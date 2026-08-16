@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register - EarnTask</title>
+
+    <title>Create Account - EarnTask</title>
 
     <style>
         * {
@@ -13,22 +14,22 @@
         }
 
         body {
-            font-family: Arial, Helvetica, sans-serif;
+            font-family: Arial, sans-serif;
             background: linear-gradient(135deg, #ecfdf5, #f8fafc);
             min-height: 100vh;
             display: flex;
-            align-items: center;
             justify-content: center;
-            padding: 25px;
+            align-items: center;
+            padding: 20px;
         }
 
-        .register-box {
+        .box {
             width: 100%;
             max-width: 480px;
             background: white;
             padding: 35px;
             border-radius: 18px;
-            box-shadow: 0 10px 35px rgba(0,0,0,0.08);
+            box-shadow: 0 10px 35px rgba(0,0,0,.08);
         }
 
         .logo {
@@ -36,7 +37,6 @@
             font-size: 30px;
             font-weight: 800;
             margin-bottom: 8px;
-            color: #111827;
         }
 
         .logo span {
@@ -46,34 +46,28 @@
         .subtitle {
             text-align: center;
             color: #64748b;
-            margin-bottom: 30px;
+            margin-bottom: 28px;
         }
 
         label {
             display: block;
-            margin-bottom: 7px;
             font-weight: 600;
+            margin-bottom: 7px;
             color: #374151;
         }
 
-        input,
-        select {
+        input {
             width: 100%;
             padding: 13px;
             border: 1px solid #d1d5db;
             border-radius: 9px;
-            margin-bottom: 18px;
+            margin-bottom: 17px;
             font-size: 15px;
+        }
+
+        input:focus {
             outline: none;
-        }
-
-        input:focus,
-        select:focus {
             border-color: #16a34a;
-        }
-
-        .role-title {
-            margin-bottom: 10px;
         }
 
         .roles {
@@ -85,10 +79,14 @@
 
         .role {
             border: 2px solid #e5e7eb;
-            border-radius: 10px;
             padding: 15px;
+            border-radius: 10px;
             text-align: center;
             cursor: pointer;
+        }
+
+        .role:hover {
+            border-color: #16a34a;
         }
 
         .role input {
@@ -96,17 +94,13 @@
             margin: 0 5px 0 0;
         }
 
-        .role:hover {
-            border-color: #16a34a;
-        }
-
         button {
             width: 100%;
-            border: none;
-            background: #16a34a;
-            color: white;
             padding: 14px;
+            background: #16a34a;
+            border: none;
             border-radius: 9px;
+            color: white;
             font-size: 16px;
             font-weight: 700;
             cursor: pointer;
@@ -116,22 +110,27 @@
             background: #15803d;
         }
 
-        .message {
+        button:disabled {
+            opacity: .6;
+            cursor: not-allowed;
+        }
+
+        #message {
             margin-top: 15px;
             text-align: center;
             font-size: 14px;
-            color: #dc2626;
+            line-height: 1.5;
         }
 
-        .login-link {
+        .login {
             text-align: center;
-            margin-top: 22px;
+            margin-top: 20px;
             color: #64748b;
         }
 
-        .login-link a {
+        .login a {
             color: #16a34a;
-            font-weight: 700;
+            font-weight: bold;
             text-decoration: none;
         }
     </style>
@@ -139,7 +138,7 @@
 
 <body>
 
-<div class="register-box">
+<div class="box">
 
     <div class="logo">
         Earn<span>Task</span>
@@ -151,7 +150,8 @@
 
     <form id="registerForm">
 
-        <label for="fullName">Full Name</label>
+        <label>Full Name</label>
+
         <input
             type="text"
             id="fullName"
@@ -159,7 +159,8 @@
             required
         >
 
-        <label for="username">Username</label>
+        <label>Username</label>
+
         <input
             type="text"
             id="username"
@@ -167,7 +168,8 @@
             required
         >
 
-        <label for="email">Email Address</label>
+        <label>Email Address</label>
+
         <input
             type="email"
             id="email"
@@ -175,18 +177,17 @@
             required
         >
 
-        <label for="password">Password</label>
+        <label>Password</label>
+
         <input
             type="password"
             id="password"
-            placeholder="Create a password"
+            placeholder="Minimum 6 characters"
             minlength="6"
             required
         >
 
-        <div class="role-title">
-            <label>Choose Account Type</label>
-        </div>
+        <label>Account Type</label>
 
         <div class="roles">
 
@@ -211,52 +212,160 @@
 
         </div>
 
-        <button type="submit">
+        <button id="registerButton" type="submit">
             Create Account
         </button>
 
-        <div class="message" id="message"></div>
+        <div id="message"></div>
 
     </form>
 
-    <div class="login-link">
+    <div class="login">
         Already have an account?
         <a href="login.html">Login</a>
     </div>
 
 </div>
 
-<script>
 
-document.getElementById("registerForm").addEventListener("submit", function(event) {
+<script type="module">
 
-    event.preventDefault();
+    /*
+      IMPORTANT:
+      Replace the two values below with YOUR OWN
+      Supabase API URL and Publishable Key.
+    */
 
-    const fullName = document.getElementById("fullName").value;
-    const username = document.getElementById("username").value;
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
+    const SUPABASE_URL = "https://rvwboegeisnrhwicvvhj.supabase.co/rest/v1/";
 
-    const role = document.querySelector(
-        'input[name="role"]:checked'
-    ).value;
+    const SUPABASE_KEY = "sb_publishable_Kz3hgj9W0khG3JEIclhx2g_HZ6eSyQQ";
+
+
+    import {
+        createClient
+    } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+
+
+    const supabase = createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
+
+
+    const form = document.getElementById("registerForm");
 
     const message = document.getElementById("message");
 
-    message.style.color = "#16a34a";
+    const button = document.getElementById("registerButton");
 
-    message.innerText =
-        "Registration page is ready. Supabase connection will be added next.";
 
-    console.log({
-        fullName,
-        username,
-        email,
-        password,
-        role
+    form.addEventListener("submit", async function(event) {
+
+        event.preventDefault();
+
+        message.textContent = "";
+        message.style.color = "#dc2626";
+
+        button.disabled = true;
+        button.textContent = "Creating Account...";
+
+
+        const fullName =
+            document.getElementById("fullName").value.trim();
+
+        const username =
+            document.getElementById("username").value.trim();
+
+        const email =
+            document.getElementById("email").value.trim();
+
+        const password =
+            document.getElementById("password").value;
+
+        const role =
+            document.querySelector(
+                'input[name="role"]:checked'
+            ).value;
+
+
+        try {
+
+            /*
+              Create Supabase Auth account
+            */
+
+            const {
+                data,
+                error
+            } = await supabase.auth.signUp({
+
+                email: email,
+
+                password: password,
+
+                options: {
+
+                    data: {
+
+                        full_name: fullName,
+
+                        username: username,
+
+                        role: role
+
+                    }
+
+                }
+
+            });
+
+
+            if (error) {
+                throw error;
+            }
+
+
+            message.style.color = "#16a34a";
+
+            message.textContent =
+                "Account created successfully! You can now login.";
+
+            form.reset();
+
+
+            /*
+              If email confirmation is enabled,
+              Supabase will ask the user to verify email.
+            */
+
+            if (
+                data.user &&
+                !data.session
+            ) {
+
+                message.textContent =
+                    "Account created! Please check your email to confirm your account.";
+
+            }
+
+
+        } catch (error) {
+
+            console.error(error);
+
+            message.style.color = "#dc2626";
+
+            message.textContent =
+                error.message || "Registration failed.";
+
+        }
+
+
+        button.disabled = false;
+
+        button.textContent = "Create Account";
+
     });
-
-});
 
 </script>
 
