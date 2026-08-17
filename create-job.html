@@ -464,134 +464,165 @@ Select a category first.
 
 <!-- ================= STEP 3 ================= -->
 
+<!-- ================= STEP 3 ================= -->
+
 <div class="step" id="step3">
 
-<h2>📝 Job Details</h2>
+<h2>Job Details</h2>
 
 <p class="desc">
-Tell workers exactly what they need to do.
+Provide detailed information about the job
 </p>
 
-<div class="form-grid">
+<div class="selected-job-info" id="jobCategoryInfo">
+    Category: <strong>Not selected</strong><br>
+    Subcategory: <strong>Not selected</strong>
+</div>
 
-<div class="full">
+<div class="detail-field">
 
-<label>Job Title *</label>
+<label>Job Title <span class="required">*</span></label>
 
 <input
-id="jobTitle"
-maxlength="150"
-placeholder="Example: Visit our website and provide feedback"
+    type="text"
+    id="jobTitle"
+    maxlength="150"
+    placeholder="Enter a clear and descriptive job title"
 >
+
+<div class="character-count">
+<span id="titleCount">0</span>/150 characters
+</div>
 
 </div>
 
+<div class="detail-field">
 
-<div class="full">
-
-<label>Description *</label>
+<label>Description <span class="required">*</span></label>
 
 <textarea
-id="description"
-maxlength="5000"
-placeholder="Explain the task clearly..."
+    id="description"
+    maxlength="5000"
+    placeholder="Describe what the job is about, what workers will do, and any important context"
 ></textarea>
 
+<div class="character-count">
+<span id="descriptionCount">0</span>/5000 characters
 </div>
 
+</div>
 
-<div class="full">
+<div class="detail-field">
 
-<label>Attachments</label>
+<label>
+Attachments <span class="optional">(Optional)</span>
+</label>
 
-<div class="file-box">
+<p class="field-help">
+Attach supporting files to help workers understand the job better.
+Max 10 files, 10MB each.
+</p>
 
-<p>📎 Upload supporting files</p>
-
-<br>
+<div class="attachment-box">
 
 <input
-type="file"
-id="attachments"
-multiple
-accept=".jpg,.jpeg,.png,.pdf,.doc,.docx"
+    type="file"
+    id="attachments"
+    multiple
+    accept="image/*,.pdf,.doc,.docx,.txt"
 >
 
-</div>
+<label for="attachments" class="file-button">
+📎 Add Files <span id="fileCount">(0/10)</span>
+</label>
+
+<div id="fileList"></div>
 
 </div>
 
+</div>
 
-<div class="full">
+<div class="detail-field">
 
-<label>Instructions *</label>
+<label>Instructions <span class="required">*</span></label>
 
 <textarea
-id="instructions"
-placeholder="Write step-by-step instructions for workers..."
+    id="instructions"
+    maxlength="3000"
+    placeholder="Provide step-by-step instructions for completing the job"
 ></textarea>
 
-</div>
-
-
-<div class="full">
-
-<label>Proof Requirements</label>
-
-<div class="proof-list">
-
-<label class="proof">
-<input type="checkbox" value="Screenshot">
-Screenshot
-</label>
-
-<label class="proof">
-<input type="checkbox" value="Text Answer">
-Text Answer
-</label>
-
-<label class="proof">
-<input type="checkbox" value="URL">
-URL
-</label>
-
-<label class="proof">
-<input type="checkbox" value="File Upload">
-File Upload
-</label>
-
-<label class="proof">
-<input type="checkbox" value="Photo">
-Photo
-</label>
-
-<label class="proof">
-<input type="checkbox" value="Multiple Screenshots">
-Multiple Screenshots
-</label>
-
+<div class="character-count">
+<span id="instructionsCount">0</span>/3000 characters
 </div>
 
 </div>
 
+<div class="proof-section">
 
-<div class="full">
+<div class="proof-heading">
 
-<label>Proof Question</label>
+<label>
+Proof Requirements <span class="required">*</span>
+</label>
 
-<input
-id="proofQuestion"
-placeholder="Example: What did you find on the website?"
+<p>
+Define what proof workers need to submit.
+Each slot can be a screenshot or text proof.
+</p>
+
+</div>
+
+<div id="proofContainer"></div>
+
+<button
+    type="button"
+    class="add-proof-btn"
+    onclick="addProof()"
+    id="addProofBtn"
 >
++ Add Proof (1/5)
+</button>
+
+<div class="proof-help">
+
+<div>💡 <strong>Example labels:</strong></div>
+
+<ul>
+<li>"Before screenshot"</li>
+<li>"After screenshot"</li>
+<li>"Homepage screenshot"</li>
+<li>"Profile URL"</li>
+<li>"Your username"</li>
+<li>"Review text"</li>
+</ul>
 
 </div>
 
 </div>
+
+<div
+    id="step3Message"
+    class="step3-message"
+></div>
 
 <div class="actions">
 
-<button class="back" onclick="prevStep()">← Back</button>
-<button class="next" onclick="nextStep()">Continue →</button>
+<button
+    class="back"
+    type="button"
+    onclick="prevStep()"
+>
+← Back
+</button>
+
+<button
+    class="next"
+    type="button"
+    onclick="nextStep()"
+>
+Continue →
+</button>
 
 </div>
 
