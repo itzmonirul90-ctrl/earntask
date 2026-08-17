@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Create New Job - EarnTask</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f5f7fb;
+    color: #172033;
+    padding: 30px 15px;
+}
+
+.container {
+    max-width: 900px;
+    margin: auto;
+}
+
+.header {
+    margin-bottom: 25px;
+}
+
+.header h1 {
+    font-size: 30px;
+    margin-bottom: 8px;
+}
+
+.header p {
+    color: #64748b;
+}
+
+/* Progress */
+
+.progress {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    margin-bottom: 30px;
+}
+
+.progress-item {
+    text-align: center;
+    position: relative;
+}
+
+.progress-item:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    height: 3px;
+    background: #dbe1e8;
+    top: 17px;
+    left: 50%;
+    width: 100%;
+    z-index: 0;
+}
+
+.progress-circle {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background: #e5e7eb;
+    color: #64748b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+    position: relative;
+    z-index: 2;
+    font-weight: bold;
+}
+
+.progress-item.active .progress-circle {
+    background: #16a34a;
+    color: white;
+}
+
+.progress-item.active:not(:last-child)::after {
+    background: #16a34a;
+}
+
+.progress-label {
+    margin-top: 9px;
+    font-size: 13px;
+    color: #64748b;
+}
+
+.progress-item.active .progress-label {
+    color: #16a34a;
+    font-weight: bold;
+}
+
+/* Card */
+
+.card {
+    background: white;
+    border-radius: 16px;
+    padding: 30px;
+    box-shadow: 0 5px 25px rgba(0,0,0,.06);
+}
+
+.card h2 {
+    margin-bottom: 8px;
+}
+
+.card-description {
+    color: #64748b;
+    margin-bottom: 28px;
+}
+
+/* Location */
+
+.location-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+}
+
+.location-option {
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 25px;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.location-option:hover {
+    border-color: #16a34a;
+}
+
+.location-option.selected {
+    border-color: #16a34a;
+    background: #f0fdf4;
+}
+
+.location-option input {
+    display: none;
+}
+
+.location-icon {
+    font-size: 32px;
+    margin-bottom: 12px;
+}
+
+.location-option h3 {
+    margin-bottom: 7px;
+}
+
+.location-option p {
+    color: #64748b;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.countries {
+    display: none;
+    margin-top: 25px;
+}
+
+.countries.show {
+    display: block;
+}
+
+label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+select {
+    width: 100%;
+    padding: 13px;
+    border: 1px solid #d1d5db;
+    border-radius: 9px;
+    font-size: 15px;
+    background: white;
+}
+
+select:focus {
+    outline: none;
+    border-color: #16a34a;
+}
+
+/* Buttons */
+
+.actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+    padding-top: 25px;
+    border-top: 1px solid #e5e7eb;
+}
+
+.btn {
+    border: none;
+    padding: 13px 24px;
+    border-radius: 9px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.btn-back {
+    background: #e5e7eb;
+    color: #374151;
+}
+
+.btn-next {
+    background: #16a34a;
+    color: white;
+}
+
+.btn-next:hover {
+    background: #15803d;
+}
+
+.message {
+    margin-top: 15px;
+    color: #dc2626;
+    font-size: 14px;
+}
+
+@media (max-width: 650px) {
+
+    body {
+        padding: 15px;
+    }
+
+    .card {
+        padding: 20px;
+    }
+
+    .location-options {
+        grid-template-columns: 1fr;
+    }
+
+    .progress-label {
+        font-size: 10px;
+    }
+
+    .header h1 {
+        font-size: 24px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="header">
+
+        <h1>Create New Job – MicroJob</h1>
+
+        <p>
+            Create a task and find workers to complete it.
+        </p>
+
+    </div>
+
+
+    <!-- Progress Bar -->
+
+    <div class="progress">
+
+        <div class="progress-item active">
+
+            <div class="progress-circle">
+                1
+            </div>
+
+            <div class="progress-label">
+                Location
+            </div>
+
+        </div>
+
+
+        <div class="progress-item">
+
+            <div class="progress-circle">
+                2
+            </div>
+
+            <div class="progress-label">
+                Category
+            </div>
+
+        </div>
+
+
+        <div class="progress-item">
+
+            <div class="progress-circle">
+                3
+            </div>
+
+            <div class="progress-label">
+                Job Details
+            </div>
+
+        </div>
+
+
+        <div class="progress-item">
+
+            <div class="progress-circle">
+                4
+            </div>
+
+            <div class="progress-label">
+                Budget & Publish
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Step 1 -->
+
+    <div class="card">
+
+        <h2>📍 Where should the workers be from?</h2>
+
+        <p class="card-description">
+            Choose whether your job is available worldwide
+            or only for workers from selected countries.
+        </p>
+
+
+        <div class="location-options">
+
+            <label class="location-option selected">
+
+                <input
+                    type="radio"
+                    name="location"
+                    value="international"
+                    checked
+                >
+
+                <div class="location-icon">
+                    🌎
+                </div>
+
+                <h3>
+                    International
+                </h3>
+
+                <p>
+                    Workers from any country can complete
+                    this job.
+                </p>
+
+            </label>
+
+
+            <label class="location-option">
+
+                <input
+                    type="radio"
+                    name="location"
+                    value="specific"
+                >
+
+                <div class="location-icon">
+                    🌍
+                </div>
+
+                <h3>
+                    Specific Countries
+                </h3>
+
+                <p>
+                    Only workers from countries selected
+                    by you can complete this job.
+                </p>
+
+            </label>
+
+        </div>
+
+
+        <div
+            class="countries"
+            id="countriesBox"
+        >
+
+            <label for="countries">
+                Select Countries
+            </label>
+
+            <select
+                id="countries"
+                multiple
+                size="7"
+            >
+
+                <option value="BD">
+                    🇧🇩 Bangladesh
+                </option>
+
+                <option value="US">
+                    🇺🇸 United States
+                </option>
+
+                <option value="GB">
+                    🇬🇧 United Kingdom
+                </option>
+
+                <option value="IN">
+                    🇮🇳 India
+                </option>
+
+                <option value="PK">
+                    🇵🇰 Pakistan
+                </option>
+
+                <option value="CA">
+                    🇨🇦 Canada
+                </option>
+
+                <option value="AU">
+                    🇦🇺 Australia
+                </option>
+
+                <option value="DE">
+                    🇩🇪 Germany
+                </option>
+
+                <option value="FR">
+                    🇫🇷 France
+                </option>
+
+                <option value="IT">
+                    🇮🇹 Italy
+                </option>
+
+                <option value="ES">
+                    🇪🇸 Spain
+                </option>
+
+                <option value="BR">
+                    🇧🇷 Brazil
+                </option>
+
+                <option value="JP">
+                    🇯🇵 Japan
+                </option>
+
+                <option value="KR">
+                    🇰🇷 South Korea
+                </option>
+
+            </select>
+
+            <p
+                style="
+                color:#64748b;
+                font-size:13px;
+                margin-top:8px;
+                "
+            >
+                Hold Ctrl (Windows) or Command (Mac)
+                to select multiple countries.
+            </p>
+
+        </div>
+
+
+        <div
+            class="message"
+            id="message"
+        ></div>
+
+
+        <div class="actions">
+
+            <button
+                type="button"
+                class="btn btn-back"
+                onclick="goBack()"
+            >
+                ← Back
+            </button>
+
+
+            <button
+                type="button"
+                class="btn btn-next"
+                onclick="continueStep()"
+            >
+                Continue →
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+const locationOptions =
+    document.querySelectorAll(
+        ".location-option"
+    );
+
+
+const countriesBox =
+    document.getElementById(
+        "countriesBox"
+    );
+
+
+locationOptions.forEach(function(option) {
+
+    option.addEventListener(
+        "click",
+        function() {
+
+            locationOptions.forEach(
+                function(item) {
+
+                    item.classList.remove(
+                        "selected"
+                    );
+
+                }
+            );
+
+
+            option.classList.add(
+                "selected"
+            );
+
+
+            const radio =
+                option.querySelector(
+                    "input"
+                );
+
+
+            radio.checked = true;
+
+
+            if (
+                radio.value ===
+                "specific"
+            ) {
+
+                countriesBox.classList.add(
+                    "show"
+                );
+
+            } else {
+
+                countriesBox.classList.remove(
+                    "show"
+                );
+
+            }
+
+        }
+    );
+
+});
+
+
+function continueStep() {
+
+    const selected =
+        document.querySelector(
+            'input[name="location"]:checked'
+        );
+
+
+    if (!selected) {
+
+        document.getElementById(
+            "message"
+        ).textContent =
+            "Please select a location.";
+
+        return;
+
+    }
+
+
+    if (
+        selected.value ===
+        "specific"
+    ) {
+
+        const countries =
+            document.getElementById(
+                "countries"
+            );
+
+
+        if (
+            countries.selectedOptions.length === 0
+        ) {
+
+            document.getElementById(
+                "message"
+            ).textContent =
+                "Please select at least one country.";
+
+            return;
+
+        }
+
+    }
+
+
+    /*
+     * Save Step 1 data temporarily.
+     */
+
+    const selectedCountries =
+        Array.from(
+            document.getElementById(
+                "countries"
+            ).selectedOptions
+        ).map(
+            option => option.value
+        );
+
+
+    const jobData = {
+
+        locationType:
+            selected.value,
+
+        countries:
+            selectedCountries
+
+    };
+
+
+    sessionStorage.setItem(
+        "earntask_job",
+        JSON.stringify(jobData)
+    );
+
+
+    /*
+     * Step 2 will be added next.
+     */
+
+    alert(
+        "Location saved successfully! Step 2 will be added next."
+    );
+
+}
+
+
+function goBack() {
+
+    window.location.href =
+        "employer-dashboard.html";
+
+}
+
+</script>
+
+</body>
+</html>
