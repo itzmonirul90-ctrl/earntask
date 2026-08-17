@@ -2,252 +2,304 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Create New Job - EarnTask</title>
 
 <style>
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+*{box-sizing:border-box;margin:0;padding:0}
+
+body{
+    font-family:Arial,sans-serif;
+    background:#f5f7fb;
+    color:#172033;
+    padding:25px 15px
 }
 
-body {
-    font-family: Arial, sans-serif;
-    background: #f5f7fb;
-    color: #172033;
-    padding: 30px 15px;
+.container{max-width:950px;margin:auto}
+
+.header{margin-bottom:25px}
+.header h1{font-size:30px;margin-bottom:7px}
+.header p{color:#64748b}
+
+.progress{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    margin-bottom:30px
 }
 
-.container {
-    max-width: 900px;
-    margin: auto;
+.progress-item{
+    text-align:center;
+    position:relative
 }
 
-.header {
-    margin-bottom: 25px;
+.progress-item:not(:last-child):after{
+    content:"";
+    position:absolute;
+    height:3px;
+    background:#dbe1e8;
+    top:17px;
+    left:50%;
+    width:100%;
+    z-index:0
 }
 
-.header h1 {
-    font-size: 30px;
-    margin-bottom: 8px;
+.progress-circle{
+    width:36px;
+    height:36px;
+    border-radius:50%;
+    background:#e5e7eb;
+    color:#64748b;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin:auto;
+    position:relative;
+    z-index:2;
+    font-weight:bold
 }
 
-.header p {
-    color: #64748b;
+.progress-item.active .progress-circle{
+    background:#16a34a;
+    color:#fff
 }
 
-/* Progress */
-
-.progress {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    margin-bottom: 30px;
+.progress-item.done .progress-circle{
+    background:#15803d;
+    color:#fff
 }
 
-.progress-item {
-    text-align: center;
-    position: relative;
+.progress-item.active:not(:last-child):after,
+.progress-item.done:not(:last-child):after{
+    background:#16a34a
 }
 
-.progress-item:not(:last-child)::after {
-    content: "";
-    position: absolute;
-    height: 3px;
-    background: #dbe1e8;
-    top: 17px;
-    left: 50%;
-    width: 100%;
-    z-index: 0;
+.progress-label{
+    margin-top:8px;
+    font-size:12px;
+    color:#64748b
 }
 
-.progress-circle {
-    width: 35px;
-    height: 35px;
-    border-radius: 50%;
-    background: #e5e7eb;
-    color: #64748b;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: auto;
-    position: relative;
-    z-index: 2;
-    font-weight: bold;
+.progress-item.active .progress-label{
+    color:#16a34a;
+    font-weight:bold
 }
 
-.progress-item.active .progress-circle {
-    background: #16a34a;
-    color: white;
+.card{
+    background:#fff;
+    border-radius:16px;
+    padding:30px;
+    box-shadow:0 5px 25px rgba(0,0,0,.06)
 }
 
-.progress-item.active:not(:last-child)::after {
-    background: #16a34a;
+.step{display:none}
+.step.active{display:block}
+
+.card h2{margin-bottom:8px}
+.desc{color:#64748b;margin-bottom:25px;line-height:1.5}
+
+.location-options{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px
 }
 
-.progress-label {
-    margin-top: 9px;
-    font-size: 13px;
-    color: #64748b;
+.location-option{
+    border:2px solid #e2e8f0;
+    border-radius:12px;
+    padding:25px;
+    cursor:pointer
 }
 
-.progress-item.active .progress-label {
-    color: #16a34a;
-    font-weight: bold;
+.location-option.selected{
+    border-color:#16a34a;
+    background:#f0fdf4
 }
 
-/* Card */
+.location-option input{display:none}
+.location-icon{font-size:32px;margin-bottom:10px}
+.location-option p{color:#64748b;font-size:14px;margin-top:7px}
 
-.card {
-    background: white;
-    border-radius: 16px;
-    padding: 30px;
-    box-shadow: 0 5px 25px rgba(0,0,0,.06);
+.country-box{margin-top:22px;display:none}
+.country-box.show{display:block}
+
+label{
+    display:block;
+    font-weight:600;
+    margin-bottom:7px
 }
 
-.card h2 {
-    margin-bottom: 8px;
+input,select,textarea{
+    width:100%;
+    padding:13px;
+    border:1px solid #d1d5db;
+    border-radius:9px;
+    font-size:15px;
+    outline:none;
+    background:#fff
 }
 
-.card-description {
-    color: #64748b;
-    margin-bottom: 28px;
+textarea{
+    min-height:130px;
+    resize:vertical
 }
 
-/* Location */
-
-.location-options {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 18px;
+input:focus,select:focus,textarea:focus{
+    border-color:#16a34a
 }
 
-.location-option {
-    border: 2px solid #e2e8f0;
-    border-radius: 12px;
-    padding: 25px;
-    cursor: pointer;
-    transition: .2s;
+.search{
+    margin-bottom:15px
 }
 
-.location-option:hover {
-    border-color: #16a34a;
+.category-layout{
+    display:grid;
+    grid-template-columns:1fr 1.3fr;
+    gap:20px
 }
 
-.location-option.selected {
-    border-color: #16a34a;
-    background: #f0fdf4;
+.category-list,.sub-list{
+    border:1px solid #e5e7eb;
+    border-radius:10px;
+    max-height:430px;
+    overflow:auto
 }
 
-.location-option input {
-    display: none;
+.category-item,.sub-item{
+    padding:13px 15px;
+    border-bottom:1px solid #f1f5f9;
+    cursor:pointer
 }
 
-.location-icon {
-    font-size: 32px;
-    margin-bottom: 12px;
+.category-item:hover,.sub-item:hover{
+    background:#f0fdf4
 }
 
-.location-option h3 {
-    margin-bottom: 7px;
+.category-item.selected,.sub-item.selected{
+    background:#dcfce7;
+    color:#15803d;
+    font-weight:bold
 }
 
-.location-option p {
-    color: #64748b;
-    font-size: 14px;
-    line-height: 1.5;
+.category-count{
+    float:right;
+    color:#64748b;
+    font-size:12px
 }
 
-.countries {
-    display: none;
-    margin-top: 25px;
+.form-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px
 }
 
-.countries.show {
-    display: block;
+.full{grid-column:1/-1}
+
+textarea{line-height:1.5}
+
+.file-box{
+    border:2px dashed #cbd5e1;
+    border-radius:10px;
+    padding:20px;
+    text-align:center
 }
 
-label {
-    display: block;
-    font-weight: 600;
-    margin-bottom: 8px;
+.file-box input{
+    border:0;
+    padding:5px
 }
 
-select {
-    width: 100%;
-    padding: 13px;
-    border: 1px solid #d1d5db;
-    border-radius: 9px;
-    font-size: 15px;
-    background: white;
+.proof-list{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px
 }
 
-select:focus {
-    outline: none;
-    border-color: #16a34a;
+.proof{
+    border:1px solid #e2e8f0;
+    border-radius:8px;
+    padding:12px
 }
 
-/* Buttons */
-
-.actions {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 30px;
-    padding-top: 25px;
-    border-top: 1px solid #e5e7eb;
+.proof input{
+    width:auto;
+    margin-right:7px
 }
 
-.btn {
-    border: none;
-    padding: 13px 24px;
-    border-radius: 9px;
-    font-size: 15px;
-    font-weight: 700;
-    cursor: pointer;
+.budget-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:20px
 }
 
-.btn-back {
-    background: #e5e7eb;
-    color: #374151;
+.summary{
+    background:#f8fafc;
+    border-radius:12px;
+    padding:22px;
+    margin-top:25px
 }
 
-.btn-next {
-    background: #16a34a;
-    color: white;
+.summary-row{
+    display:flex;
+    justify-content:space-between;
+    padding:9px 0
 }
 
-.btn-next:hover {
-    background: #15803d;
+.total{
+    border-top:1px solid #dbe1e8;
+    margin-top:8px;
+    padding-top:15px;
+    font-size:20px;
+    font-weight:bold
 }
 
-.message {
-    margin-top: 15px;
-    color: #dc2626;
-    font-size: 14px;
+.actions{
+    display:flex;
+    justify-content:space-between;
+    margin-top:30px;
+    padding-top:25px;
+    border-top:1px solid #e5e7eb
 }
 
-@media (max-width: 650px) {
+button{
+    border:0;
+    border-radius:9px;
+    padding:13px 24px;
+    font-size:15px;
+    font-weight:bold;
+    cursor:pointer
+}
 
-    body {
-        padding: 15px;
+.back{background:#e5e7eb;color:#374151}
+.next,.publish{background:#16a34a;color:#fff}
+.next:hover,.publish:hover{background:#15803d}
+
+.message{
+    margin-top:15px;
+    color:#dc2626;
+    line-height:1.5
+}
+
+.selected-info{
+    background:#f0fdf4;
+    padding:12px;
+    border-radius:8px;
+    margin-bottom:15px;
+    color:#15803d;
+    font-size:14px
+}
+
+@media(max-width:700px){
+    .location-options,
+    .category-layout,
+    .form-grid,
+    .budget-grid{
+        grid-template-columns:1fr
     }
 
-    .card {
-        padding: 20px;
-    }
+    .full{grid-column:auto}
 
-    .location-options {
-        grid-template-columns: 1fr;
-    }
-
-    .progress-label {
-        font-size: 10px;
-    }
-
-    .header h1 {
-        font-size: 24px;
-    }
+    .progress-label{font-size:9px}
+    .card{padding:20px}
 }
 </style>
 </head>
@@ -256,421 +308,1080 @@ select:focus {
 
 <div class="container">
 
-    <div class="header">
+<div class="header">
+<h1>Create New Job – MicroJob</h1>
+<p>Create a task and find workers to complete it.</p>
+</div>
 
-        <h1>Create New Job – MicroJob</h1>
+<!-- PROGRESS -->
 
-        <p>
-            Create a task and find workers to complete it.
-        </p>
+<div class="progress">
 
-    </div>
+<div class="progress-item active" id="p1">
+<div class="progress-circle">1</div>
+<div class="progress-label">Location</div>
+</div>
 
+<div class="progress-item" id="p2">
+<div class="progress-circle">2</div>
+<div class="progress-label">Category</div>
+</div>
 
-    <!-- Progress Bar -->
+<div class="progress-item" id="p3">
+<div class="progress-circle">3</div>
+<div class="progress-label">Job Details</div>
+</div>
 
-    <div class="progress">
+<div class="progress-item" id="p4">
+<div class="progress-circle">4</div>
+<div class="progress-label">Budget & Publish</div>
+</div>
 
-        <div class="progress-item active">
+</div>
 
-            <div class="progress-circle">
-                1
-            </div>
 
-            <div class="progress-label">
-                Location
-            </div>
+<div class="card">
 
-        </div>
+<!-- ================= STEP 1 ================= -->
 
+<div class="step active" id="step1">
 
-        <div class="progress-item">
+<h2>📍 Location</h2>
 
-            <div class="progress-circle">
-                2
-            </div>
+<p class="desc">
+Choose where your workers should be located.
+</p>
 
-            <div class="progress-label">
-                Category
-            </div>
+<div class="location-options">
 
-        </div>
+<label class="location-option selected">
+<input type="radio" name="location" value="international" checked>
+<div class="location-icon">🌎</div>
+<h3>International</h3>
+<p>Workers from any country can complete this job.</p>
+</label>
 
+<label class="location-option">
+<input type="radio" name="location" value="specific">
+<div class="location-icon">🌍</div>
+<h3>Specific Countries</h3>
+<p>Only selected countries can complete this job.</p>
+</label>
 
-        <div class="progress-item">
+</div>
 
-            <div class="progress-circle">
-                3
-            </div>
+<div class="country-box" id="countryBox">
 
-            <div class="progress-label">
-                Job Details
-            </div>
+<label>Select Countries</label>
 
-        </div>
+<select id="countries" multiple size="7">
 
+<option value="BD">🇧🇩 Bangladesh</option>
+<option value="US">🇺🇸 United States</option>
+<option value="GB">🇬🇧 United Kingdom</option>
+<option value="IN">🇮🇳 India</option>
+<option value="PK">🇵🇰 Pakistan</option>
+<option value="CA">🇨🇦 Canada</option>
+<option value="AU">🇦🇺 Australia</option>
+<option value="DE">🇩🇪 Germany</option>
+<option value="FR">🇫🇷 France</option>
+<option value="IT">🇮🇹 Italy</option>
+<option value="ES">🇪🇸 Spain</option>
+<option value="BR">🇧🇷 Brazil</option>
+<option value="JP">🇯🇵 Japan</option>
+<option value="KR">🇰🇷 South Korea</option>
 
-        <div class="progress-item">
+</select>
 
-            <div class="progress-circle">
-                4
-            </div>
+</div>
 
-            <div class="progress-label">
-                Budget & Publish
-            </div>
+<div class="actions">
 
-        </div>
+<button class="back" onclick="goBack()">← Back</button>
+<button class="next" onclick="nextStep()">Continue →</button>
 
-    </div>
+</div>
 
+</div>
 
-    <!-- Step 1 -->
 
-    <div class="card">
+<!-- ================= STEP 2 ================= -->
 
-        <h2>📍 Where should the workers be from?</h2>
+<div class="step" id="step2">
 
-        <p class="card-description">
-            Choose whether your job is available worldwide
-            or only for workers from selected countries.
-        </p>
+<h2>📂 Category</h2>
 
+<p class="desc">
+Select a category and then choose its subcategory.
+</p>
 
-        <div class="location-options">
+<div class="category-layout">
 
-            <label class="location-option selected">
+<div>
 
-                <input
-                    type="radio"
-                    name="location"
-                    value="international"
-                    checked
-                >
+<label>Search Category</label>
 
-                <div class="location-icon">
-                    🌎
-                </div>
+<input
+class="search"
+id="categorySearch"
+placeholder="Search category..."
+>
 
-                <h3>
-                    International
-                </h3>
+<div class="category-list" id="categoryList"></div>
 
-                <p>
-                    Workers from any country can complete
-                    this job.
-                </p>
+</div>
 
-            </label>
 
+<div>
 
-            <label class="location-option">
+<label>Search Subcategory</label>
 
-                <input
-                    type="radio"
-                    name="location"
-                    value="specific"
-                >
+<input
+class="search"
+id="subSearch"
+placeholder="Search subcategory..."
+>
 
-                <div class="location-icon">
-                    🌍
-                </div>
+<div class="selected-info" id="selectedCategory">
+Select a category first.
+</div>
 
-                <h3>
-                    Specific Countries
-                </h3>
+<div class="sub-list" id="subList"></div>
 
-                <p>
-                    Only workers from countries selected
-                    by you can complete this job.
-                </p>
+</div>
 
-            </label>
+</div>
 
-        </div>
+<div class="actions">
 
+<button class="back" onclick="prevStep()">← Back</button>
+<button class="next" onclick="nextStep()">Continue →</button>
 
-        <div
-            class="countries"
-            id="countriesBox"
-        >
+</div>
 
-            <label for="countries">
-                Select Countries
-            </label>
+</div>
 
-            <select
-                id="countries"
-                multiple
-                size="7"
-            >
 
-                <option value="BD">
-                    🇧🇩 Bangladesh
-                </option>
+<!-- ================= STEP 3 ================= -->
 
-                <option value="US">
-                    🇺🇸 United States
-                </option>
+<div class="step" id="step3">
 
-                <option value="GB">
-                    🇬🇧 United Kingdom
-                </option>
+<h2>📝 Job Details</h2>
 
-                <option value="IN">
-                    🇮🇳 India
-                </option>
+<p class="desc">
+Tell workers exactly what they need to do.
+</p>
 
-                <option value="PK">
-                    🇵🇰 Pakistan
-                </option>
+<div class="form-grid">
 
-                <option value="CA">
-                    🇨🇦 Canada
-                </option>
+<div class="full">
 
-                <option value="AU">
-                    🇦🇺 Australia
-                </option>
+<label>Job Title *</label>
 
-                <option value="DE">
-                    🇩🇪 Germany
-                </option>
+<input
+id="jobTitle"
+maxlength="150"
+placeholder="Example: Visit our website and provide feedback"
+>
 
-                <option value="FR">
-                    🇫🇷 France
-                </option>
+</div>
 
-                <option value="IT">
-                    🇮🇹 Italy
-                </option>
 
-                <option value="ES">
-                    🇪🇸 Spain
-                </option>
+<div class="full">
 
-                <option value="BR">
-                    🇧🇷 Brazil
-                </option>
+<label>Description *</label>
 
-                <option value="JP">
-                    🇯🇵 Japan
-                </option>
+<textarea
+id="description"
+maxlength="5000"
+placeholder="Explain the task clearly..."
+></textarea>
 
-                <option value="KR">
-                    🇰🇷 South Korea
-                </option>
+</div>
 
-            </select>
 
-            <p
-                style="
-                color:#64748b;
-                font-size:13px;
-                margin-top:8px;
-                "
-            >
-                Hold Ctrl (Windows) or Command (Mac)
-                to select multiple countries.
-            </p>
+<div class="full">
 
-        </div>
+<label>Attachments</label>
 
+<div class="file-box">
 
-        <div
-            class="message"
-            id="message"
-        ></div>
+<p>📎 Upload supporting files</p>
 
+<br>
 
-        <div class="actions">
+<input
+type="file"
+id="attachments"
+multiple
+accept=".jpg,.jpeg,.png,.pdf,.doc,.docx"
+>
 
-            <button
-                type="button"
-                class="btn btn-back"
-                onclick="goBack()"
-            >
-                ← Back
-            </button>
+</div>
 
+</div>
 
-            <button
-                type="button"
-                class="btn btn-next"
-                onclick="continueStep()"
-            >
-                Continue →
-            </button>
 
-        </div>
+<div class="full">
 
-    </div>
+<label>Instructions *</label>
+
+<textarea
+id="instructions"
+placeholder="Write step-by-step instructions for workers..."
+></textarea>
+
+</div>
+
+
+<div class="full">
+
+<label>Proof Requirements</label>
+
+<div class="proof-list">
+
+<label class="proof">
+<input type="checkbox" value="Screenshot">
+Screenshot
+</label>
+
+<label class="proof">
+<input type="checkbox" value="Text Answer">
+Text Answer
+</label>
+
+<label class="proof">
+<input type="checkbox" value="URL">
+URL
+</label>
+
+<label class="proof">
+<input type="checkbox" value="File Upload">
+File Upload
+</label>
+
+<label class="proof">
+<input type="checkbox" value="Photo">
+Photo
+</label>
+
+<label class="proof">
+<input type="checkbox" value="Multiple Screenshots">
+Multiple Screenshots
+</label>
+
+</div>
+
+</div>
+
+
+<div class="full">
+
+<label>Proof Question</label>
+
+<input
+id="proofQuestion"
+placeholder="Example: What did you find on the website?"
+>
+
+</div>
+
+</div>
+
+<div class="actions">
+
+<button class="back" onclick="prevStep()">← Back</button>
+<button class="next" onclick="nextStep()">Continue →</button>
+
+</div>
+
+</div>
+
+
+<!-- ================= STEP 4 ================= -->
+
+<div class="step" id="step4">
+
+<h2>💰 Budget & Publish</h2>
+
+<p class="desc">
+Set your reward, number of workers and deadline.
+</p>
+
+<div class="budget-grid">
+
+<div>
+
+<label>Reward Per Worker ($) *</label>
+
+<input
+type="number"
+id="reward"
+min="0.01"
+step="0.01"
+value="0.50"
+oninput="calculateBudget()"
+>
+
+</div>
+
+
+<div>
+
+<label>Number of Workers *</label>
+
+<input
+type="number"
+id="workers"
+min="1"
+value="10"
+oninput="calculateBudget()"
+>
+
+</div>
+
+
+<div>
+
+<label>Deadline *</label>
+
+<input
+type="datetime-local"
+id="deadline"
+>
+
+</div>
+
+</div>
+
+
+<div class="summary">
+
+<h3>💵 Job Summary</h3>
+
+<div class="summary-row">
+<span>Reward per worker</span>
+<strong id="sumReward">$0.50</strong>
+</div>
+
+<div class="summary-row">
+<span>Workers</span>
+<strong id="sumWorkers">10</strong>
+</div>
+
+<div class="summary-row">
+<span>Worker Cost</span>
+<strong id="workerCost">$5.00</strong>
+</div>
+
+<div class="summary-row">
+<span>Platform Fee (5%)</span>
+<strong id="platformFee">$0.25</strong>
+</div>
+
+<div class="summary-row total">
+<span>Total Cost</span>
+<strong id="totalCost">$5.25</strong>
+</div>
+
+</div>
+
+
+<div style="margin-top:20px">
+
+<label>
+<input
+type="checkbox"
+id="agree"
+style="width:auto;margin-right:7px"
+>
+I agree that this job follows EarnTask policies.
+</label>
+
+</div>
+
+
+<div class="message" id="finalMessage"></div>
+
+
+<div class="actions">
+
+<button class="back" onclick="prevStep()">← Back</button>
+
+<button
+class="publish"
+id="publishBtn"
+onclick="publishJob()"
+>
+🚀 Publish Job
+</button>
+
+</div>
+
+</div>
+
+</div>
 
 </div>
 
 
 <script>
 
-const locationOptions =
-    document.querySelectorAll(
-        ".location-option"
-    );
+/* =========================================================
+   CATEGORY + SUBCATEGORY DATA
+========================================================= */
+
+const categories = {
+
+"Ads Click, SEO, Visit, Search, Engage":[
+"Ad Click","Website Visit","Search & Visit","Google Search",
+"SEO Check","Keyword Research","Website Engagement",
+"Page Visit","Search Result Feedback","Website Navigation",
+"Landing Page Test","Website Usability Test","Traffic Research",
+"SEO Audit","Website Feedback"
+],
+
+"Airdrop / Offer Join":[
+"Airdrop Research","Airdrop Registration","Offer Research",
+"Promotional Offer","Giveaway Entry","Campaign Participation",
+"Reward Program"
+],
+
+"Answers":[
+"Question Answer","Knowledge Answer","Research Answer"
+],
+
+"Comment on Other Blogs":[
+"Blog Comment","Article Comment","Website Feedback","Blog Discussion"
+],
+
+"Computer Programs":[
+"Software Testing","Program Testing"
+],
+
+"Data Entry":[
+"Copy Paste","Data Collection","Data Formatting","Excel Data Entry",
+"Google Sheets","PDF to Word","Word to PDF","Image to Text",
+"Data Cleaning","Product Data Entry","Web Research","Database Update",
+"Contact Data","Spreadsheet Update","Data Verification","Form Filling"
+],
+
+"Discord":[
+"Server Join","Community Participation","Channel Activity","Discord Feedback"
+],
+
+"Facebook":[
+"Page Visit","Page Like","Page Follow","Post Like","Post Comment",
+"Post Share","Video Watch","Video Reaction","Profile Visit",
+"Profile Follow","Group Join","Group Participation","Group Post",
+"Group Comment","Story View","Story Reaction","Reel View",
+"Reel Reaction","Reel Comment","Reel Share","Event Response",
+"Event Visit","Messenger Page Interaction","Page Review",
+"Page Recommendation","Content Feedback","Page Information Research",
+"Public Post Research","Hashtag Research","Facebook Search",
+"Business Page Research","Competitor Research","Public Group Research",
+"Public Content Research","Page Category Research","Website Link Visit",
+"Product Page Visit","Marketplace Research","Public Video Research",
+"Public Image Research","Content Reporting","Broken Link Reporting",
+"Page Usability Feedback","Ad Feedback","Public Poll Participation",
+"Public Survey Participation","Community Feedback",
+"Content Classification","Public Information Collection"
+],
+
+"Forums":[
+"Forum Registration","Forum Discussion","Forum Comment",
+"Forum Research","Forum Feedback"
+],
+
+"Gmail Account":[
+"Email Research","Email Testing","Email Verification",
+"Inbox Testing","Email Formatting","Email Deliverability Testing",
+"Email Feedback"
+],
+
+"Identity Verification":[
+"Legitimate Identity Verification","Age Verification","KYC Testing"
+],
+
+"Instagram":[
+"Profile Visit","Follow","Post Like","Comment",
+"Reel View","Reel Feedback","Hashtag Research","Public Profile Research"
+],
+
+"LinkedIn":[
+"Profile Research","Company Research",
+"Public Content Research","Professional Profile Feedback"
+],
+
+"Medium":[
+"Article Reading","Article Research",
+"Article Feedback","Writer/Profile Research"
+],
+
+"Mobile Application":[
+"App Testing","App Installation Testing",
+"UI Testing","Bug Reporting","App Feedback"
+],
+
+"Other":[
+"Other MicroJobs"
+],
+
+"Promotion":[
+"Website Promotion","Content Promotion",
+"Campaign Promotion","Product Promotion"
+],
+
+"Quora":[
+"Question Research","Answer Research","Public Content Research"
+],
+
+"Reddit":[
+"Subreddit Research","Public Post Research","Community Feedback"
+],
+
+"Review":[
+"Product Feedback","Website Feedback","App Feedback",
+"Service Feedback","User Experience Research"
+],
+
+"Snapchat":[
+"Public Content Research"
+],
+
+"Survey":[
+"General Survey","Product Survey","Market Research","User Feedback"
+],
+
+"Telegram":[
+"Public Channel Research","Public Group Research",
+"Channel Information Research","Public Content Research",
+"Community Feedback","Channel Usability Feedback",
+"Public Announcement Research"
+],
+
+"TikTok":[
+"Public Profile Research","Video Research","Hashtag Research",
+"Trend Research","Video Feedback","Public Content Classification",
+"Creator Research","Public Video Testing","Content Research"
+],
+
+"Toffee":[
+"Video Viewing","Content Research","Video Feedback","Channel Research",
+"Program Research","Content Classification","Video Quality Feedback",
+"User Experience Testing","Public Content Research","Platform Feedback"
+],
+
+"Twitter / X":[
+"Profile Research","Post Research","Hashtag Research",
+"Trend Research","Public Content Research","Community Research",
+"Public Poll Participation","Content Classification","Post Feedback",
+"Link Research","Public Information Collection"
+],
+
+"WhatsApp":[
+"Public Channel Research","Community Information Research"
+],
+
+"YouTube":[
+"Video Viewing","Channel Research","Video Feedback",
+"Public Comment Research","Keyword Research","YouTube Search",
+"Playlist Research","Creator Research","Video Quality Testing",
+"Public Content Classification","Channel Information Research"
+]
+
+};
 
 
-const countriesBox =
-    document.getElementById(
-        "countriesBox"
-    );
+/* =========================================================
+   STATE
+========================================================= */
+
+let currentStep = 1;
+let selectedCategory = "";
+let selectedSubcategory = "";
 
 
-locationOptions.forEach(function(option) {
+/* =========================================================
+   PROGRESS
+========================================================= */
 
-    option.addEventListener(
-        "click",
-        function() {
+function showStep(step){
 
-            locationOptions.forEach(
-                function(item) {
+    currentStep = step;
 
-                    item.classList.remove(
-                        "selected"
-                    );
+    document.querySelectorAll(".step")
+        .forEach(el => el.classList.remove("active"));
 
-                }
-            );
+    document.getElementById("step"+step)
+        .classList.add("active");
+
+    for(let i=1;i<=4;i++){
+
+        const p=document.getElementById("p"+i);
+
+        p.classList.remove("active","done");
+
+        if(i<step) p.classList.add("done");
+
+        if(i===step) p.classList.add("active");
+    }
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+}
 
 
-            option.classList.add(
-                "selected"
-            );
+/* =========================================================
+   LOCATION
+========================================================= */
 
+document.querySelectorAll(".location-option")
+.forEach(option=>{
 
-            const radio =
-                option.querySelector(
-                    "input"
-                );
+    option.addEventListener("click",()=>{
 
+        document.querySelectorAll(".location-option")
+        .forEach(x=>x.classList.remove("selected"));
 
-            radio.checked = true;
+        option.classList.add("selected");
 
+        const radio=option.querySelector("input");
+        radio.checked=true;
 
-            if (
-                radio.value ===
-                "specific"
-            ) {
+        const box=document.getElementById("countryBox");
 
-                countriesBox.classList.add(
-                    "show"
-                );
-
-            } else {
-
-                countriesBox.classList.remove(
-                    "show"
-                );
-
-            }
-
-        }
-    );
+        if(radio.value==="specific")
+            box.classList.add("show");
+        else
+            box.classList.remove("show");
+    });
 
 });
 
 
-function continueStep() {
+/* =========================================================
+   CATEGORY LIST
+========================================================= */
 
-    const selected =
+function renderCategories(search=""){
+
+    const list=document.getElementById("categoryList");
+
+    list.innerHTML="";
+
+    Object.keys(categories)
+    .filter(cat =>
+        cat.toLowerCase().includes(search.toLowerCase())
+    )
+    .forEach(cat=>{
+
+        const item=document.createElement("div");
+
+        item.className="category-item";
+
+        if(cat===selectedCategory)
+            item.classList.add("selected");
+
+        item.innerHTML=`
+            ${escapeHtml(cat)}
+            <span class="category-count">
+                ${categories[cat].length}
+            </span>
+        `;
+
+        item.onclick=()=>{
+
+            selectedCategory=cat;
+            selectedSubcategory="";
+
+            renderCategories(
+                document.getElementById("categorySearch").value
+            );
+
+            renderSubcategories();
+
+            document.getElementById("selectedCategory")
+            .textContent =
+                cat+" — Select a subcategory";
+        };
+
+        list.appendChild(item);
+
+    });
+}
+
+
+function renderSubcategories(search=""){
+
+    const list=document.getElementById("subList");
+
+    list.innerHTML="";
+
+    if(!selectedCategory){
+
+        list.innerHTML=
+            '<div style="padding:15px;color:#64748b">Select a category first.</div>';
+
+        return;
+    }
+
+    categories[selectedCategory]
+    .filter(sub =>
+        sub.toLowerCase().includes(search.toLowerCase())
+    )
+    .forEach(sub=>{
+
+        const item=document.createElement("div");
+
+        item.className="sub-item";
+
+        if(sub===selectedSubcategory)
+            item.classList.add("selected");
+
+        item.textContent=sub;
+
+        item.onclick=()=>{
+
+            selectedSubcategory=sub;
+
+            renderSubcategories(
+                document.getElementById("subSearch").value
+            );
+
+            document.getElementById("selectedCategory")
+            .textContent =
+                selectedCategory+" → "+sub;
+        };
+
+        list.appendChild(item);
+    });
+}
+
+
+document.getElementById("categorySearch")
+.addEventListener("input",e=>{
+    renderCategories(e.target.value);
+});
+
+
+document.getElementById("subSearch")
+.addEventListener("input",e=>{
+    renderSubcategories(e.target.value);
+});
+
+
+renderCategories();
+renderSubcategories();
+
+
+/* =========================================================
+   STEP VALIDATION
+========================================================= */
+
+function validateStep(){
+
+    if(currentStep===1){
+
+        const location=
+            document.querySelector(
+                'input[name="location"]:checked'
+            );
+
+        if(!location){
+
+            alert("Please select a location.");
+
+            return false;
+        }
+
+        if(location.value==="specific"){
+
+            const countries=
+                document.getElementById("countries");
+
+            if(countries.selectedOptions.length===0){
+
+                alert("Please select at least one country.");
+
+                return false;
+            }
+        }
+    }
+
+
+    if(currentStep===2){
+
+        if(!selectedCategory){
+
+            alert("Please select a category.");
+
+            return false;
+        }
+
+        if(!selectedSubcategory){
+
+            alert("Please select a subcategory.");
+
+            return false;
+        }
+    }
+
+
+    if(currentStep===3){
+
+        const title=
+            document.getElementById("jobTitle").value.trim();
+
+        const description=
+            document.getElementById("description").value.trim();
+
+        const instructions=
+            document.getElementById("instructions").value.trim();
+
+        if(!title){
+
+            alert("Please enter a job title.");
+
+            return false;
+        }
+
+        if(!description){
+
+            alert("Please enter a job description.");
+
+            return false;
+        }
+
+        if(!instructions){
+
+            alert("Please enter job instructions.");
+
+            return false;
+        }
+    }
+
+
+    return true;
+}
+
+
+function nextStep(){
+
+    if(!validateStep()) return;
+
+    if(currentStep<4){
+
+        showStep(currentStep+1);
+    }
+}
+
+
+function prevStep(){
+
+    if(currentStep>1)
+        showStep(currentStep-1);
+}
+
+
+function goBack(){
+
+    window.location.href=
+        "employer-dashboard.html";
+}
+
+
+/* =========================================================
+   BUDGET
+========================================================= */
+
+function calculateBudget(){
+
+    const reward=
+        Number(document.getElementById("reward").value)||0;
+
+    const workers=
+        Number(document.getElementById("workers").value)||0;
+
+    const workerCost=reward*workers;
+
+    const fee=workerCost*0.05;
+
+    const total=workerCost+fee;
+
+    document.getElementById("sumReward")
+        .textContent="$"+reward.toFixed(2);
+
+    document.getElementById("sumWorkers")
+        .textContent=workers;
+
+    document.getElementById("workerCost")
+        .textContent="$"+workerCost.toFixed(2);
+
+    document.getElementById("platformFee")
+        .textContent="$"+fee.toFixed(2);
+
+    document.getElementById("totalCost")
+        .textContent="$"+total.toFixed(2);
+}
+
+calculateBudget();
+
+
+/* =========================================================
+   PUBLISH
+========================================================= */
+
+function publishJob(){
+
+    const reward=
+        Number(document.getElementById("reward").value);
+
+    const workers=
+        Number(document.getElementById("workers").value);
+
+    const deadline=
+        document.getElementById("deadline").value;
+
+    const agree=
+        document.getElementById("agree").checked;
+
+    const message=
+        document.getElementById("finalMessage");
+
+
+    if(reward<=0){
+
+        message.textContent=
+            "Please enter a valid reward.";
+
+        return;
+    }
+
+    if(workers<1){
+
+        message.textContent=
+            "Please enter the number of workers.";
+
+        return;
+    }
+
+    if(!deadline){
+
+        message.textContent=
+            "Please select a deadline.";
+
+        return;
+    }
+
+    if(!agree){
+
+        message.textContent=
+            "Please agree to the EarnTask job policy.";
+
+        return;
+    }
+
+
+    const location=
         document.querySelector(
             'input[name="location"]:checked'
         );
 
 
-    if (!selected) {
-
-        document.getElementById(
-            "message"
-        ).textContent =
-            "Please select a location.";
-
-        return;
-
-    }
-
-
-    if (
-        selected.value ===
-        "specific"
-    ) {
-
-        const countries =
-            document.getElementById(
-                "countries"
-            );
-
-
-        if (
-            countries.selectedOptions.length === 0
-        ) {
-
-            document.getElementById(
-                "message"
-            ).textContent =
-                "Please select at least one country.";
-
-            return;
-
-        }
-
-    }
-
-
-    /*
-     * Save Step 1 data temporarily.
-     */
-
-    const selectedCountries =
+    const countries=
         Array.from(
-            document.getElementById(
-                "countries"
-            ).selectedOptions
-        ).map(
-            option => option.value
-        );
+            document.getElementById("countries")
+            .selectedOptions
+        ).map(x=>x.value);
 
 
-    const jobData = {
+    const proofs=
+        Array.from(
+            document.querySelectorAll(
+                '.proof input:checked'
+            )
+        ).map(x=>x.value);
 
-        locationType:
-            selected.value,
 
-        countries:
-            selectedCountries
+    const job={
+
+        locationType:location.value,
+
+        countries:countries,
+
+        category:selectedCategory,
+
+        subcategory:selectedSubcategory,
+
+        title:
+            document.getElementById("jobTitle")
+            .value.trim(),
+
+        description:
+            document.getElementById("description")
+            .value.trim(),
+
+        instructions:
+            document.getElementById("instructions")
+            .value.trim(),
+
+        proofRequirements:proofs,
+
+        proofQuestion:
+            document.getElementById("proofQuestion")
+            .value.trim(),
+
+        reward:reward,
+
+        workers:workers,
+
+        deadline:deadline,
+
+        status:"pending",
+
+        createdAt:new Date().toISOString()
 
     };
 
 
-    sessionStorage.setItem(
-        "earntask_job",
-        JSON.stringify(jobData)
-    );
-
-
     /*
-     * Step 2 will be added next.
+     * Save the complete job temporarily.
+     * Supabase publishing will be connected
+     * after the database columns are ready.
      */
 
-    alert(
-        "Location saved successfully! Step 2 will be added next."
+    localStorage.setItem(
+        "earntask_last_job",
+        JSON.stringify(job)
     );
+
+
+    message.style.color="#15803d";
+
+    message.textContent=
+        "Job information is ready for submission. Admin approval will be required before the job goes live.";
+
+    document.getElementById("publishBtn")
+        .disabled=true;
 
 }
 
 
-function goBack() {
+/* =========================================================
+   HTML ESCAPE
+========================================================= */
 
-    window.location.href =
-        "employer-dashboard.html";
+function escapeHtml(value){
 
+    return String(value??"")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
 }
 
 </script>
