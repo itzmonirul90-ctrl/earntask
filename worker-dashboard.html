@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Worker Dashboard - EarnTask</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f8fafc;
+    color: #172033;
+}
+
+.sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 240px;
+    height: 100vh;
+    background: #111827;
+    color: white;
+    padding: 25px 15px;
+}
+
+.logo {
+    font-size: 27px;
+    font-weight: 800;
+    text-align: center;
+    margin-bottom: 35px;
+}
+
+.logo span {
+    color: #22c55e;
+}
+
+.sidebar a {
+    display: block;
+    color: #d1d5db;
+    text-decoration: none;
+    padding: 13px 15px;
+    margin-bottom: 7px;
+    border-radius: 8px;
+}
+
+.sidebar a:hover,
+.sidebar a.active {
+    background: #16a34a;
+    color: white;
+}
+
+.logout {
+    position: absolute;
+    bottom: 25px;
+    left: 15px;
+    right: 15px;
+    background: #dc2626 !important;
+    text-align: center;
+}
+
+.main {
+    margin-left: 240px;
+    padding: 30px;
+}
+
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.topbar h1 {
+    font-size: 30px;
+}
+
+.user-name {
+    background: white;
+    padding: 10px 18px;
+    border-radius: 10px;
+    box-shadow: 0 3px 15px rgba(0,0,0,.05);
+}
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-bottom: 35px;
+}
+
+.card {
+    background: white;
+    padding: 25px;
+    border-radius: 14px;
+    box-shadow: 0 5px 20px rgba(0,0,0,.05);
+}
+
+.card .icon {
+    font-size: 30px;
+    margin-bottom: 12px;
+}
+
+.card h3 {
+    color: #64748b;
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.card .number {
+    font-size: 27px;
+    font-weight: 800;
+}
+
+.section {
+    background: white;
+    padding: 25px;
+    border-radius: 14px;
+    margin-bottom: 25px;
+    box-shadow: 0 5px 20px rgba(0,0,0,.05);
+}
+
+.section h2 {
+    margin-bottom: 20px;
+}
+
+.job {
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 18px;
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.job-info h3 {
+    margin-bottom: 7px;
+}
+
+.job-info p {
+    color: #64748b;
+    font-size: 14px;
+}
+
+.reward {
+    color: #16a34a;
+    font-weight: 800;
+    margin-bottom: 8px;
+}
+
+.view-btn {
+    display: inline-block;
+    background: #16a34a;
+    color: white;
+    text-decoration: none;
+    padding: 9px 15px;
+    border-radius: 7px;
+    font-size: 14px;
+}
+
+.loading {
+    color: #64748b;
+}
+
+.error {
+    color: #dc2626;
+}
+
+@media (max-width: 900px) {
+
+    .sidebar {
+        width: 200px;
+    }
+
+    .main {
+        margin-left: 200px;
+    }
+
+    .cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 650px) {
+
+    .sidebar {
+        position: relative;
+        width: 100%;
+        height: auto;
+    }
+
+    .sidebar a {
+        display: inline-block;
+    }
+
+    .logout {
+        position: relative;
+        left: auto;
+        right: auto;
+        bottom: auto;
+    }
+
+    .main {
+        margin-left: 0;
+        padding: 20px;
+    }
+
+    .cards {
+        grid-template-columns: 1fr;
+    }
+
+    .job {
+        display: block;
+    }
+
+    .view-btn {
+        margin-top: 12px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<aside class="sidebar">
+
+    <div class="logo">
+        Earn<span>Task</span>
+    </div>
+
+    <a href="worker-dashboard.html" class="active">
+        🏠 Dashboard
+    </a>
+
+    <a href="#jobs">
+        💼 Available Jobs
+    </a>
+
+    <a href="#submissions">
+        📤 My Submissions
+    </a>
+
+    <a href="#earnings">
+        💰 Earnings
+    </a>
+
+    <a href="#withdraw">
+        💸 Withdraw
+    </a>
+
+    <a href="#profile">
+        👤 Profile
+    </a>
+
+    <a href="#" class="logout" id="logoutBtn">
+        🚪 Logout
+    </a>
+
+</aside>
+
+
+<main class="main">
+
+    <div class="topbar">
+
+        <h1>Worker Dashboard</h1>
+
+        <div class="user-name" id="userName">
+            Loading...
+        </div>
+
+    </div>
+
+
+    <div class="cards">
+
+        <div class="card">
+
+            <div class="icon">💰</div>
+
+            <h3>Available Balance</h3>
+
+            <div class="number" id="balance">
+                $0.00
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="icon">⏳</div>
+
+            <h3>Pending Balance</h3>
+
+            <div class="number" id="pendingBalance">
+                $0.00
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="icon">🏆</div>
+
+            <h3>Total Earned</h3>
+
+            <div class="number" id="totalEarned">
+                $0.00
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="icon">✅</div>
+
+            <h3>Completed Jobs</h3>
+
+            <div class="number" id="completedJobs">
+                0
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <section class="section" id="jobs">
+
+        <h2>Available Jobs</h2>
+
+        <div id="jobsList">
+
+            <div class="loading">
+                Loading available jobs...
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <section class="section" id="submissions">
+
+        <h2>My Recent Submissions</h2>
+
+        <div id="submissionsList">
+
+            <div class="loading">
+                Loading submissions...
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <section class="section" id="profile">
+
+        <h2>My Profile</h2>
+
+        <p>
+            <strong>Name:</strong>
+            <span id="profileName">Loading...</span>
+        </p>
+
+        <br>
+
+        <p>
+            <strong>Username:</strong>
+            <span id="profileUsername">Loading...</span>
+        </p>
+
+        <br>
+
+        <p>
+            <strong>Role:</strong>
+            <span id="profileRole">Loading...</span>
+        </p>
+
+        <br>
+
+        <p>
+            <strong>Success Rate:</strong>
+            <span id="successRate">100%</span>
+        </p>
+
+    </section>
+
+</main>
+
+
+<script type="module">
+
+const SUPABASE_URL = "https://rvwboegeisnrhwicvvhj.supabase.co";
+
+const SUPABASE_KEY = "sb_publishable_Kz3hgj9W0khG3JEIclhx2g_HZ6eSyQQ";
+
+
+import {
+    createClient
+} from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+
+
+const supabase = createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+);
+
+
+async function loadDashboard() {
+
+    /*
+     * Check logged-in user
+     */
+
+    const {
+        data: {
+            user
+        }
+    } = await supabase.auth.getUser();
+
+
+    if (!user) {
+
+        window.location.href = "login.html";
+
+        return;
+
+    }
+
+
+    /*
+     * Get profile
+     */
+
+    const {
+        data: profile,
+        error: profileError
+    } = await supabase
+
+        .from("profiles")
+
+        .select("*")
+
+        .eq("id", user.id)
+
+        .single();
+
+
+    if (profileError) {
+
+        console.error(profileError);
+
+        return;
+
+    }
+
+
+    /*
+     * Only workers can access this dashboard.
+     */
+
+    if (profile.role !== "worker") {
+
+        if (profile.role === "employer") {
+
+            window.location.href =
+                "employer-dashboard.html";
+
+        } else if (profile.role === "admin") {
+
+            window.location.href =
+                "admin-dashboard.html";
+
+        }
+
+        return;
+
+    }
+
+
+    /*
+     * Profile information
+     */
+
+    document.getElementById("userName").textContent =
+        profile.full_name || profile.username || "Worker";
+
+
+    document.getElementById("profileName").textContent =
+        profile.full_name || "-";
+
+
+    document.getElementById("profileUsername").textContent =
+        profile.username || "-";
+
+
+    document.getElementById("profileRole").textContent =
+        profile.role;
+
+
+    document.getElementById("successRate").textContent =
+        (profile.success_rate || 100) + "%";
+
+
+    /*
+     * Get wallet
+     */
+
+    const {
+        data: wallet,
+        error: walletError
+    } = await supabase
+
+        .from("wallets")
+
+        .select("*")
+
+        .eq("user_id", user.id)
+
+        .single();
+
+
+    if (!walletError && wallet) {
+
+        document.getElementById("balance").textContent =
+            "$" + Number(wallet.balance).toFixed(2);
+
+
+        document.getElementById("pendingBalance").textContent =
+            "$" + Number(wallet.pending_balance).toFixed(2);
+
+
+        document.getElementById("totalEarned").textContent =
+            "$" + Number(wallet.total_earned).toFixed(2);
+
+
+        document.getElementById("completedJobs").textContent =
+            profile.completed_jobs || 0;
+
+    }
+
+
+    /*
+     * Load available jobs
+     */
+
+    const {
+        data: jobs,
+        error: jobsError
+    } = await supabase
+
+        .from("jobs")
+
+        .select("*")
+
+        .in("status", ["approved", "active"])
+
+        .order("created_at", {
+            ascending: false
+        })
+
+        .limit(10);
+
+
+    const jobsList =
+        document.getElementById("jobsList");
+
+
+    if (jobsError) {
+
+        jobsList.innerHTML =
+            '<div class="error">Unable to load jobs.</div>';
+
+    } else if (!jobs || jobs.length === 0) {
+
+        jobsList.innerHTML =
+            '<div class="loading">No jobs available right now.</div>';
+
+    } else {
+
+        jobsList.innerHTML = "";
+
+        jobs.forEach(function(job) {
+
+            const item =
+                document.createElement("div");
+
+            item.className = "job";
+
+            item.innerHTML = `
+
+                <div class="job-info">
+
+                    <h3>${escapeHtml(job.title)}</h3>
+
+                    <p>
+                        ${escapeHtml(job.category)}
+                        •
+                        ${job.workers_completed}/${job.workers_needed}
+                        completed
+                    </p>
+
+                </div>
+
+                <div>
+
+                    <div class="reward">
+                        $${Number(job.reward).toFixed(2)}
+                    </div>
+
+                    <a
+                        class="view-btn"
+                        href="job.html?id=${encodeURIComponent(job.id)}"
+                    >
+                        View Job
+                    </a>
+
+                </div>
+
+            `;
+
+            jobsList.appendChild(item);
+
+        });
+
+    }
+
+
+    /*
+     * Load worker submissions
+     */
+
+    const {
+        data: submissions,
+        error: submissionsError
+    } = await supabase
+
+        .from("job_submissions")
+
+        .select("*, jobs(title)")
+
+        .eq("worker_id", user.id)
+
+        .order("submitted_at", {
+            ascending: false
+        })
+
+        .limit(5);
+
+
+    const submissionsList =
+        document.getElementById("submissionsList");
+
+
+    if (submissionsError) {
+
+        submissionsList.innerHTML =
+            '<div class="error">Unable to load submissions.</div>';
+
+    } else if (!submissions || submissions.length === 0) {
+
+        submissionsList.innerHTML =
+            '<div class="loading">No submissions yet.</div>';
+
+    } else {
+
+        submissionsList.innerHTML = "";
+
+        submissions.forEach(function(item) {
+
+            const row =
+                document.createElement("div");
+
+            row.className = "job";
+
+            const title =
+                item.jobs
+                    ? item.jobs.title
+                    : "Job";
+
+
+            row.innerHTML = `
+
+                <div class="job-info">
+
+                    <h3>${escapeHtml(title)}</h3>
+
+                    <p>
+                        Submitted:
+                        ${new Date(item.submitted_at)
+                            .toLocaleDateString()}
+                    </p>
+
+                </div>
+
+                <div>
+
+                    <strong>
+                        ${escapeHtml(item.status)}
+                    </strong>
+
+                </div>
+
+            `;
+
+            submissionsList.appendChild(row);
+
+        });
+
+    }
+
+}
+
+
+/*
+ * Simple HTML escaping
+ */
+
+function escapeHtml(value) {
+
+    return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+}
+
+
+/*
+ * Logout
+ */
+
+document
+    .getElementById("logoutBtn")
+    .addEventListener("click", async function(event) {
+
+        event.preventDefault();
+
+        await supabase.auth.signOut();
+
+        window.location.href = "login.html";
+
+    });
+
+
+loadDashboard();
+
+</script>
+
+</body>
+</html>
