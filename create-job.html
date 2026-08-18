@@ -2440,6 +2440,107 @@ document.addEventListener("DOMContentLoaded", function(){
     updateJobCategoryInfo();
 
 });
+    function calculateBudget(){
+
+    const reward =
+        parseFloat(document.getElementById("rewardPerWorker").value) || 0;
+
+    const workers =
+        parseInt(document.getElementById("workerCount").value) || 0;
+
+    const workerCost = reward * workers;
+
+    const platformFee = workerCost * 0.10;
+
+    const totalBudget = workerCost + platformFee;
+
+    document.getElementById("workerCost").textContent =
+        "৳" + workerCost.toFixed(2);
+
+    document.getElementById("platformFee").textContent =
+        "৳" + platformFee.toFixed(2);
+
+    document.getElementById("totalBudget").textContent =
+        "৳" + totalBudget.toFixed(2);
+}
+
+
+function updateStep4Summary(){
+
+    const titleInput =
+        document.getElementById("jobTitle");
+
+    document.getElementById("summaryTitle").textContent =
+        titleInput && titleInput.value.trim()
+        ? titleInput.value.trim()
+        : "Not entered";
+
+    if(typeof selectedCategory !== "undefined"){
+        document.getElementById("summaryCategory").textContent =
+            selectedCategory || "Not selected";
+    }
+
+    if(typeof selectedSubcategory !== "undefined"){
+        document.getElementById("summarySubcategory").textContent =
+            selectedSubcategory || "Not selected";
+    }
+}
+
+
+document.addEventListener("DOMContentLoaded", function(){
+
+    updateStep4Summary();
+
+    calculateBudget();
+
+});
+
+
+function publishJob(){
+
+    const reward =
+        parseFloat(document.getElementById("rewardPerWorker").value) || 0;
+
+    const workers =
+        parseInt(document.getElementById("workerCount").value) || 0;
+
+    const deadline =
+        document.getElementById("jobDeadline").value;
+
+    const message =
+        document.getElementById("step4Message");
+
+    message.textContent = "";
+    message.style.color = "#dc2626";
+
+
+    if(reward <= 0){
+        message.textContent =
+            "Please enter a valid reward per worker.";
+        return;
+    }
+
+
+    if(workers <= 0){
+        message.textContent =
+            "Please enter the number of workers.";
+        return;
+    }
+
+
+    if(!deadline){
+        message.textContent =
+            "Please select a job deadline.";
+        return;
+    }
+
+
+    message.style.color = "#15803d";
+
+    message.textContent =
+        "Job information is valid. Ready to publish.";
+
+}
 </script>
 
 </body>
