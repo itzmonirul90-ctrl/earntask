@@ -1959,154 +1959,252 @@ function goBack(){
    BUDGET
 ========================================================= */
 
-function calculateBudget(){
+async function publishJob(){
 
-    const reward=
-        Number(document.getElementById("reward").value)||0;
+    const message =
+        document.getElementById("step4Message");
 
-    const workers=
-        Number(document.getElementById("workers").value)||0;
-
-    const workerCost=reward*workers;
-
-    const fee=workerCost*0.05;
-
-    const total=workerCost+fee;
-
-    document.getElementById("sumReward")
-        .textContent="$"+reward.toFixed(2);
-
-    document.getElementById("sumWorkers")
-        .textContent=workers;
-
-    document.getElementById("workerCost")
-        .textContent="$"+workerCost.toFixed(2);
-
-    document.getElementById("platformFee")
-        .textContent="$"+fee.toFixed(2);
-
-    document.getElementById("totalCost")
-        .textContent="$"+total.toFixed(2);
-}
-
-calculateBudget();
+    message.textContent = "";
+    message.style.color = "#dc2626";
 
 
-/* =========================================================
-   PUBLISH
-========================================================= */
+    /* JOB DATA */
 
-function publishJob(){
+    const title =
+        document.getElementById("jobTitle")?.value.trim() || "";
 
-    const reward=
-        Number(document.getElementById("reward").value);
+    const description =
+        document.getElementById("description")?.value.trim() || "";
 
-    const workers=
-        Number(document.getElementById("workers").value);
-
-    const deadline=
-        document.getElementById("deadline").value;
-
-    const agree=
-        document.getElementById("agree").checked;
-
-    const message=
-        document.getElementById("finalMessage");
+    const instructions =
+        document.getElementById("instructions")?.value.trim() || "";
 
 
-    if(reward<=0){
+    /* CATEGORY */
 
-        message.textContent=
-            "Please enter a valid reward.";
+    const category =
+        typeof selectedCategory !== "undefined"
+        ? selectedCategory
+        : "";
+
+
+    const subcategory =
+        typeof selectedSubcategory !== "undefined"
+        ? selectedSubcategory
+        : "";
+
+
+    /* BUDGET */
+
+    const reward =
+        parseFloat(
+            document.getElementById("rewardPerWorker").value
+        ) || 0;
+
+
+    const workers =
+        parseInt(
+            document.getElementById("workerCount").value
+        ) || 0;
+
+
+    const deadline =
+        document.getElementById("jobDeadline").value;
+
+
+    const workerCost =
+        reward * workers;
+
+
+    const platformFee =
+        workerCost * 0.10;
+
+
+    const totalBudget =
+        workerCost + platformFee;
+
+
+    /* VALIDATION */
+
+    if(!title){
+
+        message.textContent =
+            "Please enter a Job Title.";
 
         return;
     }
 
-    if(workers<1){
 
-        message.textContent=
-            "Please enter the number of workers.";
+    if(!description){
+
+        message.textContent =
+            "Please enter a Description.";
 
         return;
     }
+
+
+    if(!category){
+
+        message.textContent =
+            "Please select a Category.";
+
+        return;
+    }
+
+
+    if(!subcategory){
+
+        message.textContent =
+            "Please select a Subcategory.";
+
+        return;
+    }
+
+
+    if(!instructions){
+
+        message.textContent =
+            "Please enter Instructions.";
+
+        return;
+    }
+
+
+    if(reward <= 0){
+
+        message.textContent =
+            "Please enter a valid Reward per Worker.";
+
+        return;
+    }
+
+
+    if(workers <= 0){
+
+        message.textContent =
+            "Please enter the Number of Workers.";
+
+        return;
+    }
+
 
     if(!deadline){
 
-        message.textContent=
-            "Please select a deadline.";
-
-        return;
-    }
-
-    if(!agree){
-
-        message.textContent=
-            "Please agree to the EarnTask job policy.";
+        message.textContent =
+            "Please select a Job Deadline.";
 
         return;
     }
 
 
-    const location=
-        document.querySelector(
-            'input[name="location"]:checked'
-        );
+    /* CURRENT USER */
+
+    const {
+        data: {
+            user
+        },
+        error: userError
+    } = await supabase.auth.getUser();
 
 
-    const countries=
-        Array.from(
-            document.getElementById("countries")
-            .selectedOptions
-        ).map(x=>x.value);
+    if(userError || !user){
+
+        message.textContent =
+            "Please login before publishing a job.";
+
+        return;
+    }
 
 
-    const proofs=
-        Array.from(
-            document.querySelectorAll(
-                '.proof input:checked'
-            )
-        ).map(x=>x.value);
+    /* PROOF DATA */
+
+    const proofs =
+        typeof proofData !== "undefined"
+        ? proofData
+        : [];
 
 
-    const job={
+    /* SAVE JOB */
 
-        locationType:location.value,
+    const {
+        data,
+        error
+    } = await supabase
+        .from("jobs")
+        .insert({
 
-        countries:countries,
+            employer_id: user.id,
 
-        category:selectedCategory,
+            title: title,
 
-        subcategory:selectedSubcategory,
+            description: description,
 
-        title:
-            document.getElementById("jobTitle")
-            .value.trim(),
+            category: category,
 
-        description:
-            document.getElementById("description")
-            .value.trim(),
+            subcategory: subcategory,
 
-        instructions:
-            document.getElementById("instructions")
-            .value.trim(),
+            instructions: instructions,
 
-        proofRequirements:proofs,
+            proof_requirements: proofs,
 
-        proofQuestion:
-            document.getElementById("proofQuestion")
-            .value.trim(),
+            reward_per_worker: reward,
 
-        reward:reward,
+            worker_count: workers,
 
-        workers:workers,
+            worker_cost: workerCost,
 
-        deadline:deadline,
+            platform_fee: platformFee,
 
-        status:"pending",
+            total_budget: totalBudget,
 
-        createdAt:new Date().toISOString()
+            deadline: deadline,
 
-    };
+            status: "published"
+
+        })
+        .select()
+        .single();
+
+
+    /* ERROR */
+
+    if(error){
+
+        console.error(error);
+
+        message.textContent =
+            "Job publish failed: " +
+            error.message;
+
+        return;
+    }
+
+
+    /* SUCCESS */
+
+    message.style.color =
+        "#15803d";
+
+    message.textContent =
+        "✅ Job published successfully!";
+
+
+    alert(
+        "Job published successfully!"
+    );
+
+
+    /* GO TO EMPLOYER DASHBOARD */
+
+    setTimeout(function(){
+
+        window.location.href =
+            "employer-dashboard.html";
+
+    },1000);
+
+};
 
 
     /*
