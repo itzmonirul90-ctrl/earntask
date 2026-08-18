@@ -1134,127 +1134,197 @@ Continue →
 
 <!-- ================= STEP 4 ================= -->
 
+<!-- ================= STEP 4 ================= -->
+
 <div class="step" id="step4">
 
-<h2>💰 Budget & Publish</h2>
+    <h2>Budget & Publish</h2>
 
-<p class="desc">
-Set your reward, number of workers and deadline.
-</p>
+    <p class="desc">
+        Set your worker reward, number of workers and job deadline.
+    </p>
 
-<div class="budget-grid">
+    <!-- JOB SUMMARY -->
 
-<div>
+    <div class="job-summary">
 
-<label>Reward Per Worker ($) *</label>
+        <div class="summary-title">
+            Job Summary
+        </div>
 
-<input
-type="number"
-id="reward"
-min="0.01"
-step="0.01"
-value="0.50"
-oninput="calculateBudget()"
->
+        <div class="summary-row">
+            <span>Category</span>
+            <strong id="summaryCategory">Not selected</strong>
+        </div>
 
-</div>
+        <div class="summary-row">
+            <span>Subcategory</span>
+            <strong id="summarySubcategory">Not selected</strong>
+        </div>
 
+        <div class="summary-row">
+            <span>Job Title</span>
+            <strong id="summaryTitle">Not entered</strong>
+        </div>
 
-<div>
-
-<label>Number of Workers *</label>
-
-<input
-type="number"
-id="workers"
-min="1"
-value="10"
-oninput="calculateBudget()"
->
-
-</div>
+    </div>
 
 
-<div>
+    <!-- REWARD -->
 
-<label>Deadline *</label>
+    <div class="budget-field">
 
-<input
-type="datetime-local"
-id="deadline"
->
+        <label>
+            Reward per Worker
+            <span class="required">*</span>
+        </label>
 
-</div>
+        <div class="money-input">
 
-</div>
+            <span>৳</span>
 
+            <input
+                type="number"
+                id="rewardPerWorker"
+                min="1"
+                step="0.01"
+                placeholder="10.00"
+                oninput="calculateBudget()"
+            >
 
-<div class="summary">
+        </div>
 
-<h3>💵 Job Summary</h3>
+        <small>
+            Amount a worker will receive for completing this job.
+        </small>
 
-<div class="summary-row">
-<span>Reward per worker</span>
-<strong id="sumReward">$0.50</strong>
-</div>
-
-<div class="summary-row">
-<span>Workers</span>
-<strong id="sumWorkers">10</strong>
-</div>
-
-<div class="summary-row">
-<span>Worker Cost</span>
-<strong id="workerCost">$5.00</strong>
-</div>
-
-<div class="summary-row">
-<span>Platform Fee (5%)</span>
-<strong id="platformFee">$0.25</strong>
-</div>
-
-<div class="summary-row total">
-<span>Total Cost</span>
-<strong id="totalCost">$5.25</strong>
-</div>
-
-</div>
+    </div>
 
 
-<div style="margin-top:20px">
+    <!-- WORKERS -->
 
-<label>
-<input
-type="checkbox"
-id="agree"
-style="width:auto;margin-right:7px"
->
-I agree that this job follows EarnTask policies.
-</label>
+    <div class="budget-field">
 
-</div>
+        <label>
+            Number of Workers
+            <span class="required">*</span>
+        </label>
+
+        <input
+            type="number"
+            id="workerCount"
+            min="1"
+            step="1"
+            placeholder="100"
+            oninput="calculateBudget()"
+        >
+
+        <small>
+            How many workers can complete this job?
+        </small>
+
+    </div>
 
 
-<div class="message" id="finalMessage"></div>
+    <!-- DEADLINE -->
+
+    <div class="budget-field">
+
+        <label>
+            Job Deadline
+            <span class="required">*</span>
+        </label>
+
+        <input
+            type="date"
+            id="jobDeadline"
+        >
+
+        <small>
+            Workers must complete the job before this date.
+        </small>
+
+    </div>
 
 
-<div class="actions">
+    <!-- COST SUMMARY -->
 
-<button class="back" onclick="prevStep()">← Back</button>
+    <div class="cost-box">
 
-<button
-class="publish"
-id="publishBtn"
-onclick="publishJob()"
->
-🚀 Publish Job
-</button>
+        <div class="cost-row">
 
-</div>
+            <span>
+                Worker Cost
+            </span>
 
-</div>
+            <strong id="workerCost">
+                ৳0.00
+            </strong>
 
-</div>
+        </div>
+
+
+        <div class="cost-row">
+
+            <span>
+                Platform Fee
+            </span>
+
+            <strong id="platformFee">
+                ৳0.00
+            </strong>
+
+        </div>
+
+
+        <div class="cost-divider"></div>
+
+
+        <div class="cost-row total">
+
+            <span>
+                Total Budget
+            </span>
+
+            <strong id="totalBudget">
+                ৳0.00
+            </strong>
+
+        </div>
+
+    </div>
+
+
+    <!-- MESSAGE -->
+
+    <div
+        id="step4Message"
+        class="step4-message"
+    ></div>
+
+
+    <!-- BUTTONS -->
+
+    <div class="actions">
+
+        <button
+            class="back"
+            type="button"
+            onclick="prevStep()"
+        >
+            ← Back
+        </button>
+
+
+        <button
+            class="next publish-button"
+            type="button"
+            onclick="publishJob()"
+        >
+            Publish Job →
+        </button>
+
+    </div>
 
 </div>
 
