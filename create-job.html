@@ -2076,6 +2076,300 @@ function escapeHtml(value){
     .replace(/'/g,"&#039;");
 }
 
+    /* ================= STEP 3 JAVASCRIPT ================= */
+
+let proofCount = 1;
+
+let proofData = [
+    {
+        type: "screenshot",
+        label: "",
+        example: ""
+    }
+];
+
+
+/* ---------- CATEGORY + SUBCATEGORY ---------- */
+
+function updateJobCategoryInfo(){
+
+    const box = document.getElementById("jobCategoryInfo");
+
+    if(!box) return;
+
+    let category = "";
+
+    let subcategory = "";
+
+    if(typeof selectedCategory !== "undefined"){
+        category = selectedCategory || "";
+    }
+
+    if(typeof selectedSubcategory !== "undefined"){
+        subcategory = selectedSubcategory || "";
+    }
+
+    box.innerHTML =
+        "Category: <strong>" +
+        escapeHtml(category || "Not selected") +
+        "</strong><br>" +
+
+        "Subcategory: <strong>" +
+        escapeHtml(subcategory || "Not selected") +
+        "</strong>";
+}
+
+
+/* ---------- CHARACTER COUNTER ---------- */
+
+document.addEventListener("input", function(e){
+
+    if(e.target.id === "jobTitle"){
+
+        document.getElementById("titleCount").textContent =
+            e.target.value.length;
+    }
+
+    if(e.target.id === "description"){
+
+        document.getElementById("descriptionCount").textContent =
+            e.target.value.length;
+    }
+
+    if(e.target.id === "instructions"){
+
+        document.getElementById("instructionsCount").textContent =
+            e.target.value.length;
+    }
+
+});
+
+
+/* ---------- FILE UPLOAD ---------- */
+
+document.addEventListener("change", function(e){
+
+    if(e.target.id !== "attachments") return;
+
+    const files = Array.from(e.target.files);
+
+    if(files.length > 10){
+
+        alert("Maximum 10 files are allowed.");
+
+        e.target.value = "";
+
+        return;
+    }
+
+    document.getElementById("fileCount").textContent =
+        "(" + files.length + "/10)";
+
+    const list =
+        document.getElementById("fileList");
+
+    list.innerHTML = "";
+
+    files.forEach(function(file){
+
+        const item =
+            document.createElement("div");
+
+        item.className = "file-item";
+
+        item.innerHTML =
+            "<span>📎 " +
+            escapeHtml(file.name) +
+            "</span>";
+
+        list.appendChild(item);
+
+    });
+
+});
+
+
+/* ---------- ADD PROOF ---------- */
+
+function addProof(){
+
+    if(proofCount >= 5){
+
+        alert("Maximum 5 proof requirements allowed.");
+
+        return;
+    }
+
+    proofCount++;
+
+    proofData.push({
+        type: "screenshot",
+        label: "",
+        example: ""
+    });
+
+    renderProofs();
+}
+
+
+/* ---------- RENDER PROOFS ---------- */
+
+function renderProofs(){
+
+    const container =
+        document.getElementById("proofContainer");
+
+    if(!container) return;
+
+    container.innerHTML = "";
+
+    proofData.forEach(function(proof,index){
+
+        const card =
+            document.createElement("div");
+
+        card.className = "proof-card";
+
+        card.innerHTML = `
+
+            <div class="proof-top">
+
+                <div class="proof-number">
+                    ${index + 1}
+                </div>
+
+                <strong>
+                    Proof ${index + 1}
+                </strong>
+
+            </div>
+
+
+            <div class="proof-type">
+
+                <button
+                    type="button"
+                    class="${proof.type === "screenshot" ? "active" : ""}"
+                    onclick="setProofType(${index}, 'screenshot')"
+                >
+                    🖼 Screenshot
+                </button>
+
+
+                <button
+                    type="button"
+                    class="${proof.type === "text" ? "active" : ""}"
+                    onclick="setProofType(${index}, 'text')"
+                >
+                    📄 Text
+                </button>
+
+            </div>
+
+
+            <div class="proof-label">
+
+                <input
+                    type="text"
+                    placeholder="Label (e.g. Homepage screenshot)"
+                    value="${escapeHtml(proof.label)}"
+                    oninput="updateProofLabel(${index}, this.value)"
+                >
+
+            </div>
+
+
+            <div class="proof-example">
+
+                <label>
+                    Example
+                    <span class="optional">(Optional)</span>
+                </label>
+
+                <input
+                    type="text"
+                    placeholder="${
+                        proof.type === "screenshot"
+                        ? "Example screenshot description"
+                        : "Example text answer"
+                    }"
+                    value="${escapeHtml(proof.example)}"
+                    oninput="updateProofExample(${index}, this.value)"
+                >
+
+            </div>
+
+        `;
+
+        container.appendChild(card);
+
+    });
+
+
+    const addButton =
+        document.getElementById("addProofBtn");
+
+    if(addButton){
+
+        addButton.textContent =
+            "+ Add Proof (" + proofCount + "/5)";
+
+        addButton.disabled =
+            proofCount >= 5;
+
+    }
+
+}
+
+
+/* ---------- PROOF TYPE ---------- */
+
+function setProofType(index,type){
+
+    proofData[index].type = type;
+
+    renderProofs();
+}
+
+
+/* ---------- PROOF LABEL ---------- */
+
+function updateProofLabel(index,value){
+
+    proofData[index].label = value;
+}
+
+
+/* ---------- PROOF EXAMPLE ---------- */
+
+function updateProofExample(index,value){
+
+    proofData[index].example = value;
+}
+
+
+/* ---------- ESCAPE HTML ---------- */
+
+function escapeHtml(value){
+
+    return String(value)
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+}
+
+
+/* ---------- INITIALIZE ---------- */
+
+document.addEventListener("DOMContentLoaded", function(){
+
+    renderProofs();
+
+    updateJobCategoryInfo();
+
+});
 </script>
 
 </body>
