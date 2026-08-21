@@ -1668,33 +1668,101 @@ let selectedSubcategory = "";
    PROGRESS
 ========================================================= */
 
-function showStep(step){
+function nextStep(){
 
-    currentStep = step;
+    /* STEP 1 → STEP 2 */
 
-    document.querySelectorAll(".step")
-        .forEach(el => el.classList.remove("active"));
+    if(currentStep === 1){
 
-    document.getElementById("step"+step)
-        .classList.add("active");
+        if(
+            typeof selectedLocation !== "undefined" &&
+            !selectedLocation
+        ){
 
-    for(let i=1;i<=4;i++){
+            alert("Please select a location.");
 
-        const p=document.getElementById("p"+i);
-
-        p.classList.remove("active","done");
-
-        if(i<step) p.classList.add("done");
-
-        if(i===step) p.classList.add("active");
+            return;
+        }
     }
 
-    window.scrollTo({
-        top:0,
-        behavior:"smooth"
-    });
-}
 
+    /* STEP 2 → STEP 3 */
+
+    if(currentStep === 2){
+
+        if(
+            typeof selectedCategory !== "undefined" &&
+            !selectedCategory
+        ){
+
+            alert("Please select a category.");
+
+            return;
+        }
+
+
+        if(
+            typeof selectedSubcategory !== "undefined" &&
+            !selectedSubcategory
+        ){
+
+            alert("Please select a subcategory.");
+
+            return;
+        }
+    }
+
+
+    /* STEP 3 → STEP 4 */
+
+    if(currentStep === 3){
+
+        const title =
+            document.getElementById("jobTitle")?.value.trim() || "";
+
+        const description =
+            document.getElementById("description")?.value.trim() || "";
+
+        const instructions =
+            document.getElementById("instructions")?.value.trim() || "";
+
+
+        if(!title){
+
+            alert("Please enter a Job Title.");
+
+            return;
+        }
+
+
+        if(!description){
+
+            alert("Please enter a Description.");
+
+            return;
+        }
+
+
+        if(!instructions){
+
+            alert("Please enter Instructions.");
+
+            return;
+        }
+    }
+
+
+    /* MOVE TO NEXT STEP */
+
+    if(currentStep < 4){
+
+        currentStep++;
+
+        showStep(currentStep);
+
+    }
+
+}
 
 /* =========================================================
    LOCATION
