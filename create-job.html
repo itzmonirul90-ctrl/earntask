@@ -1932,26 +1932,88 @@ function validateStep(){
 
 function nextStep(){
 
-    if(!validateStep()) return;
+    // Current step check
+    if(currentStep === 1){
 
-    if(currentStep<4){
+        // Location must be selected
+        if(!selectedLocation){
 
-        showStep(currentStep+1);
+            alert("Please select a location.");
+
+            return;
+        }
     }
-}
 
 
-function prevStep(){
+    if(currentStep === 2){
 
-    if(currentStep>1)
-        showStep(currentStep-1);
-}
+        // Category must be selected
+        if(!selectedCategory){
+
+            alert("Please select a category.");
+
+            return;
+        }
+
+        // Subcategory must be selected
+        if(!selectedSubcategory){
+
+            alert("Please select a subcategory.");
+
+            return;
+        }
+    }
 
 
-function goBack(){
+    if(currentStep === 3){
 
-    window.location.href=
-        "employer-dashboard.html";
+        const title =
+            document.getElementById("jobTitle")?.value.trim();
+
+        const description =
+            document.getElementById("description")?.value.trim();
+
+        const instructions =
+            document.getElementById("instructions")?.value.trim();
+
+
+        if(!title){
+
+            alert("Please enter a Job Title.");
+
+            return;
+        }
+
+
+        if(!description){
+
+            alert("Please enter a Description.");
+
+            return;
+        }
+
+
+        if(!instructions){
+
+            alert("Please enter Instructions.");
+
+            return;
+        }
+    }
+
+
+    // Move to next step
+
+    if(currentStep < 4){
+
+        currentStep++;
+
+        showStep(currentStep);
+
+        updateProgressBar(currentStep);
+
+    }
+
 }
 
 
