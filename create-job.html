@@ -3,36 +3,58 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
+
 <title>Create New Job - EarnTask</title>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
 
 body{
     font-family:Arial,sans-serif;
     background:#f5f7fb;
     color:#172033;
-    padding:25px 15px
+    padding:24px 15px;
 }
 
-.container{max-width:950px;margin:auto}
+.container{
+    max-width:950px;
+    margin:auto;
+}
 
-.header{margin-bottom:25px}
-.header h1{font-size:30px;margin-bottom:7px}
-.header p{color:#64748b}
+.header{
+    margin-bottom:25px;
+}
+
+.header h1{
+    font-size:30px;
+    margin-bottom:7px;
+}
+
+.header p{
+    color:#64748b;
+}
+
+/* PROGRESS */
 
 .progress{
     display:grid;
     grid-template-columns:repeat(4,1fr);
-    margin-bottom:30px
+    margin-bottom:30px;
 }
 
 .progress-item{
     text-align:center;
-    position:relative
+    position:relative;
 }
 
-.progress-item:not(:last-child):after{
+.progress-item:not(:last-child)::after{
     content:"";
     position:absolute;
     height:3px;
@@ -40,279 +62,210 @@ body{
     top:17px;
     left:50%;
     width:100%;
-    z-index:0
+    z-index:0;
 }
 
-.progress-circle{
+.progress-item.done:not(:last-child)::after,
+.progress-item.active:not(:last-child)::after{
+    background:#16a34a;
+}
+
+.progress-number{
     width:36px;
     height:36px;
     border-radius:50%;
-    background:#e5e7eb;
+    background:#e2e8f0;
     color:#64748b;
+
     display:flex;
     align-items:center;
     justify-content:center;
+
     margin:auto;
+
     position:relative;
-    z-index:2;
-    font-weight:bold
+    z-index:1;
+
+    font-weight:bold;
 }
 
-.progress-item.active .progress-circle{
+.progress-item.active .progress-number,
+.progress-item.done .progress-number{
     background:#16a34a;
-    color:#fff
-}
-
-.progress-item.done .progress-circle{
-    background:#15803d;
-    color:#fff
-}
-
-.progress-item.active:not(:last-child):after,
-.progress-item.done:not(:last-child):after{
-    background:#16a34a
+    color:#fff;
 }
 
 .progress-label{
-    margin-top:8px;
-    font-size:12px;
-    color:#64748b
+    font-size:13px;
+    color:#64748b;
+    margin-top:7px;
 }
 
-.progress-item.active .progress-label{
+.progress-item.active .progress-label,
+.progress-item.done .progress-label{
     color:#16a34a;
-    font-weight:bold
+    font-weight:bold;
 }
+
+/* CARD */
 
 .card{
     background:#fff;
     border-radius:16px;
-    padding:30px;
-    box-shadow:0 5px 25px rgba(0,0,0,.06)
+    padding:28px;
+    box-shadow:0 5px 25px rgba(15,23,42,.07);
 }
 
-.step{display:none}
-.step.active{display:block}
+/* STEPS */
 
-.card h2{margin-bottom:8px}
-.desc{color:#64748b;margin-bottom:25px;line-height:1.5}
+.step{
+    display:none;
+}
+
+.step.active{
+    display:block;
+}
+
+h2{
+    font-size:25px;
+    margin-bottom:8px;
+}
+
+.desc{
+    color:#64748b;
+    margin-bottom:28px;
+}
+
+/* LOCATION */
 
 .location-options{
     display:grid;
     grid-template-columns:1fr 1fr;
-    gap:18px
+    gap:18px;
 }
 
 .location-option{
-    border:2px solid #e2e8f0;
-    border-radius:12px;
+    border:2px solid #dbe1e8;
+    border-radius:13px;
     padding:25px;
-    cursor:pointer
+    cursor:pointer;
+    display:block;
 }
 
 .location-option.selected{
     border-color:#16a34a;
-    background:#f0fdf4
+    background:#f0fdf4;
 }
 
-.location-option input{display:none}
-.location-icon{font-size:32px;margin-bottom:10px}
-.location-option p{color:#64748b;font-size:14px;margin-top:7px}
+.location-option input{
+    display:none;
+}
 
-.country-box{margin-top:22px;display:none}
-.country-box.show{display:block}
+.location-icon{
+    font-size:30px;
+    margin-bottom:10px;
+}
 
-label{
+.location-option h3{
+    font-size:18px;
+    margin-bottom:7px;
+}
+
+.location-option p{
+    color:#64748b;
+}
+
+/* COUNTRY */
+
+.country-box{
+    display:none;
+    margin-top:18px;
+}
+
+.country-box.show{
     display:block;
-    font-weight:600;
-    margin-bottom:7px
 }
 
-input,select,textarea{
+.country-box select{
     width:100%;
-    padding:13px;
-    border:1px solid #d1d5db;
+    min-height:160px;
+    border:1px solid #cbd5e1;
     border-radius:9px;
-    font-size:15px;
-    outline:none;
-    background:#fff
+    padding:8px;
 }
 
-textarea{
-    min-height:130px;
-    resize:vertical
-}
-
-input:focus,select:focus,textarea:focus{
-    border-color:#16a34a
-}
-
-.search{
-    margin-bottom:15px
-}
+/* CATEGORY */
 
 .category-layout{
     display:grid;
-    grid-template-columns:1fr 1.3fr;
-    gap:20px
+    grid-template-columns:1fr 1.25fr;
+    gap:20px;
 }
 
-.category-list,.sub-list{
-    border:1px solid #e5e7eb;
-    border-radius:10px;
-    max-height:430px;
-    overflow:auto
+.category-panel,
+.subcategory-panel{
+    border:1px solid #e2e8f0;
+    border-radius:12px;
+    overflow:hidden;
 }
 
-.category-item,.sub-item{
-    padding:13px 15px;
-    border-bottom:1px solid #f1f5f9;
-    cursor:pointer
+.panel-title{
+    padding:14px 16px;
+    background:#f8fafc;
+    font-weight:bold;
 }
 
-.category-item:hover,.sub-item:hover{
-    background:#f0fdf4
+.search{
+    width:calc(100% - 24px);
+    margin:12px;
+    border:1px solid #cbd5e1;
+    border-radius:8px;
+    padding:11px;
 }
 
-.category-item.selected,.sub-item.selected{
+.category-list,
+.subcategory-list{
+    max-height:390px;
+    overflow:auto;
+    padding:8px;
+}
+
+.category-item,
+.subcategory-item{
+    padding:11px 12px;
+    border-radius:8px;
+    cursor:pointer;
+    margin-bottom:4px;
+}
+
+.category-item:hover,
+.subcategory-item:hover{
+    background:#f1f5f9;
+}
+
+.category-item.selected,
+.subcategory-item.selected{
     background:#dcfce7;
-    color:#15803d;
-    font-weight:bold
+    color:#166534;
+    font-weight:bold;
 }
 
 .category-count{
     float:right;
     color:#64748b;
-    font-size:12px
-}
-
-.form-grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:18px
-}
-
-.full{grid-column:1/-1}
-
-textarea{line-height:1.5}
-
-.file-box{
-    border:2px dashed #cbd5e1;
-    border-radius:10px;
-    padding:20px;
-    text-align:center
-}
-
-.file-box input{
-    border:0;
-    padding:5px
-}
-
-.proof-list{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:10px
-}
-
-.proof{
-    border:1px solid #e2e8f0;
-    border-radius:8px;
-    padding:12px
-}
-
-.proof input{
-    width:auto;
-    margin-right:7px
-}
-
-.budget-grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:20px
-}
-
-.summary{
-    background:#f8fafc;
-    border-radius:12px;
-    padding:22px;
-    margin-top:25px
-}
-
-.summary-row{
-    display:flex;
-    justify-content:space-between;
-    padding:9px 0
-}
-
-.total{
-    border-top:1px solid #dbe1e8;
-    margin-top:8px;
-    padding-top:15px;
-    font-size:20px;
-    font-weight:bold
-}
-
-.actions{
-    display:flex;
-    justify-content:space-between;
-    margin-top:30px;
-    padding-top:25px;
-    border-top:1px solid #e5e7eb
-}
-
-button{
-    border:0;
-    border-radius:9px;
-    padding:13px 24px;
-    font-size:15px;
-    font-weight:bold;
-    cursor:pointer
-}
-
-.back{background:#e5e7eb;color:#374151}
-.next,.publish{background:#16a34a;color:#fff}
-.next:hover,.publish:hover{background:#15803d}
-
-.message{
-    margin-top:15px;
-    color:#dc2626;
-    line-height:1.5
+    font-size:12px;
 }
 
 .selected-info{
-    background:#f0fdf4;
+    margin:14px 0;
     padding:12px;
-    border-radius:8px;
-    margin-bottom:15px;
-    color:#15803d;
-    font-size:14px
-}
-
-@media(max-width:700px){
-    .location-options,
-    .category-layout,
-    .form-grid,
-    .budget-grid{
-        grid-template-columns:1fr
-    }
-
-    .full{grid-column:auto}
-
-    .progress-label{font-size:9px}
-    .card{padding:20px}
-}
-    /* ================= STEP 3 DESIGN ================= */
-
-.selected-job-info{
+    border-radius:9px;
     background:#f0fdf4;
-    border:1px solid #bbf7d0;
-    border-radius:10px;
-    padding:14px 16px;
-    margin:18px 0 24px;
     color:#166534;
     font-size:14px;
-    line-height:1.8;
 }
+
+/* JOB DETAILS */
 
 .detail-field{
     margin-bottom:22px;
@@ -322,7 +275,6 @@ button{
 .proof-heading label{
     display:block;
     font-weight:600;
-    color:#1e293b;
     margin-bottom:8px;
 }
 
@@ -332,109 +284,73 @@ button{
 
 .optional{
     color:#64748b;
-    font-weight:400;
+    font-weight:normal;
 }
 
-.detail-field input[type="text"],
-.detail-field textarea,
-.proof-card input[type="text"]{
+input[type=text],
+input[type=number],
+input[type=date],
+textarea{
     width:100%;
     border:1px solid #cbd5e1;
     border-radius:8px;
-    padding:12px 13px;
+    padding:12px;
     font-size:14px;
     outline:none;
-    background:#fff;
 }
 
-.detail-field textarea{
-    min-height:130px;
+textarea{
+    min-height:125px;
     resize:vertical;
 }
 
-.detail-field input:focus,
-.detail-field textarea:focus,
-.proof-card input:focus{
+input:focus,
+textarea:focus,
+select:focus{
     border-color:#22c55e;
-    box-shadow:0 0 0 3px rgba(34,197,94,.10);
+    box-shadow:0 0 0 3px rgba(34,197,94,.1);
+    outline:none;
+}
+
+.field-help{
+    font-size:13px;
+    color:#64748b;
+    margin:7px 0;
 }
 
 .character-count{
     text-align:right;
-    margin-top:5px;
     font-size:12px;
     color:#64748b;
+    margin-top:4px;
 }
 
-.field-help{
-    color:#64748b;
-    font-size:13px;
-    margin-bottom:10px;
-}
-
-/* ATTACHMENT */
+/* ATTACHMENTS */
 
 .attachment-box{
     border:1px dashed #cbd5e1;
-    border-radius:10px;
-    padding:18px;
-    background:#f8fafc;
+    border-radius:9px;
+    padding:14px;
 }
 
-.attachment-box input[type="file"]{
-    display:none;
+.attachment-list{
+    margin-top:10px;
 }
 
-.file-button{
-    display:inline-block;
-    padding:9px 14px;
-    background:#fff;
-    border:1px solid #cbd5e1;
-    border-radius:7px;
-    cursor:pointer;
-    font-size:13px;
-    font-weight:600;
-    color:#334155;
-}
-
-.file-button:hover{
-    background:#f1f5f9;
-}
-
-.file-item{
+.attachment-item{
     display:flex;
-    align-items:center;
     justify-content:space-between;
-    gap:10px;
-    margin-top:8px;
-    padding:9px 11px;
-    background:#fff;
-    border:1px solid #e2e8f0;
-    border-radius:7px;
+    padding:7px;
+    background:#f8fafc;
+    margin-bottom:5px;
+    border-radius:6px;
     font-size:13px;
-}
-
-.remove-file{
-    color:#dc2626;
-    cursor:pointer;
-    font-weight:bold;
 }
 
 /* PROOF */
 
-.proof-section{
-    margin-top:28px;
-}
-
-.proof-heading p{
-    color:#64748b;
-    font-size:13px;
-    margin:0 0 14px;
-}
-
 .proof-card{
-    background:#fff;
-    border:1px solid #dbe3ea;
+    border:1px solid #dbe1e8;
     border-radius:10px;
     padding:15px;
     margin-bottom:12px;
@@ -443,116 +359,168 @@ button{
 .proof-top{
     display:flex;
     align-items:center;
-    gap:9px;
-    margin-bottom:12px;
+    gap:8px;
+    margin-bottom:10px;
 }
 
 .proof-number{
-    width:26px;
-    height:26px;
+    width:24px;
+    height:24px;
     border-radius:50%;
     background:#dcfce7;
-    color:#15803d;
+    color:#166534;
+
     display:flex;
-    justify-content:center;
     align-items:center;
-    font-size:12px;
+    justify-content:center;
+
     font-weight:bold;
 }
 
 .proof-type{
     display:flex;
     gap:8px;
-    margin-bottom:12px;
-}
-
-.proof-type button{
-    padding:8px 13px;
-    border:1px solid #cbd5e1;
-    border-radius:7px;
-    background:#fff;
-    color:#475569;
-    cursor:pointer;
-    font-size:13px;
-}
-
-.proof-type button.active{
-    background:#ecfdf5;
-    border-color:#22c55e;
-    color:#15803d;
-}
-
-.proof-label{
     margin-bottom:10px;
 }
 
-.proof-example label{
-    display:block;
-    font-size:13px;
-    font-weight:600;
-    margin-bottom:7px;
-}
-
-.add-proof-btn{
-    padding:10px 15px;
+.proof-type button{
     border:1px solid #cbd5e1;
-    border-radius:8px;
     background:#fff;
-    color:#334155;
-    font-weight:600;
+    border-radius:7px;
+    padding:7px 12px;
     cursor:pointer;
 }
 
-.add-proof-btn:hover{
-    background:#f8fafc;
+.proof-type button.active{
+    background:#dcfce7;
+    border-color:#16a34a;
+    color:#166534;
 }
 
-.add-proof-btn:disabled{
-    cursor:not-allowed;
-    opacity:.5;
+.proof-actions{
+    display:flex;
+    justify-content:flex-end;
+    gap:8px;
+    margin-top:8px;
+}
+
+.small-btn{
+    border:0;
+    background:#f1f5f9;
+    padding:7px 10px;
+    border-radius:7px;
+    cursor:pointer;
 }
 
 .proof-help{
-    margin-top:15px;
-    padding:13px 15px;
     background:#fffbeb;
     border:1px solid #fde68a;
-    border-radius:9px;
-    color:#92400e;
-    font-size:13px;
-}
-
-.proof-help ul{
-    margin:7px 0 0 20px;
-}
-
-.proof-help li{
-    margin:3px 0;
-}
-
-.step3-message{
-    color:#dc2626;
-    font-size:13px;
+    border-radius:8px;
+    padding:12px;
     margin-top:12px;
+    font-size:13px;
+}
+
+/* BUTTONS */
+
+.actions{
+    display:flex;
+    justify-content:space-between;
+    border-top:1px solid #e2e8f0;
+    margin-top:25px;
+    padding-top:22px;
+}
+
+button.next,
+button.publish{
+    border:0;
+    background:#16a34a;
+    color:#fff;
+    padding:12px 24px;
+    border-radius:9px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+button.back{
+    border:0;
+    background:#e2e8f0;
+    color:#172033;
+    padding:12px 24px;
+    border-radius:9px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+button:disabled{
+    opacity:.6;
+    cursor:not-allowed;
+}
+
+/* SUMMARY */
+
+.summary{
+    border:1px solid #e2e8f0;
+    border-radius:10px;
+    padding:15px;
+    margin-bottom:22px;
+}
+
+.summary-row{
+    display:flex;
+    justify-content:space-between;
+    gap:20px;
+    padding:9px 0;
+    border-bottom:1px solid #f1f5f9;
+}
+
+.summary-row:last-child{
+    border-bottom:0;
+}
+
+.summary-row span:last-child{
+    font-weight:bold;
+    text-align:right;
+}
+
+.budget-row{
+    margin-bottom:20px;
+}
+
+.total-box{
+    border-top:1px solid #cbd5e1;
+    padding-top:20px;
+    margin-top:20px;
+}
+
+.total-box h2{
+    margin-top:18px;
+}
+
+.message{
+    margin-top:12px;
+    font-size:14px;
 }
 
 /* MOBILE */
 
-@media(max-width:600px){
+@media(max-width:700px){
 
-    .selected-job-info{
-        font-size:13px;
+    .location-options,
+    .category-layout{
+        grid-template-columns:1fr;
     }
 
-    .detail-field textarea{
-        min-height:110px;
+    .card{
+        padding:20px;
     }
 
-    .proof-type{
-        flex-wrap:wrap;
+    .progress-label{
+        font-size:10px;
     }
 
 }
+
 </style>
 </head>
 
@@ -561,42 +529,62 @@ button{
 <div class="container">
 
 <div class="header">
-<h1>Create New Job – MicroJob</h1>
-<p>Create a task and find workers to complete it.</p>
-</div>
 
-<!-- PROGRESS -->
+<h1>Create New Job - MicroJob</h1>
+
+<p>Create a task and find workers to complete it.</p>
+
+</div>
 
 <div class="progress">
 
 <div class="progress-item active" id="p1">
-<div class="progress-circle">1</div>
-<div class="progress-label">Location</div>
+
+<div class="progress-number">1</div>
+
+<div class="progress-label">
+Location
+</div>
+
 </div>
 
 <div class="progress-item" id="p2">
-<div class="progress-circle">2</div>
-<div class="progress-label">Category</div>
+
+<div class="progress-number">2</div>
+
+<div class="progress-label">
+Category
+</div>
+
 </div>
 
 <div class="progress-item" id="p3">
-<div class="progress-circle">3</div>
-<div class="progress-label">Job Details</div>
+
+<div class="progress-number">3</div>
+
+<div class="progress-label">
+Job Details
+</div>
+
 </div>
 
 <div class="progress-item" id="p4">
-<div class="progress-circle">4</div>
-<div class="progress-label">Budget & Publish</div>
+
+<div class="progress-number">4</div>
+
+<div class="progress-label">
+Budget & Publish
 </div>
 
 </div>
 
+</div>
 
 <div class="card">
 
-<!-- ================= STEP 1 ================= -->
+<!-- STEP 1 -->
 
-<div class="step active" id="step1">
+<section class="step active" id="step1">
 
 <h2>📍 Location</h2>
 
@@ -607,312 +595,160 @@ Choose where your workers should be located.
 <div class="location-options">
 
 <label class="location-option selected">
-<input type="radio" name="location" value="international" checked>
-<div class="location-icon">🌎</div>
-<h3>International</h3>
-<p>Workers from any country can complete this job.</p>
+
+<input
+type="radio"
+name="location"
+value="international"
+checked
+>
+
+<div class="location-icon">
+🌎
+</div>
+
+<h3>
+International
+</h3>
+
+<p>
+Workers from any country can complete this job.
+</p>
+
 </label>
 
+
 <label class="location-option">
-<input type="radio" name="location" value="specific">
-<div class="location-icon">🌍</div>
-<h3>Specific Countries</h3>
-<p>Only selected countries can complete this job.</p>
+
+<input
+type="radio"
+name="location"
+value="specific"
+>
+
+<div class="location-icon">
+🌍
+</div>
+
+<h3>
+Specific Countries
+</h3>
+
+<p>
+Only selected countries can complete this job.
+</p>
+
 </label>
 
 </div>
+
 
 <div class="country-box" id="countryBox">
 
-<label>Select Countries</label>
+<label>
+Select Countries
+</label>
 
-<select id="countries" multiple size="7">
+<select
+id="countries"
+multiple
+size="7"
+>
 
-<option value="BD">🇧🇩 Bangladesh</option>
-<option value="US">🇺🇸 United States</option>
-<option value="GB">🇬🇧 United Kingdom</option>
-<option value="IN">🇮🇳 India</option>
-<option value="PK">🇵🇰 Pakistan</option>
-<option value="CA">🇨🇦 Canada</option>
-<option value="AU">🇦🇺 Australia</option>
-<option value="DE">🇩🇪 Germany</option>
-<option value="FR">🇫🇷 France</option>
-<option value="IT">🇮🇹 Italy</option>
-<option value="ES">🇪🇸 Spain</option>
-<option value="BR">🇧🇷 Brazil</option>
-<option value="JP">🇯🇵 Japan</option>
-<option value="KR">🇰🇷 South Korea</option>
-/* ================= STEP 3 DESIGN ================= */
+<option value="BD">
+🇧🇩 Bangladesh
+</option>
 
-.selected-job-info{
-    background:#f0fdf4;
-    border:1px solid #bbf7d0;
-    border-radius:10px;
-    padding:14px 16px;
-    margin:18px 0 24px;
-    color:#166534;
-    font-size:14px;
-    line-height:1.8;
-}
+<option value="US">
+🇺🇸 United States
+</option>
 
-.detail-field{
-    margin-bottom:22px;
-}
+<option value="GB">
+🇬🇧 United Kingdom
+</option>
 
-.detail-field label,
-.proof-heading label{
-    display:block;
-    font-weight:600;
-    color:#1e293b;
-    margin-bottom:8px;
-}
+<option value="IN">
+🇮🇳 India
+</option>
 
-.required{
-    color:#ef4444;
-}
+<option value="PK">
+🇵🇰 Pakistan
+</option>
 
-.optional{
-    color:#64748b;
-    font-weight:400;
-}
+<option value="CA">
+🇨🇦 Canada
+</option>
 
-.detail-field input[type="text"],
-.detail-field textarea,
-.proof-card input[type="text"]{
-    width:100%;
-    border:1px solid #cbd5e1;
-    border-radius:8px;
-    padding:12px 13px;
-    font-size:14px;
-    outline:none;
-    background:#fff;
-}
+<option value="AU">
+🇦🇺 Australia
+</option>
 
-.detail-field textarea{
-    min-height:130px;
-    resize:vertical;
-}
+<option value="DE">
+🇩🇪 Germany
+</option>
 
-.detail-field input:focus,
-.detail-field textarea:focus,
-.proof-card input:focus{
-    border-color:#22c55e;
-    box-shadow:0 0 0 3px rgba(34,197,94,.10);
-}
+<option value="FR">
+🇫🇷 France
+</option>
 
-.character-count{
-    text-align:right;
-    margin-top:5px;
-    font-size:12px;
-    color:#64748b;
-}
+<option value="IT">
+🇮🇹 Italy
+</option>
 
-.field-help{
-    color:#64748b;
-    font-size:13px;
-    margin-bottom:10px;
-}
+<option value="ES">
+🇪🇸 Spain
+</option>
 
-/* ATTACHMENT */
+<option value="BR">
+🇧🇷 Brazil
+</option>
 
-.attachment-box{
-    border:1px dashed #cbd5e1;
-    border-radius:10px;
-    padding:18px;
-    background:#f8fafc;
-}
+<option value="JP">
+🇯🇵 Japan
+</option>
 
-.attachment-box input[type="file"]{
-    display:none;
-}
+<option value="KR">
+🇰🇷 South Korea
+</option>
 
-.file-button{
-    display:inline-block;
-    padding:9px 14px;
-    background:#fff;
-    border:1px solid #cbd5e1;
-    border-radius:7px;
-    cursor:pointer;
-    font-size:13px;
-    font-weight:600;
-    color:#334155;
-}
-
-.file-button:hover{
-    background:#f1f5f9;
-}
-
-.file-item{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:10px;
-    margin-top:8px;
-    padding:9px 11px;
-    background:#fff;
-    border:1px solid #e2e8f0;
-    border-radius:7px;
-    font-size:13px;
-}
-
-.remove-file{
-    color:#dc2626;
-    cursor:pointer;
-    font-weight:bold;
-}
-
-/* PROOF */
-
-.proof-section{
-    margin-top:28px;
-}
-
-.proof-heading p{
-    color:#64748b;
-    font-size:13px;
-    margin:0 0 14px;
-}
-
-.proof-card{
-    background:#fff;
-    border:1px solid #dbe3ea;
-    border-radius:10px;
-    padding:15px;
-    margin-bottom:12px;
-}
-
-.proof-top{
-    display:flex;
-    align-items:center;
-    gap:9px;
-    margin-bottom:12px;
-}
-
-.proof-number{
-    width:26px;
-    height:26px;
-    border-radius:50%;
-    background:#dcfce7;
-    color:#15803d;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    font-size:12px;
-    font-weight:bold;
-}
-
-.proof-type{
-    display:flex;
-    gap:8px;
-    margin-bottom:12px;
-}
-
-.proof-type button{
-    padding:8px 13px;
-    border:1px solid #cbd5e1;
-    border-radius:7px;
-    background:#fff;
-    color:#475569;
-    cursor:pointer;
-    font-size:13px;
-}
-
-.proof-type button.active{
-    background:#ecfdf5;
-    border-color:#22c55e;
-    color:#15803d;
-}
-
-.proof-label{
-    margin-bottom:10px;
-}
-
-.proof-example label{
-    display:block;
-    font-size:13px;
-    font-weight:600;
-    margin-bottom:7px;
-}
-
-.add-proof-btn{
-    padding:10px 15px;
-    border:1px solid #cbd5e1;
-    border-radius:8px;
-    background:#fff;
-    color:#334155;
-    font-weight:600;
-    cursor:pointer;
-}
-
-.add-proof-btn:hover{
-    background:#f8fafc;
-}
-
-.add-proof-btn:disabled{
-    cursor:not-allowed;
-    opacity:.5;
-}
-
-.proof-help{
-    margin-top:15px;
-    padding:13px 15px;
-    background:#fffbeb;
-    border:1px solid #fde68a;
-    border-radius:9px;
-    color:#92400e;
-    font-size:13px;
-}
-
-.proof-help ul{
-    margin:7px 0 0 20px;
-}
-
-.proof-help li{
-    margin:3px 0;
-}
-
-.step3-message{
-    color:#dc2626;
-    font-size:13px;
-    margin-top:12px;
-}
-
-/* MOBILE */
-
-@media(max-width:600px){
-
-    .selected-job-info{
-        font-size:13px;
-    }
-
-    .detail-field textarea{
-        min-height:110px;
-    }
-
-    .proof-type{
-        flex-wrap:wrap;
-    }
-
-}
-
+</select>
 
 </div>
+
 
 <div class="actions">
 
-<button class="back" onclick="goBack()">← Back</button>
-<button class="next" onclick="nextStep()">Continue →</button>
+<button
+class="back"
+type="button"
+onclick="goBack()"
+>
+← Back
+</button>
+
+<button
+class="next"
+type="button"
+onclick="nextStep()"
+>
+Continue →
+</button>
 
 </div>
 
-</div>
+</section>
 
 
-<!-- ================= STEP 2 ================= -->
+<!-- STEP 2 -->
 
-<div class="step" id="step2">
+<section
+class="step"
+id="step2"
+>
 
-<h2>📂 Category</h2>
+<h2>
+📂 Category
+</h2>
 
 <p class="desc">
 Select a category and then choose its subcategory.
@@ -920,9 +756,11 @@ Select a category and then choose its subcategory.
 
 <div class="category-layout">
 
-<div>
+<div class="category-panel">
 
-<label>Search Category</label>
+<div class="panel-title">
+Categories
+</div>
 
 <input
 class="search"
@@ -930,83 +768,115 @@ id="categorySearch"
 placeholder="Search category..."
 >
 
-<div class="category-list" id="categoryList"></div>
+<div
+class="category-list"
+id="categoryList"
+></div>
 
 </div>
 
 
-<div>
+<div class="subcategory-panel">
 
-<label>Search Subcategory</label>
+<div class="panel-title">
+Subcategories
+</div>
 
 <input
 class="search"
 id="subSearch"
 placeholder="Search subcategory..."
+disabled
 >
 
-<div class="selected-info" id="selectedCategory">
+<div
+class="subcategory-list"
+id="subcategoryList"
+></div>
+
+</div>
+
+</div>
+
+<div
+class="selected-info"
+id="selectedInfo"
+>
 Select a category first.
 </div>
 
-<div class="sub-list" id="subList"></div>
-
-</div>
-
-</div>
 
 <div class="actions">
 
-<button class="back" onclick="prevStep()">← Back</button>
-<button class="next" onclick="nextStep()">Continue →</button>
+<button
+class="back"
+type="button"
+onclick="prevStep()"
+>
+← Back
+</button>
+
+<button
+class="next"
+type="button"
+onclick="nextStep()"
+>
+Continue →
+</button>
 
 </div>
 
-</div>
+</section>
+<!-- STEP 3 -->
 
+<section class="step" id="step3">
 
-<!-- ================= STEP 3 ================= -->
-
-<!-- ================= STEP 3 ================= -->
-
-<div class="step" id="step3">
-
-<h2>Job Details</h2>
+<h2>📝 Job Details</h2>
 
 <p class="desc">
-Provide detailed information about the job
+Provide detailed information about the job.
 </p>
 
-<div class="selected-job-info" id="jobCategoryInfo">
-    Category: <strong>Not selected</strong><br>
-    Subcategory: <strong>Not selected</strong>
+
+<div class="selected-info">
+    <strong>Category:</strong>
+    <span id="detailCategory">Not selected</span>
+    &nbsp; | &nbsp;
+    <strong>Subcategory:</strong>
+    <span id="detailSubcategory">Not selected</span>
 </div>
+
+
+<!-- JOB TITLE -->
 
 <div class="detail-field">
 
-<label>Job Title <span class="required">*</span></label>
+<label>
+Job Title <span class="required">*</span>
+</label>
 
 <input
-    type="text"
-    id="jobTitle"
-    maxlength="150"
-    placeholder="Enter a clear and descriptive job title"
+type="text"
+id="jobTitle"
+maxlength="150"
+placeholder="Enter a clear and descriptive job title"
 >
 
-<div class="character-count">
-<span id="titleCount">0</span>/150 characters
 </div>
 
-</div>
+
+<!-- DESCRIPTION -->
 
 <div class="detail-field">
 
-<label>Description <span class="required">*</span></label>
+<label>
+Description <span class="required">*</span>
+</label>
 
 <textarea
-    id="description"
-    maxlength="5000"
-    placeholder="Describe what the job is about, what workers will do, and any important context"
+id="jobDescription"
+maxlength="5000"
+placeholder="Describe what the job is about, what workers will do, and any important context"
 ></textarea>
 
 <div class="character-count">
@@ -1015,44 +885,51 @@ Provide detailed information about the job
 
 </div>
 
+
+<!-- ATTACHMENTS -->
+
 <div class="detail-field">
 
 <label>
-Attachments <span class="optional">(Optional)</span>
+Attachments
+<span class="optional">(Optional)</span>
 </label>
 
-<p class="field-help">
+<div class="field-help">
 Attach supporting files to help workers understand the job better.
-Max 10 files, 10MB each.
-</p>
+Maximum 10 files, 10MB each.
+</div>
 
 <div class="attachment-box">
 
 <input
-    type="file"
-    id="attachments"
-    multiple
-    accept="image/*,.pdf,.doc,.docx,.txt"
+type="file"
+id="jobAttachments"
+multiple
 >
 
-<label for="attachments" class="file-button">
-📎 Add Files <span id="fileCount">(0/10)</span>
-</label>
+<div
+class="attachment-list"
+id="attachmentList"
+></div>
 
-<div id="fileList"></div>
+</div>
 
 </div>
 
-</div>
+
+<!-- INSTRUCTIONS -->
 
 <div class="detail-field">
 
-<label>Instructions <span class="required">*</span></label>
+<label>
+Instructions <span class="required">*</span>
+</label>
 
 <textarea
-    id="instructions"
-    maxlength="3000"
-    placeholder="Provide step-by-step instructions for completing the job"
+id="jobInstructions"
+maxlength="3000"
+placeholder="Provide step-by-step instructions for completing the job"
 ></textarea>
 
 <div class="character-count">
@@ -1061,7 +938,10 @@ Max 10 files, 10MB each.
 
 </div>
 
-<div class="proof-section">
+
+<!-- PROOF -->
+
+<div class="detail-field">
 
 <div class="proof-heading">
 
@@ -1069,275 +949,345 @@ Max 10 files, 10MB each.
 Proof Requirements <span class="required">*</span>
 </label>
 
-<p>
+<div class="field-help">
 Define what proof workers need to submit.
-Each slot can be a screenshot or text proof.
-</p>
+Each proof can be a screenshot or text answer.
+</div>
 
 </div>
 
+
 <div id="proofContainer"></div>
 
+
 <button
-    type="button"
-    class="add-proof-btn"
-    onclick="addProof()"
-    id="addProofBtn"
+type="button"
+class="small-btn"
+onclick="addProof()"
 >
-+ Add Proof (1/5)
++ Add Proof
 </button>
+
 
 <div class="proof-help">
 
-<div>💡 <strong>Example labels:</strong></div>
+<strong>Example labels:</strong>
 
 <ul>
-<li>"Before screenshot"</li>
-<li>"After screenshot"</li>
-<li>"Homepage screenshot"</li>
-<li>"Profile URL"</li>
-<li>"Your username"</li>
-<li>"Review text"</li>
+
+<li>Before screenshot</li>
+
+<li>After screenshot</li>
+
+<li>Homepage screenshot</li>
+
+<li>Profile URL</li>
+
+<li>Your username</li>
+
+<li>Review text</li>
+
 </ul>
 
 </div>
 
 </div>
 
+
 <div
-    id="step3Message"
-    class="step3-message"
+class="message"
+id="step3Message"
 ></div>
+
 
 <div class="actions">
 
 <button
-    class="back"
-    type="button"
-    onclick="prevStep()"
+class="back"
+type="button"
+onclick="prevStep()"
 >
 ← Back
 </button>
 
 <button
-    class="next"
-    type="button"
-    onclick="nextStep()"
+class="next"
+type="button"
+onclick="nextStep()"
 >
 Continue →
 </button>
 
 </div>
 
+</section>
+
+
+<!-- STEP 4 -->
+
+<section
+class="step"
+id="step4"
+>
+
+<h2>
+💰 Budget & Publish
+</h2>
+
+<p class="desc">
+Set your worker reward, number of workers and job deadline.
+</p>
+
+
+<!-- SUMMARY -->
+
+<h3 style="margin-bottom:12px;">
+Job Summary
+</h3>
+
+<div class="summary">
+
+<div class="summary-row">
+
+<span>Category</span>
+
+<span id="summaryCategory">
+Not selected
+</span>
+
 </div>
 
 
-<!-- ================= STEP 4 ================= -->
+<div class="summary-row">
 
-<!-- ================= STEP 4 ================= -->
+<span>Subcategory</span>
 
-<div class="step" id="step4">
+<span id="summarySubcategory">
+Not selected
+</span>
 
-    <h2>Budget & Publish</h2>
+</div>
 
-    <p class="desc">
-        Set your worker reward, number of workers and job deadline.
-    </p>
 
-    <!-- JOB SUMMARY -->
+<div class="summary-row">
 
-    <div class="job-summary">
+<span>Job Title</span>
 
-        <div class="summary-title">
-            Job Summary
-        </div>
+<span id="summaryTitle">
+Not entered
+</span>
 
-        <div class="summary-row">
-            <span>Category</span>
-            <strong id="summaryCategory">Not selected</strong>
-        </div>
+</div>
 
-        <div class="summary-row">
-            <span>Subcategory</span>
-            <strong id="summarySubcategory">Not selected</strong>
-        </div>
+</div>
 
-        <div class="summary-row">
-            <span>Job Title</span>
-            <strong id="summaryTitle">Not entered</strong>
-        </div>
 
-    </div>
+<!-- REWARD -->
 
+<div class="budget-row">
 
-    <!-- REWARD -->
+<label>
+<strong>
+Reward per Worker <span class="required">*</span>
+</strong>
+</label>
 
-    <div class="budget-field">
+<div style="margin-top:7px;">
+৳
+</div>
 
-        <label>
-            Reward per Worker
-            <span class="required">*</span>
-        </label>
+<input
+type="number"
+id="reward"
+min="1"
+step="0.01"
+value="10"
+placeholder="Enter reward"
+>
 
-        <div class="money-input">
+<div class="field-help">
+Amount a worker will receive for completing this job.
+</div>
 
-            <span>৳</span>
+</div>
 
-            <input
-                type="number"
-                id="rewardPerWorker"
-                min="1"
-                step="0.01"
-                placeholder="10.00"
-                oninput="calculateBudget()"
-            >
 
-        </div>
+<!-- WORKERS -->
 
-        <small>
-            Amount a worker will receive for completing this job.
-        </small>
+<div class="budget-row">
 
-    </div>
+<label>
+<strong>
+Number of Workers <span class="required">*</span>
+</strong>
+</label>
 
+<input
+type="number"
+id="workers"
+min="1"
+step="1"
+value="50"
+placeholder="Enter number of workers"
+style="margin-top:7px;"
+>
 
-    <!-- WORKERS -->
+<div class="field-help">
+How many workers can complete this job?
+</div>
 
-    <div class="budget-field">
+</div>
 
-        <label>
-            Number of Workers
-            <span class="required">*</span>
-        </label>
 
-        <input
-            type="number"
-            id="workerCount"
-            min="1"
-            step="1"
-            placeholder="100"
-            oninput="calculateBudget()"
-        >
+<!-- DEADLINE -->
 
-        <small>
-            How many workers can complete this job?
-        </small>
+<div class="budget-row">
 
-    </div>
+<label>
+<strong>
+Job Deadline <span class="required">*</span>
+</strong>
+</label>
 
+<input
+type="date"
+id="deadline"
+style="margin-top:7px;"
+>
 
-    <!-- DEADLINE -->
+<div class="field-help">
+Workers must complete the job before this date.
+</div>
 
-    <div class="budget-field">
+</div>
 
-        <label>
-            Job Deadline
-            <span class="required">*</span>
-        </label>
 
-        <input
-            type="date"
-            id="jobDeadline"
-        >
+<!-- COST -->
 
-        <small>
-            Workers must complete the job before this date.
-        </small>
+<div class="total-box">
 
-    </div>
+<div class="summary-row">
 
+<span>
+Worker Cost
+</span>
 
-    <!-- COST SUMMARY -->
+<strong id="workerCost">
+৳0.00
+</strong>
 
-    <div class="cost-box">
+</div>
 
-        <div class="cost-row">
 
-            <span>
-                Worker Cost
-            </span>
+<div class="summary-row">
 
-            <strong id="workerCost">
-                ৳0.00
-            </strong>
+<span>
+Platform Fee <span id="feePercent">5%</span>
+</span>
 
-        </div>
+<strong id="platformFee">
+৳0.00
+</strong>
 
+</div>
 
-        <div class="cost-row">
 
-            <span>
-                Platform Fee
-            </span>
+<h2>
+Total Budget
+<strong id="totalBudget">
+৳0.00
+</strong>
+</h2>
 
-            <strong id="platformFee">
-                ৳0.00
-            </strong>
+</div>
 
-        </div>
 
+<div
+class="message"
+id="step4Message"
+></div>
 
-        <div class="cost-divider"></div>
 
+<div class="actions">
 
-        <div class="cost-row total">
+<button
+class="back"
+type="button"
+onclick="prevStep()"
+>
+← Back
+</button>
 
-            <span>
-                Total Budget
-            </span>
+<button
+class="publish"
+type="button"
+id="publishButton"
+onclick="publishJob()"
+>
+Publish Job →
+</button>
 
-            <strong id="totalBudget">
-                ৳0.00
-            </strong>
+</div>
 
-        </div>
+</section>
 
-    </div>
-
-
-    <!-- MESSAGE -->
-
-    <div
-        id="step4Message"
-        class="step4-message"
-    ></div>
-
-
-    <!-- BUTTONS -->
-
-    <div class="actions">
-
-        <button
-            class="back"
-            type="button"
-            onclick="prevStep()"
-        >
-            ← Back
-        </button>
-
-
-        <button
-            class="next publish-button"
-            type="button"
-            onclick="publishJob()"
-        >
-            Publish Job →
-        </button>
-
-    </div>
+</div>
 
 </div>
 
 
 <script>
 
-/* =========================================================
-   CATEGORY + SUBCATEGORY DATA
-========================================================= */
+/* =========================================
+   SUPABASE
+========================================= */
+
+const SUPABASE_URL =
+"PASTE_YOUR_SUPABASE_PROJECT_URL_HERE";
+
+const SUPABASE_PUBLISHABLE_KEY =
+"PASTE_YOUR_SUPABASE_PUBLISHABLE_KEY_HERE";
+
+let supabaseClient = null;
+
+if(
+    SUPABASE_URL &&
+    SUPABASE_PUBLISHABLE_KEY &&
+    !SUPABASE_URL.includes("PASTE_")
+){
+    supabaseClient =
+        supabase.createClient(
+            SUPABASE_URL,
+            SUPABASE_PUBLISHABLE_KEY
+        );
+}
+
+
+/* =========================================
+   GLOBAL VARIABLES
+========================================= */
+
+let currentStep = 1;
+
+let selectedCategory = "";
+
+let selectedSubcategory = "";
+
+let selectedLocation = "international";
+
+let proofs = [];
+
+let proofCounter = 0;
+
+
+/* =========================================
+   CATEGORY DATA
+========================================= */
 
 const categories = {
 
 "Ads Click, SEO, Visit, Search, Engage":[
+
 "1-3 Page Visit & Ads Click",
 "1-5 Page Visit & Ads Click",
 "1-7 Page Visit & Ads Click",
@@ -1353,49 +1303,71 @@ const categories = {
 "Website Search, 1- 5 Article Visit & Comment",
 "Website Search, 1- 7 Article Visit & Article Share",
 "Website Search, 1- 7 Article Visit & Comment"
+
 ],
 
+
 "Answers":[
+
 "Answer Only",
 "Long Answer + Link (30+ words)",
 "Short Answer + Link (up to 30 words)"
+
 ],
 
+
 "Comment on other blogs":[
+
 "Short Comment",
 "Short Comment 2x",
 "Short Comment 3x",
 "Short Comment 4x more"
+
 ],
+
 
 "Computer Programs":[
+
 "Download + Install",
 "Download only"
+
 ],
 
+
 "Data Entry":[
+
 "Excel Spreadsheet (Max 50 words)",
 "PowerPoint Presentation design (1 Slide)",
+"Typing ( 10 Pages )",
+"Typing ( 3 Pages )",
+"Typing ( 5 Pages )",
+"Typing ( 8 Pages )",
+"Typing (10 Pages)",
 "Typing (3 Pages)",
 "Typing (5 Pages)",
 "Typing (8 Pages)",
-"Typing (10 Pages)",
-"Typing word (Max 50 words)",
 "Typing word (Max 100 words)",
 "Typing word (Max 200 words)",
 "Typing word (Max 300 words)",
 "Typing word (Max 400 words)",
+"Typing word (Max 50 words)",
 "Typing word (Max 500 words)"
+
 ],
 
+
 "Discord":[
+
 "Create discord account",
 "Join a Channel",
 "Join a Group",
 "Verify"
+
 ],
 
+
 "Facebook":[
+
 "Birthday Wish",
 "Comment",
 "Facebook Account + Gmail Account",
@@ -1445,17 +1417,23 @@ const categories = {
 "Watch Video (1-5) Minutes + Comment + Share",
 "Watch Video (1-5) Minutes + Follow",
 "Watch Video (1-5) Minutes + Share"
+
 ],
 
+
 "Forums":[
+
 "Post 1x",
 "Post 2x",
 "Sign up",
 "Sign up + Post 1x",
 "Sign up + Post 2x"
+
 ],
 
+
 "Gmail Account":[
+
 "Gmail Account + Facebook Account Create",
 "Gmail Account + Instagram Account Create",
 "Gmail Account + Tiktok Account Create",
@@ -1463,9 +1441,12 @@ const categories = {
 "Gmail Account + Youtube Account Create",
 "New Gmail Account",
 "Old Gmail Account"
+
 ],
 
+
 "Instagram":[
+
 "Account Create",
 "Comment",
 "Follow",
@@ -1474,79 +1455,115 @@ const categories = {
 "Instagram video + Like + comment + share",
 "Like",
 "Old Instagram Account"
+
 ],
 
+
 "Linkedin":[
+
 "Follow",
 "New LinkedIn Account",
 "Old LinkedIn Account",
 "Others"
+
 ],
 
+
 "Medium":[
+
 "Clap a post",
 "Follow",
 "Follow + Comment",
 "Share a post"
+
 ],
 
+
 "Mobile Application":[
+
 "Download & Create Account",
 "Download & Visit",
 "Download + Install",
 "Download + Install + Review",
 "Download only"
+
 ],
+
 
 "Other":[
+
 "Describe and set acceptable price"
+
 ],
 
+
 "Promotion":[
+
 "Rate OR Vote",
 "Rate OR Vote + Comment",
 "Sign up + Rate OR Vote",
 "Sign up + Rate OR Vote + Comment"
+
 ],
 
+
 "Quora":[
+
 "New Quora Account",
 "Old Quora Account",
 "Reply Question"
+
 ],
 
+
 "Reddit":[
+
 "Comment",
 "Follow Account",
 "Up vote"
+
 ],
 
+
 "Review":[
+
 "Facebook Review",
 "Google Map Review",
 "Play Store Review",
 "Trustpilot Review",
 "Website/Product Review"
+
 ],
 
+
 "Sign Up":[
+
 "Complex Sign up",
 "Email submit only",
 "Simple Sign up"
+
 ],
+
 
 "Snapchat":[
+
 "Follow"
+
 ],
 
+
 "Survey":[
+
 "Google Form",
 "Up to 10 questions",
 "Up to 20 questions",
 "Up to 30+ questions"
+
 ],
 
+
 "Telegram":[
+
 "Emoji",
 "Gleam Offer",
 "Join Bot",
@@ -1554,9 +1571,12 @@ const categories = {
 "Join a Group",
 "Post Comment",
 "Qr Code Scan"
+
 ],
 
+
 "Tiktok":[
+
 "Comment",
 "Create a video",
 "Like / Follow",
@@ -1566,9 +1586,12 @@ const categories = {
 "Watch a Video (up to 3m)",
 "Watch a Video (up to 5m)",
 "Watch a Video (up to 8m)"
+
 ],
 
+
 "Toffee":[
+
 "Comment",
 "Follow",
 "Like",
@@ -1579,9 +1602,12 @@ const categories = {
 "Watch 1-5 Minutes",
 "Watch 1-8 Minutes",
 "views"
+
 ],
 
+
 "Twitter":[
+
 "Connect",
 "Favourite",
 "Favourite + Retweet",
@@ -1593,14 +1619,20 @@ const categories = {
 "Quote Tweeted",
 "Re-Tweet",
 "Share a post"
+
 ],
+
 
 "Whats-App":[
+
 "Join Channel",
 "Join Group"
+
 ],
 
-"Youtube":[
+
+"YouTube":[
+
 "1-3 Min watch time + 1 ads view",
 "1-3 Min watch time + 2 ads view",
 "1-5 Min watch time + 1 ads view",
@@ -1650,148 +1682,69 @@ const categories = {
 "Watch Video (1-8) Minutes + Subscribe",
 "Watch Video (1-8) Minutes + Subscribe + Comment",
 "Watch Video (1-8) Minutes + Subscribe + Share"
+
+],
+
+
+"Airdrop/Offer Join":[
+"Join Airdrop",
+"Complete Offer",
+"Offer Registration",
+"Join Campaign",
+"Claim Offer",
+"Complete Task",
+"Other Offer"
+],
+
+"Identity Verification":[
+"Basic Verification",
+"Identity Check",
+"Account Verification"
 ]
 
 };
 
 
-/* =========================================================
-   STATE
-========================================================= */
+/* =========================================
+   SHOW CATEGORY LIST
+========================================= */
 
-let currentStep = 1;
-let selectedCategory = "";
-let selectedSubcategory = "";
+function renderCategories(filter = ""){
 
+    const list =
+        document.getElementById("categoryList");
 
-/* =========================================================
-   PROGRESS
-========================================================= */
-
-function nextStep(){ function showStep(step){
-
-    currentStep = step;
-
-    document.querySelectorAll(".step").forEach(function(el){
-        el.classList.remove("active");
-    });
-
-    const targetStep = document.getElementById("step" + step);
-
-    if(targetStep){
-        targetStep.classList.add("active");
-    }
-
-    for(let i = 1; i <= 4; i++){
-
-        const progress = document.getElementById("p" + i);
-
-        if(!progress) continue;
-
-        progress.classList.remove("active","done");
-
-        if(i < step){
-            progress.classList.add("done");
-        }
-
-        if(i === step){
-            progress.classList.add("active");
-        }
-    }
-
-    updateStep4Summary();
-
-    window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-    });
-}
-
-
-function prevStep(){
-
-    if(currentStep > 1){
-
-        currentStep--;
-
-        showStep(currentStep);
-
-    }
-
-}
-
-    if(currentStep < 4){
-
-        currentStep = currentStep + 1;
-
-        showStep(currentStep);
-
-    }
-
-}
-
-/* =========================================================
-   LOCATION
-========================================================= */
-
-document.querySelectorAll(".location-option")
-.forEach(option=>{
-
-    option.addEventListener("click",()=>{
-
-        document.querySelectorAll(".location-option")
-        .forEach(x=>x.classList.remove("selected"));
-
-        option.classList.add("selected");
-
-        const radio=option.querySelector("input");
-        radio.checked=true;
-
-        const box=document.getElementById("countryBox");
-
-        if(radio.value==="specific")
-            box.classList.add("show");
-        else
-            box.classList.remove("show");
-    });
-
-});
-
-
-/* =========================================================
-   CATEGORY LIST
-========================================================= */
-
-function renderCategories(search=""){
-
-    const list=document.getElementById("categoryList");
-
-    list.innerHTML="";
+    list.innerHTML = "";
 
     Object.keys(categories)
-    .filter(cat =>
-        cat.toLowerCase().includes(search.toLowerCase())
+    .filter(category =>
+        category
+        .toLowerCase()
+        .includes(filter.toLowerCase())
     )
-    .forEach(cat=>{
+    .forEach(category => {
 
-        const item=document.createElement("div");
+        const div =
+            document.createElement("div");
 
-        item.className="category-item";
+        div.className = "category-item";
 
-        if(cat===selectedCategory)
-            item.classList.add("selected");
+        if(category === selectedCategory){
+            div.classList.add("selected");
+        }
 
-        item.innerHTML=`
-            ${escapeHtml(cat)}
+        div.innerHTML = `
+            <span>${escapeHtml(category)}</span>
             <span class="category-count">
-                ${categories[cat].length}
+                ${categories[category].length}
             </span>
         `;
 
-        item.onclick=()=>{
+        div.onclick = function(){
 
-            selectedCategory=cat;
-            selectedSubcategory="";
+            selectedCategory = category;
+
+            selectedSubcategory = "";
 
             renderCategories(
                 document.getElementById("categorySearch").value
@@ -1799,948 +1752,448 @@ function renderCategories(search=""){
 
             renderSubcategories();
 
-            document.getElementById("selectedCategory")
-            .textContent =
-                cat+" — Select a subcategory";
+            updateSelectedInfo();
+
         };
 
-        list.appendChild(item);
+        list.appendChild(div);
 
     });
+
 }
 
 
-function renderSubcategories(search=""){
+/* =========================================
+   SHOW SUBCATEGORY
+========================================= */
 
-    const list=document.getElementById("subList");
+function renderSubcategories(){
 
-    list.innerHTML="";
+    const list =
+        document.getElementById("subcategoryList");
+
+    const search =
+        document.getElementById("subSearch");
+
+    list.innerHTML = "";
 
     if(!selectedCategory){
 
-        list.innerHTML=
-            '<div style="padding:15px;color:#64748b">Select a category first.</div>';
+        search.disabled = true;
+
+        list.innerHTML = `
+            <div style="
+                padding:15px;
+                color:#64748b;
+            ">
+                Select a category first.
+            </div>
+        `;
 
         return;
     }
 
+    search.disabled = false;
+
+    const filter =
+        search.value.toLowerCase();
+
     categories[selectedCategory]
-    .filter(sub =>
-        sub.toLowerCase().includes(search.toLowerCase())
+    .filter(item =>
+        item.toLowerCase().includes(filter)
     )
-    .forEach(sub=>{
+    .forEach(subcategory => {
 
-        const item=document.createElement("div");
+        const div =
+            document.createElement("div");
 
-        item.className="sub-item";
+        div.className =
+            "subcategory-item";
 
-        if(sub===selectedSubcategory)
-            item.classList.add("selected");
+        if(
+            subcategory ===
+            selectedSubcategory
+        ){
 
-        item.textContent=sub;
+            div.classList.add("selected");
 
-        item.onclick=()=>{
+        }
 
-            selectedSubcategory=sub;
+        div.textContent =
+            subcategory;
 
-            renderSubcategories(
-                document.getElementById("subSearch").value
-            );
+        div.onclick = function(){
 
-            document.getElementById("selectedCategory")
-            .textContent =
-                selectedCategory+" → "+sub;
+            selectedSubcategory =
+                subcategory;
+
+            renderSubcategories();
+
+            updateSelectedInfo();
+
         };
 
-        list.appendChild(item);
+        list.appendChild(div);
+
     });
+
 }
 
 
-document.getElementById("categorySearch")
-.addEventListener("input",e=>{
-    renderCategories(e.target.value);
-});
+/* =========================================
+   SELECTED INFO
+========================================= */
+
+function updateSelectedInfo(){
+
+    const info =
+        document.getElementById(
+            "selectedInfo"
+        );
+
+    if(!selectedCategory){
+
+        info.innerHTML =
+            "Select a category first.";
+
+        return;
+
+    }
+
+    if(!selectedSubcategory){
+
+        info.innerHTML =
+            `<strong>${escapeHtml(selectedCategory)}</strong>
+             selected. Now choose a subcategory.`;
+
+        return;
+
+    }
+
+    info.innerHTML =
+        `<strong>Category:</strong>
+        ${escapeHtml(selectedCategory)}
+        &nbsp; | &nbsp;
+        <strong>Subcategory:</strong>
+        ${escapeHtml(selectedSubcategory)}`;
+
+}
 
 
-document.getElementById("subSearch")
-.addEventListener("input",e=>{
-    renderSubcategories(e.target.value);
-});
+/* =========================================
+   ESCAPE HTML
+========================================= */
+
+function escapeHtml(value){
+
+    return String(value)
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
+}
 
 
-renderCategories();
-renderSubcategories();
+/* =========================================
+   STEP SYSTEM
+========================================= */
+
+function showStep(step){
+
+    currentStep = step;
+
+    document
+    .querySelectorAll(".step")
+    .forEach(el => {
+
+        el.classList.remove("active");
+
+    });
 
 
-/* =========================================================
-   STEP VALIDATION
-========================================================= */
+    const target =
+        document.getElementById(
+            "step" + step
+        );
 
-function validateStep(){
+    if(target){
 
-    if(currentStep===1){
+        target.classList.add("active");
 
-        const location=
+    }
+
+
+    for(let i=1;i<=4;i++){
+
+        const progress =
+            document.getElementById(
+                "p" + i
+            );
+
+        progress.classList.remove(
+            "active",
+            "done"
+        );
+
+        if(i < step){
+
+            progress.classList.add("done");
+
+        }
+
+        if(i === step){
+
+            progress.classList.add("active");
+
+        }
+
+    }
+
+
+    if(step === 3){
+
+        updateJobDetails();
+
+    }
+
+    if(step === 4){
+
+        updateBudgetSummary();
+
+    }
+
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+
+}
+
+
+/* =========================================
+   NEXT STEP
+========================================= */
+
+function nextStep(){
+
+    if(currentStep === 1){
+
+        const location =
             document.querySelector(
                 'input[name="location"]:checked'
             );
 
         if(!location){
 
-            alert("Please select a location.");
-
-            return false;
-        }
-
-        if(location.value==="specific"){
-
-            const countries=
-                document.getElementById("countries");
-
-            if(countries.selectedOptions.length===0){
-
-                alert("Please select at least one country.");
-
-                return false;
-            }
-        }
-    }
-
-
-    if(currentStep===2){
-
-        if(!selectedCategory){
-
-            alert("Please select a category.");
-
-            return false;
-        }
-
-        if(!selectedSubcategory){
-
-            alert("Please select a subcategory.");
-
-            return false;
-        }
-    }
-
-
-    if(currentStep===3){
-
-        const title=
-            document.getElementById("jobTitle").value.trim();
-
-        const description=
-            document.getElementById("description").value.trim();
-
-        const instructions=
-            document.getElementById("instructions").value.trim();
-
-        if(!title){
-
-            alert("Please enter a job title.");
-
-            return false;
-        }
-
-        if(!description){
-
-            alert("Please enter a job description.");
-
-            return false;
-        }
-
-        if(!instructions){
-
-            alert("Please enter job instructions.");
-
-            return false;
-        }
-    }
-
-
-    return true;
-}
-
-
-function nextStep(){
-
-    // Current step check
-    if(currentStep === 1){
-
-        // Location must be selected
-        if(!selectedLocation){
-
-            alert("Please select a location.");
+            alert(
+                "Please select a location."
+            );
 
             return;
+
         }
+
+        selectedLocation =
+            location.value;
+
+        showStep(2);
+
+        return;
+
     }
 
 
     if(currentStep === 2){
 
-        // Category must be selected
         if(!selectedCategory){
 
-            alert("Please select a category.");
+            alert(
+                "Please select a category."
+            );
 
             return;
+
         }
 
-        // Subcategory must be selected
         if(!selectedSubcategory){
 
-            alert("Please select a subcategory.");
+            alert(
+                "Please select a subcategory."
+            );
 
             return;
+
         }
+
+        showStep(3);
+
+        return;
+
     }
 
 
     if(currentStep === 3){
 
-        const title =
-            document.getElementById("jobTitle")?.value.trim();
-
-        const description =
-            document.getElementById("description")?.value.trim();
-
-        const instructions =
-            document.getElementById("instructions")?.value.trim();
-
-
-        if(!title){
-
-            alert("Please enter a Job Title.");
+        if(!validateStep3()){
 
             return;
+
         }
 
+        showStep(4);
 
-        if(!description){
-
-            alert("Please enter a Description.");
-
-            return;
-        }
-
-
-        if(!instructions){
-
-            alert("Please enter Instructions.");
-
-            return;
-        }
-    }
-
-
-    // Move to next step
-
-    if(currentStep < 4){
-
-        currentStep++;
-
-        showStep(currentStep);
-
-    
+        return;
 
     }
 
 }
 
 
-/* =========================================================
-   BUDGET
-========================================================= */
+/* =========================================
+   PREVIOUS STEP
+========================================= */
 
-async function publishJob(){
+function prevStep(){
 
-    const message =
-        document.getElementById("step4Message");
+    if(currentStep > 1){
 
-    message.textContent = "";
-    message.style.color = "#dc2626";
+        showStep(
+            currentStep - 1
+        );
 
-
-    /* JOB DATA */
-
-    const title =
-        document.getElementById("jobTitle")?.value.trim() || "";
-
-    const description =
-        document.getElementById("description")?.value.trim() || "";
-
-    const instructions =
-        document.getElementById("instructions")?.value.trim() || "";
-
-
-    /* CATEGORY */
-
-    const category =
-        typeof selectedCategory !== "undefined"
-        ? selectedCategory
-        : "";
-
-
-    const subcategory =
-        typeof selectedSubcategory !== "undefined"
-        ? selectedSubcategory
-        : "";
-
-
-    /* BUDGET */
-
-    const reward =
-        parseFloat(
-            document.getElementById("rewardPerWorker").value
-        ) || 0;
-
-
-    const workers =
-        parseInt(
-            document.getElementById("workerCount").value
-        ) || 0;
-
-
-    const deadline =
-        document.getElementById("jobDeadline").value;
-
-
-    const workerCost =
-        reward * workers;
-
-
-    const platformFee =
-        workerCost * 0.10;
-
-
-    const totalBudget =
-        workerCost + platformFee;
-
-
-    /* VALIDATION */
-
-    if(!title){
-
-        message.textContent =
-            "Please enter a Job Title.";
-
-        return;
     }
 
+}
 
-    if(!description){
 
-        message.textContent =
-            "Please enter a Description.";
+/* =========================================
+   BACK BUTTON
+========================================= */
 
-        return;
+function goBack(){
+
+    if(currentStep > 1){
+
+        prevStep();
+
+    }else{
+
+        window.history.back();
+
     }
 
-
-    if(!category){
-
-        message.textContent =
-            "Please select a Category.";
-
-        return;
-    }
+}
 
 
-    if(!subcategory){
+/* =========================================
+   LOCATION
+========================================= */
 
-        message.textContent =
-            "Please select a Subcategory.";
+document
+.querySelectorAll(
+    '.location-option'
+)
+.forEach(option => {
 
-        return;
-    }
+    option.addEventListener(
+        "click",
+        function(){
 
+            document
+            .querySelectorAll(
+                ".location-option"
+            )
+            .forEach(item => {
 
-    if(!instructions){
+                item.classList.remove(
+                    "selected"
+                );
 
-        message.textContent =
-            "Please enter Instructions.";
+            });
 
-        return;
-    }
+            this.classList.add(
+                "selected"
+            );
 
+            const radio =
+                this.querySelector(
+                    "input"
+                );
 
-    if(reward <= 0){
+            radio.checked = true;
 
-        message.textContent =
-            "Please enter a valid Reward per Worker.";
+            selectedLocation =
+                radio.value;
 
-        return;
-    }
+            const countryBox =
+                document.getElementById(
+                    "countryBox"
+                );
 
+            if(
+                radio.value ===
+                "specific"
+            ){
 
-    if(workers <= 0){
+                countryBox.classList.add(
+                    "show"
+                );
 
-        message.textContent =
-            "Please enter the Number of Workers.";
+            }else{
 
-        return;
-    }
+                countryBox.classList.remove(
+                    "show"
+                );
 
+            }
 
-    if(!deadline){
-
-        message.textContent =
-            "Please select a Job Deadline.";
-
-        return;
-    }
-
-
-    /* CURRENT USER */
-
-    const {
-        data: {
-            user
-        },
-        error: userError
-    } = await supabase.auth.getUser();
-
-
-    if(userError || !user){
-
-        message.textContent =
-            "Please login before publishing a job.";
-
-        return;
-    }
-
-
-    /* PROOF DATA */
-
-    const proofs =
-        typeof proofData !== "undefined"
-        ? proofData
-        : [];
-
-
-    /* SAVE JOB */
-
-    const {
-        data,
-        error
-    } = await supabase
-        .from("jobs")
-        .insert({
-
-            employer_id: user.id,
-
-            title: title,
-
-            description: description,
-
-            category: category,
-
-            subcategory: subcategory,
-
-            instructions: instructions,
-
-            proof_requirements: proofs,
-
-            reward_per_worker: reward,
-
-            worker_count: workers,
-
-            worker_cost: workerCost,
-
-            platform_fee: platformFee,
-
-            total_budget: totalBudget,
-
-            deadline: deadline,
-
-            status: "published"
-
-        })
-        .select()
-        .single();
-
-
-    /* ERROR */
-
-    if(error){
-
-        console.error(error);
-
-        message.textContent =
-            "Job publish failed: " +
-            error.message;
-
-        return;
-    }
-
-
-    /* SUCCESS */
-
-    message.style.color =
-        "#15803d";
-
-    message.textContent =
-        "✅ Job published successfully!";
-
-
-    alert(
-        "Job published successfully!"
+        }
     );
 
-
-    /* GO TO EMPLOYER DASHBOARD */
-
-    setTimeout(function(){
-
-        window.location.href =
-            "employer-dashboard.html";
-
-    },1000);
-
-};
-
-
-    /*
-     * Save the complete job temporarily.
-     * Supabase publishing will be connected
-     * after the database columns are ready.
-     */
-
-    localStorage.setItem(
-        "earntask_last_job",
-        JSON.stringify(job)
-    );
-
-
-    message.style.color="#15803d";
-
-    message.textContent=
-        "Job information is ready for submission. Admin approval will be required before the job goes live.";
-
-    document.getElementById("publishBtn")
-        .disabled=true;
-
-}
-
-
-/* =========================================================
-   HTML ESCAPE
-========================================================= */
-
-function escapeHtml(value){
-
-    return String(value??"")
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;")
-    .replace(/'/g,"&#039;");
-}
-
-    /* ================= STEP 3 JAVASCRIPT ================= */
-
-let proofCount = 1;
-
-let proofData = [
-    {
-        type: "screenshot",
-        label: "",
-        example: ""
-    }
-];
-
-
-/* ---------- CATEGORY + SUBCATEGORY ---------- */
-
-function updateJobCategoryInfo(){
-
-    const box = document.getElementById("jobCategoryInfo");
-
-    if(!box) return;
-
-    let category = "";
-
-    let subcategory = "";
-
-    if(typeof selectedCategory !== "undefined"){
-        category = selectedCategory || "";
-    }
-
-    if(typeof selectedSubcategory !== "undefined"){
-        subcategory = selectedSubcategory || "";
-    }
-
-    box.innerHTML =
-        "Category: <strong>" +
-        escapeHtml(category || "Not selected") +
-        "</strong><br>" +
-
-        "Subcategory: <strong>" +
-        escapeHtml(subcategory || "Not selected") +
-        "</strong>";
-}
-
-
-/* ---------- CHARACTER COUNTER ---------- */
-
-document.addEventListener("input", function(e){
-
-    if(e.target.id === "jobTitle"){
-
-        document.getElementById("titleCount").textContent =
-            e.target.value.length;
-    }
-
-    if(e.target.id === "description"){
-
-        document.getElementById("descriptionCount").textContent =
-            e.target.value.length;
-    }
-
-    if(e.target.id === "instructions"){
-
-        document.getElementById("instructionsCount").textContent =
-            e.target.value.length;
-    }
-
 });
 
 
-/* ---------- FILE UPLOAD ---------- */
+/* =========================================
+   SEARCH
+========================================= */
 
-document.addEventListener("change", function(e){
+document
+.getElementById(
+    "categorySearch"
+)
+.addEventListener(
+    "input",
+    function(){
 
-    if(e.target.id !== "attachments") return;
-
-    const files = Array.from(e.target.files);
-
-    if(files.length > 10){
-
-        alert("Maximum 10 files are allowed.");
-
-        e.target.value = "";
-
-        return;
-    }
-
-    document.getElementById("fileCount").textContent =
-        "(" + files.length + "/10)";
-
-    const list =
-        document.getElementById("fileList");
-
-    list.innerHTML = "";
-
-    files.forEach(function(file){
-
-        const item =
-            document.createElement("div");
-
-        item.className = "file-item";
-
-        item.innerHTML =
-            "<span>📎 " +
-            escapeHtml(file.name) +
-            "</span>";
-
-        list.appendChild(item);
-
-    });
-
-});
-
-
-/* ---------- ADD PROOF ---------- */
-
-function addProof(){
-
-    if(proofCount >= 5){
-
-        alert("Maximum 5 proof requirements allowed.");
-
-        return;
-    }
-
-    proofCount++;
-
-    proofData.push({
-        type: "screenshot",
-        label: "",
-        example: ""
-    });
-
-    renderProofs();
-}
-
-
-/* ---------- RENDER PROOFS ---------- */
-
-function renderProofs(){
-
-    const container =
-        document.getElementById("proofContainer");
-
-    if(!container) return;
-
-    container.innerHTML = "";
-
-    proofData.forEach(function(proof,index){
-
-        const card =
-            document.createElement("div");
-
-        card.className = "proof-card";
-
-        card.innerHTML = `
-
-            <div class="proof-top">
-
-                <div class="proof-number">
-                    ${index + 1}
-                </div>
-
-                <strong>
-                    Proof ${index + 1}
-                </strong>
-
-            </div>
-
-
-            <div class="proof-type">
-
-                <button
-                    type="button"
-                    class="${proof.type === "screenshot" ? "active" : ""}"
-                    onclick="setProofType(${index}, 'screenshot')"
-                >
-                    🖼 Screenshot
-                </button>
-
-
-                <button
-                    type="button"
-                    class="${proof.type === "text" ? "active" : ""}"
-                    onclick="setProofType(${index}, 'text')"
-                >
-                    📄 Text
-                </button>
-
-            </div>
-
-
-            <div class="proof-label">
-
-                <input
-                    type="text"
-                    placeholder="Label (e.g. Homepage screenshot)"
-                    value="${escapeHtml(proof.label)}"
-                    oninput="updateProofLabel(${index}, this.value)"
-                >
-
-            </div>
-
-
-            <div class="proof-example">
-
-                <label>
-                    Example
-                    <span class="optional">(Optional)</span>
-                </label>
-
-                <input
-                    type="text"
-                    placeholder="${
-                        proof.type === "screenshot"
-                        ? "Example screenshot description"
-                        : "Example text answer"
-                    }"
-                    value="${escapeHtml(proof.example)}"
-                    oninput="updateProofExample(${index}, this.value)"
-                >
-
-            </div>
-
-        `;
-
-        container.appendChild(card);
-
-    });
-
-
-    const addButton =
-        document.getElementById("addProofBtn");
-
-    if(addButton){
-
-        addButton.textContent =
-            "+ Add Proof (" + proofCount + "/5)";
-
-        addButton.disabled =
-            proofCount >= 5;
+        renderCategories(
+            this.value
+        );
 
     }
-
-}
-
-
-/* ---------- PROOF TYPE ---------- */
-
-function setProofType(index,type){
-
-    proofData[index].type = type;
-
-    renderProofs();
-}
+);
 
 
-/* ---------- PROOF LABEL ---------- */
+document
+.getElementById(
+    "subSearch"
+)
+.addEventListener(
+    "input",
+    function(){
 
-function updateProofLabel(index,value){
+        renderSubcategories();
 
-    proofData[index].label = value;
-}
-
-
-/* ---------- PROOF EXAMPLE ---------- */
-
-function updateProofExample(index,value){
-
-    proofData[index].example = value;
-}
-
-
-/* ---------- ESCAPE HTML ---------- */
-
-function escapeHtml(value){
-
-    return String(value)
-        .replace(/&/g,"&amp;")
-        .replace(/</g,"&lt;")
-        .replace(/>/g,"&gt;")
-        .replace(/"/g,"&quot;")
-        .replace(/'/g,"&#039;");
-}
-
-
-/* ---------- INITIALIZE ---------- */
-
-document.addEventListener("DOMContentLoaded", function(){
-
-    renderProofs();
-
-    updateJobCategoryInfo();
-
-});
-    function calculateBudget(){
-
-    const reward =
-        parseFloat(document.getElementById("rewardPerWorker").value) || 0;
-
-    const workers =
-        parseInt(document.getElementById("workerCount").value) || 0;
-
-    const workerCost = reward * workers;
-
-    const platformFee = workerCost * 0.10;
-
-    const totalBudget = workerCost + platformFee;
-
-    document.getElementById("workerCost").textContent =
-        "৳" + workerCost.toFixed(2);
-
-    document.getElementById("platformFee").textContent =
-        "৳" + platformFee.toFixed(2);
-
-    document.getElementById("totalBudget").textContent =
-        "৳" + totalBudget.toFixed(2);
-}
-
-
-function updateStep4Summary(){
-
-    const titleInput =
-        document.getElementById("jobTitle");
-
-    document.getElementById("summaryTitle").textContent =
-        titleInput && titleInput.value.trim()
-        ? titleInput.value.trim()
-        : "Not entered";
-
-    if(typeof selectedCategory !== "undefined"){
-        document.getElementById("summaryCategory").textContent =
-            selectedCategory || "Not selected";
     }
-
-    if(typeof selectedSubcategory !== "undefined"){
-        document.getElementById("summarySubcategory").textContent =
-            selectedSubcategory || "Not selected";
-    }
-}
+);
 
 
-document.addEventListener("DOMContentLoaded", function(){
+/* =========================================
+   INITIAL CATEGORY LOAD
+========================================= */
 
-    updateStep4Summary();
+renderCategories();
 
-    calculateBudget();
-
-});
-
-
-function publishJob(){
-
-    const reward =
-        parseFloat(document.getElementById("rewardPerWorker").value) || 0;
-
-    const workers =
-        parseInt(document.getElementById("workerCount").value) || 0;
-
-    const deadline =
-        document.getElementById("jobDeadline").value;
-
-    const message =
-        document.getElementById("step4Message");
-
-    message.textContent = "";
-    message.style.color = "#dc2626";
-
-
-    if(reward <= 0){
-        message.textContent =
-            "Please enter a valid reward per worker.";
-        return;
-    }
-
-
-    if(workers <= 0){
-        message.textContent =
-            "Please enter the number of workers.";
-        return;
-    }
-
-
-    if(!deadline){
-        message.textContent =
-            "Please select a job deadline.";
-        return;
-    }
-
-
-    message.style.color = "#15803d";
-
-    message.textContent =
-        "Job information is valid. Ready to publish.";
-
-}
-    document.addEventListener("DOMContentLoaded", function(){
-
-    showStep(1);
-
-});
-</script>
-
-</body>
-</html>
+renderSubcategories();
