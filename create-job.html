@@ -1670,93 +1670,9 @@ let selectedSubcategory = "";
 
 function nextStep(){
 
-    /* STEP 1 → STEP 2 */
-
-    if(currentStep === 1){
-
-        if(
-            typeof selectedLocation !== "undefined" &&
-            !selectedLocation
-        ){
-
-            alert("Please select a location.");
-
-            return;
-        }
-    }
-
-
-    /* STEP 2 → STEP 3 */
-
-    if(currentStep === 2){
-
-        if(
-            typeof selectedCategory !== "undefined" &&
-            !selectedCategory
-        ){
-
-            alert("Please select a category.");
-
-            return;
-        }
-
-
-        if(
-            typeof selectedSubcategory !== "undefined" &&
-            !selectedSubcategory
-        ){
-
-            alert("Please select a subcategory.");
-
-            return;
-        }
-    }
-
-
-    /* STEP 3 → STEP 4 */
-
-    if(currentStep === 3){
-
-        const title =
-            document.getElementById("jobTitle")?.value.trim() || "";
-
-        const description =
-            document.getElementById("description")?.value.trim() || "";
-
-        const instructions =
-            document.getElementById("instructions")?.value.trim() || "";
-
-
-        if(!title){
-
-            alert("Please enter a Job Title.");
-
-            return;
-        }
-
-
-        if(!description){
-
-            alert("Please enter a Description.");
-
-            return;
-        }
-
-
-        if(!instructions){
-
-            alert("Please enter Instructions.");
-
-            return;
-        }
-    }
-
-
-    /* MOVE TO NEXT STEP */
-
     if(currentStep < 4){
 
-        currentStep++;
+        currentStep = currentStep + 1;
 
         showStep(currentStep);
 
