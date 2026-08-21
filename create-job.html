@@ -894,7 +894,7 @@ Choose where your workers should be located.
     }
 
 }
-</select>
+
 
 </div>
 
@@ -1668,7 +1668,57 @@ let selectedSubcategory = "";
    PROGRESS
 ========================================================= */
 
-function nextStep(){
+function nextStep(){ function showStep(step){
+
+    currentStep = step;
+
+    document.querySelectorAll(".step").forEach(function(el){
+        el.classList.remove("active");
+    });
+
+    const targetStep = document.getElementById("step" + step);
+
+    if(targetStep){
+        targetStep.classList.add("active");
+    }
+
+    for(let i = 1; i <= 4; i++){
+
+        const progress = document.getElementById("p" + i);
+
+        if(!progress) continue;
+
+        progress.classList.remove("active","done");
+
+        if(i < step){
+            progress.classList.add("done");
+        }
+
+        if(i === step){
+            progress.classList.add("active");
+        }
+    }
+
+    updateStep4Summary();
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+}
+
+
+function prevStep(){
+
+    if(currentStep > 1){
+
+        currentStep--;
+
+        showStep(currentStep);
+
+    }
+
+}
 
     if(currentStep < 4){
 
@@ -1994,7 +2044,7 @@ function nextStep(){
 
         showStep(currentStep);
 
-        updateProgressBar(currentStep);
+    
 
     }
 
@@ -2685,6 +2735,11 @@ function publishJob(){
         "Job information is valid. Ready to publish.";
 
 }
+    document.addEventListener("DOMContentLoaded", function(){
+
+    showStep(1);
+
+});
 </script>
 
 </body>
