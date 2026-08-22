@@ -2196,4 +2196,964 @@ document
 
 renderCategories();
 
-renderSubcategories();
+renderSubcategories(); 
+    /* =========================================
+   UPDATE JOB DETAILS
+========================================= */
+
+function updateJobDetails(){
+
+    document.getElementById(
+        "detailCategory"
+    ).textContent =
+        selectedCategory || "Not selected";
+
+    document.getElementById(
+        "detailSubcategory"
+    ).textContent =
+        selectedSubcategory || "Not selected";
+
+}
+
+
+/* =========================================
+   TEXT COUNTERS
+========================================= */
+
+document
+.getElementById("jobDescription")
+.addEventListener("input", function(){
+
+    document.getElementById(
+        "descriptionCount"
+    ).textContent = this.value.length;
+
+});
+
+
+document
+.getElementById("jobInstructions")
+.addEventListener("input", function(){
+
+    document.getElementById(
+        "instructionsCount"
+    ).textContent = this.value.length;
+
+});
+
+
+/* =========================================
+   ATTACHMENTS
+========================================= */
+
+document
+.getElementById("jobAttachments")
+.addEventListener("change", function(){
+
+    const list =
+        document.getElementById(
+            "attachmentList"
+        );
+
+    list.innerHTML = "";
+
+    const files =
+        Array.from(this.files);
+
+    if(files.length > 10){
+
+        alert(
+            "Maximum 10 files allowed."
+        );
+
+        this.value = "";
+
+        return;
+
+    }
+
+    files.forEach(file => {
+
+        if(file.size > 10 * 1024 * 1024){
+
+            alert(
+                file.name +
+                " is larger than 10MB."
+            );
+
+            return;
+
+        }
+
+        const item =
+            document.createElement("div");
+
+        item.className =
+            "attachment-item";
+
+        item.innerHTML = `
+            <span>
+                📎 ${escapeHtml(file.name)}
+            </span>
+
+            <span>
+                ${(file.size / 1024 / 1024).toFixed(2)} MB
+            </span>
+        `;
+
+        list.appendChild(item);
+
+    });
+
+});
+
+
+/* =========================================
+   PROOF SYSTEM
+========================================= */
+
+function addProof(
+    type = "screenshot",
+    label = ""
+){
+
+    if(proofs.length >= 5){
+
+        alert(
+            "Maximum 5 proof requirements allowed."
+        );
+
+        return;
+
+    }
+
+    proofCounter++;
+
+    const proof = {
+
+        id: proofCounter,
+
+        type: type,
+
+        label: label
+
+    };
+
+    proofs.push(proof);
+
+    renderProofs();
+
+}
+
+
+function removeProof(id){
+
+    proofs =
+        proofs.filter(
+            proof => proof.id !== id
+        );
+
+    renderProofs();
+
+}
+
+
+function setProofType(
+    id,
+    type
+){
+
+    const proof =
+        proofs.find(
+            item => item.id === id
+        );
+
+    if(!proof) return;
+
+    proof.type = type;
+
+    renderProofs();
+
+}
+
+
+function updateProofLabel(
+    id,
+    value
+){
+
+    const proof =
+        proofs.find(
+            item => item.id === id
+        );
+
+    if(!proof) return;
+
+    proof.label = value;
+
+}
+
+
+function renderProofs(){
+
+    const container =
+        document.getElementById(
+            "proofContainer"
+        );
+
+    container.innerHTML = "";
+
+    proofs.forEach(
+        (proof,index) => {
+
+            const card =
+                document.createElement(
+                    "div"
+                );
+
+            card.className =
+                "proof-card";
+
+            card.innerHTML = `
+
+                <div class="proof-top">
+
+                    <div class="proof-number">
+                        ${index + 1}
+                    </div>
+
+                    <strong>
+                        Proof Requirement
+                    </strong>
+
+                </div>
+
+
+                <input
+                    type="text"
+                    value="${escapeHtml(proof.label)}"
+                    placeholder="Example: Upload screenshot"
+                    oninput="
+                        updateProofLabel(
+                            ${proof.id},
+                            this.value
+                        )
+                    "
+                >
+
+
+                <div class="proof-type">
+
+                    <button
+                        type="button"
+                        class="${
+                            proof.type ===
+                            "screenshot"
+                            ? "active"
+                            : ""
+                        }"
+                        onclick="
+                            setProofType(
+                                ${proof.id},
+                                'screenshot'
+                            )
+                        "
+                    >
+                        📷 Screenshot
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="${
+                            proof.type ===
+                            "text"
+                            ? "active"
+                            : ""
+                        }"
+                        onclick="
+                            setProofType(
+                                ${proof.id},
+                                'text'
+                            )
+                        "
+                    >
+                        📝 Text Answer
+                    </button>
+
+                </div>
+
+
+                <div class="proof-actions">
+
+                    <button
+                        type="button"
+                        class="small-btn"
+                        onclick="
+                            removeProof(
+                                ${proof.id}
+                            )
+                        "
+                    >
+                        🗑 Remove
+                    </button>
+
+                </div>
+
+            `;
+
+            container.appendChild(card);
+
+        }
+    );
+
+}
+
+
+/* =========================================
+   STEP 3 VALIDATION
+========================================= */
+
+function validateStep3(){
+
+    const message =
+        document.getElementById(
+            "step3Message"
+        );
+
+    message.textContent = "";
+
+    message.style.color =
+        "#dc2626";
+
+
+    const title =
+        document.getElementById(
+            "jobTitle"
+        ).value.trim();
+
+    const description =
+        document.getElementById(
+            "jobDescription"
+        ).value.trim();
+
+    const instructions =
+        document.getElementById(
+            "jobInstructions"
+        ).value.trim();
+
+
+    if(!title){
+
+        message.textContent =
+            "Please enter a Job Title.";
+
+        document
+        .getElementById("jobTitle")
+        .focus();
+
+        return false;
+
+    }
+
+
+    if(!description){
+
+        message.textContent =
+            "Please enter a Job Description.";
+
+        document
+        .getElementById(
+            "jobDescription"
+        )
+        .focus();
+
+        return false;
+
+    }
+
+
+    if(!instructions){
+
+        message.textContent =
+            "Please enter Job Instructions.";
+
+        document
+        .getElementById(
+            "jobInstructions"
+        )
+        .focus();
+
+        return false;
+
+    }
+
+
+    if(proofs.length === 0){
+
+        message.textContent =
+            "Please add at least one Proof Requirement.";
+
+        return false;
+
+    }
+
+
+    for(
+        const proof of proofs
+    ){
+
+        if(!proof.label.trim()){
+
+            message.textContent =
+                "Please enter a label for every proof requirement.";
+
+            return false;
+
+        }
+
+    }
+
+
+    return true;
+
+}
+
+
+/* =========================================
+   BUDGET CALCULATION
+========================================= */
+
+function updateBudgetSummary(){
+
+    const reward =
+        parseFloat(
+            document.getElementById(
+                "reward"
+            ).value
+        ) || 0;
+
+
+    const workers =
+        parseInt(
+            document.getElementById(
+                "workers"
+            ).value
+        ) || 0;
+
+
+    const workerCost =
+        reward * workers;
+
+
+    const platformFee =
+        workerCost * 0.05;
+
+
+    const total =
+        workerCost +
+        platformFee;
+
+
+    document.getElementById(
+        "workerCost"
+    ).textContent =
+        "৳" +
+        workerCost.toFixed(2);
+
+
+    document.getElementById(
+        "platformFee"
+    ).textContent =
+        "৳" +
+        platformFee.toFixed(2);
+
+
+    document.getElementById(
+        "totalBudget"
+    ).textContent =
+        "৳" +
+        total.toFixed(2);
+
+
+    document.getElementById(
+        "summaryCategory"
+    ).textContent =
+        selectedCategory ||
+        "Not selected";
+
+
+    document.getElementById(
+        "summarySubcategory"
+    ).textContent =
+        selectedSubcategory ||
+        "Not selected";
+
+
+    const title =
+        document.getElementById(
+            "jobTitle"
+        ).value.trim();
+
+
+    document.getElementById(
+        "summaryTitle"
+    ).textContent =
+        title ||
+        "Not entered";
+
+}
+
+
+/* =========================================
+   BUDGET INPUT EVENTS
+========================================= */
+
+document
+.getElementById("reward")
+.addEventListener(
+    "input",
+    updateBudgetSummary
+);
+
+
+document
+.getElementById("workers")
+.addEventListener(
+    "input",
+    updateBudgetSummary
+);
+
+
+/* =========================================
+   DEADLINE
+========================================= */
+
+const today =
+    new Date()
+    .toISOString()
+    .split("T")[0];
+
+
+document
+.getElementById("deadline")
+.min = today;
+
+
+/* =========================================
+   PUBLISH JOB
+========================================= */
+
+async function publishJob(){
+
+    const message =
+        document.getElementById(
+            "step4Message"
+        );
+
+
+    message.textContent = "";
+
+    message.style.color =
+        "#dc2626";
+
+
+    const reward =
+        parseFloat(
+            document.getElementById(
+                "reward"
+            ).value
+        );
+
+
+    const workers =
+        parseInt(
+            document.getElementById(
+                "workers"
+            ).value
+        );
+
+
+    const deadline =
+        document.getElementById(
+            "deadline"
+        ).value;
+
+
+    const title =
+        document.getElementById(
+            "jobTitle"
+        ).value.trim();
+
+
+    const description =
+        document.getElementById(
+            "jobDescription"
+        ).value.trim();
+
+
+    const instructions =
+        document.getElementById(
+            "jobInstructions"
+        ).value.trim();
+
+
+    if(!reward || reward <= 0){
+
+        message.textContent =
+            "Please enter a valid reward.";
+
+        return;
+
+    }
+
+
+    if(!workers || workers <= 0){
+
+        message.textContent =
+            "Please enter a valid number of workers.";
+
+        return;
+
+    }
+
+
+    if(!deadline){
+
+        message.textContent =
+            "Please select a deadline.";
+
+        return;
+
+    }
+
+
+    if(
+        new Date(deadline) <
+        new Date(today)
+    ){
+
+        message.textContent =
+            "Deadline cannot be in the past.";
+
+        return;
+
+    }
+
+
+    const workerCost =
+        reward * workers;
+
+
+    const platformFee =
+        workerCost * 0.05;
+
+
+    const totalBudget =
+        workerCost +
+        platformFee;
+
+
+    const countries =
+        Array
+        .from(
+            document.getElementById(
+                "countries"
+            ).selectedOptions
+        )
+        .map(
+            option => option.value
+        );
+
+
+    const jobData = {
+
+        title: title,
+
+        description: description,
+
+        instructions: instructions,
+
+        category: selectedCategory,
+
+        subcategory:
+            selectedSubcategory,
+
+        location_type:
+            selectedLocation,
+
+        countries:
+            countries,
+
+        reward_per_worker:
+            reward,
+
+        workers:
+            workers,
+
+        worker_cost:
+            workerCost,
+
+        platform_fee:
+            platformFee,
+
+        total_budget:
+            totalBudget,
+
+        deadline:
+            deadline,
+
+        proofs:
+            proofs,
+
+        status:
+            "published"
+
+    };
+
+
+    const button =
+        document.getElementById(
+            "publishButton"
+        );
+
+
+    button.disabled = true;
+
+    button.textContent =
+        "Publishing...";
+
+
+    /*
+     * SUPABASE NOT CONNECTED
+     */
+
+    if(!supabaseClient){
+
+        console.log(
+            "Job Data:",
+            jobData
+        );
+
+
+        localStorage.setItem(
+            "lastEarnTaskJob",
+            JSON.stringify(jobData)
+        );
+
+
+        message.style.color =
+            "#16a34a";
+
+
+        message.innerHTML = `
+            ✅ Job information is ready.
+            <br>
+            Supabase URL এবং Publishable Key বসানোর পর
+            এই Job database-এ save হবে।
+        `;
+
+
+        button.disabled = false;
+
+        button.textContent =
+            "Publish Job →";
+
+        return;
+
+    }
+
+
+    /*
+     * GET CURRENT USER
+     */
+
+    const {
+        data: userData,
+        error: userError
+    } =
+        await supabaseClient
+        .auth
+        .getUser();
+
+
+    if(userError){
+
+        message.textContent =
+            userError.message;
+
+        button.disabled = false;
+
+        button.textContent =
+            "Publish Job →";
+
+        return;
+
+    }
+
+
+    if(!userData.user){
+
+        message.textContent =
+            "Please login first before publishing a job.";
+
+        button.disabled = false;
+
+        button.textContent =
+            "Publish Job →";
+
+        return;
+
+    }
+
+
+    /*
+     * SAVE JOB
+     */
+
+    const insertData = {
+
+        employer_id:
+            userData.user.id,
+
+        title:
+            title,
+
+        description:
+            description,
+
+        instructions:
+            instructions,
+
+        category:
+            selectedCategory,
+
+        subcategory:
+            selectedSubcategory,
+
+        location_type:
+            selectedLocation,
+
+        countries:
+            countries,
+
+        reward_per_worker:
+            reward,
+
+        workers:
+            workers,
+
+        worker_cost:
+            workerCost,
+
+        platform_fee:
+            platformFee,
+
+        total_budget:
+            totalBudget,
+
+        deadline:
+            deadline,
+
+        proofs:
+            proofs,
+
+        status:
+            "published"
+
+    };
+
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+        .from("jobs")
+        .insert([
+            insertData
+        ])
+        .select();
+
+
+    if(error){
+
+        console.error(
+            error
+        );
+
+
+        message.textContent =
+            "Publish failed: " +
+            error.message;
+
+
+        button.disabled = false;
+
+        button.textContent =
+            "Publish Job →";
+
+        return;
+
+    }
+
+
+    message.style.color =
+        "#16a34a";
+
+
+    message.innerHTML = `
+        ✅ Job Published Successfully!
+        <br>
+        Your job has been added to EarnTask.
+    `;
+
+
+    button.textContent =
+        "Published ✓";
+
+
+    /*
+     * OPTIONAL REDIRECT
+     */
+
+    setTimeout(
+        function(){
+
+            window.location.href =
+                "employer-dashboard.html";
+
+        },
+        1800
+    );
+
+}
+
+
+/* =========================================
+   INITIAL PROOF
+========================================= */
+
+addProof(
+    "screenshot",
+    "Upload screenshot"
+);
+
+
+/* =========================================
+   INITIAL BUDGET
+========================================= */
+
+updateBudgetSummary();
+
+
+/* =========================================
+   INITIAL STEP
+========================================= */
+
+showStep(1);
+
+</script>
+
+</body>
+</html>
