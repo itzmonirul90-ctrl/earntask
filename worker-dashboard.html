@@ -1,233 +1,661 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
 
 <title>Worker Dashboard - EarnTask</title>
 
+
 <style>
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+
+/* =========================================
+   RESET
+========================================= */
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
 }
 
-body {
-    font-family: Arial, sans-serif;
-    background: #f8fafc;
-    color: #172033;
+
+/* =========================================
+   BODY
+========================================= */
+
+body{
+    font-family:Arial,sans-serif;
+    background:#f8fafc;
+    color:#172033;
 }
 
-.sidebar {
-    position: fixed;
-    left: 0;
-    top: 0;
-    width: 240px;
-    height: 100vh;
-    background: #111827;
-    color: white;
-    padding: 25px 15px;
+
+/* =========================================
+   SIDEBAR
+========================================= */
+
+.sidebar{
+    position:fixed;
+    left:0;
+    top:0;
+
+    width:240px;
+    height:100vh;
+
+    background:#111827;
+    color:white;
+
+    padding:25px 15px;
+
+    z-index:1000;
 }
 
-.logo {
-    font-size: 27px;
-    font-weight: 800;
-    text-align: center;
-    margin-bottom: 35px;
+
+.logo{
+    font-size:27px;
+    font-weight:800;
+
+    text-align:center;
+
+    margin-bottom:35px;
 }
 
-.logo span {
-    color: #22c55e;
+
+.logo span{
+    color:#22c55e;
 }
 
-.sidebar a {
-    display: block;
-    color: #d1d5db;
-    text-decoration: none;
-    padding: 13px 15px;
-    margin-bottom: 7px;
-    border-radius: 8px;
+
+.sidebar a{
+    display:block;
+
+    color:#d1d5db;
+
+    text-decoration:none;
+
+    padding:13px 15px;
+
+    margin-bottom:7px;
+
+    border-radius:8px;
+
+    transition:.2s;
 }
+
 
 .sidebar a:hover,
-.sidebar a.active {
-    background: #16a34a;
-    color: white;
+.sidebar a.active{
+    background:#16a34a;
+    color:white;
 }
 
-.logout {
-    position: absolute;
-    bottom: 25px;
-    left: 15px;
-    right: 15px;
-    background: #dc2626 !important;
-    text-align: center;
+
+.logout{
+    position:absolute;
+
+    bottom:25px;
+
+    left:15px;
+    right:15px;
+
+    background:#dc2626 !important;
+
+    text-align:center;
 }
 
-.main {
-    margin-left: 240px;
-    padding: 30px;
+
+/* =========================================
+   MAIN
+========================================= */
+
+.main{
+    margin-left:240px;
+
+    padding:30px;
+
+    min-height:100vh;
 }
 
-.topbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 30px;
+
+/* =========================================
+   TOPBAR
+========================================= */
+
+.topbar{
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:30px;
 }
 
-.topbar h1 {
-    font-size: 30px;
+
+.topbar h1{
+    font-size:30px;
 }
 
-.user-name {
-    background: white;
-    padding: 10px 18px;
-    border-radius: 10px;
-    box-shadow: 0 3px 15px rgba(0,0,0,.05);
+
+.user-name{
+    background:white;
+
+    padding:10px 18px;
+
+    border-radius:10px;
+
+    box-shadow:
+        0 3px 15px rgba(0,0,0,.05);
 }
 
-.cards {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
-    margin-bottom: 35px;
+
+/* =========================================
+   DASHBOARD CARDS
+========================================= */
+
+.cards{
+    display:grid;
+
+    grid-template-columns:
+        repeat(4,1fr);
+
+    gap:20px;
+
+    margin-bottom:35px;
 }
 
-.card {
-    background: white;
-    padding: 25px;
-    border-radius: 14px;
-    box-shadow: 0 5px 20px rgba(0,0,0,.05);
+
+.card{
+    background:white;
+
+    padding:25px;
+
+    border-radius:14px;
+
+    box-shadow:
+        0 5px 20px rgba(0,0,0,.05);
 }
 
-.card .icon {
-    font-size: 30px;
-    margin-bottom: 12px;
+
+.card .icon{
+    font-size:30px;
+
+    margin-bottom:12px;
 }
 
-.card h3 {
-    color: #64748b;
-    font-size: 14px;
-    margin-bottom: 8px;
+
+.card h3{
+    color:#64748b;
+
+    font-size:14px;
+
+    margin-bottom:8px;
 }
 
-.card .number {
-    font-size: 27px;
-    font-weight: 800;
+
+.card .number{
+    font-size:27px;
+
+    font-weight:800;
 }
 
-.section {
-    background: white;
-    padding: 25px;
-    border-radius: 14px;
-    margin-bottom: 25px;
-    box-shadow: 0 5px 20px rgba(0,0,0,.05);
+
+/* =========================================
+   SECTION
+========================================= */
+
+.section{
+    background:white;
+
+    padding:25px;
+
+    border-radius:14px;
+
+    margin-bottom:25px;
+
+    box-shadow:
+        0 5px 20px rgba(0,0,0,.05);
 }
 
-.section h2 {
-    margin-bottom: 20px;
+
+.section h2{
+    margin-bottom:20px;
 }
 
-.job {
-    border: 1px solid #e5e7eb;
-    border-radius: 10px;
-    padding: 18px;
-    margin-bottom: 12px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+
+/* =========================================
+   JOB CARD
+========================================= */
+
+.job{
+    border:1px solid #e5e7eb;
+
+    border-radius:12px;
+
+    padding:20px;
+
+    margin-bottom:15px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    gap:20px;
+
+    align-items:center;
+
+    transition:.2s;
 }
 
-.job-info h3 {
-    margin-bottom: 7px;
+
+.job:hover{
+    border-color:#22c55e;
+
+    box-shadow:
+        0 4px 15px rgba(0,0,0,.05);
 }
 
-.job-info p {
-    color: #64748b;
-    font-size: 14px;
+
+.job-info{
+    flex:1;
 }
 
-.reward {
-    color: #16a34a;
-    font-weight: 800;
-    margin-bottom: 8px;
+
+.job-info h3{
+    margin-bottom:8px;
+
+    font-size:18px;
 }
 
-.view-btn {
-    display: inline-block;
-    background: #16a34a;
-    color: white;
-    text-decoration: none;
-    padding: 9px 15px;
-    border-radius: 7px;
-    font-size: 14px;
+
+.job-info p{
+    color:#64748b;
+
+    font-size:14px;
+
+    margin:4px 0;
 }
 
-.loading {
-    color: #64748b;
+
+/* =========================================
+   JOB META
+========================================= */
+
+.job-category{
+    display:inline-block;
+
+    background:#eff6ff;
+
+    color:#2563eb;
+
+    padding:5px 9px;
+
+    border-radius:6px;
+
+    font-size:12px;
+
+    font-weight:600;
+
+    margin-bottom:8px;
 }
 
-.error {
-    color: #dc2626;
+
+.job-subcategory{
+    display:inline-block;
+
+    background:#f0fdf4;
+
+    color:#16a34a;
+
+    padding:5px 9px;
+
+    border-radius:6px;
+
+    font-size:12px;
+
+    font-weight:600;
+
+    margin-left:5px;
+
+    margin-bottom:8px;
 }
 
-@media (max-width: 900px) {
 
-    .sidebar {
-        width: 200px;
+/* =========================================
+   JOB DETAILS
+========================================= */
+
+.job-meta{
+    display:flex;
+
+    flex-wrap:wrap;
+
+    gap:8px;
+
+    margin-top:10px;
+}
+
+
+.meta-item{
+    background:#f8fafc;
+
+    border:1px solid #e5e7eb;
+
+    padding:7px 10px;
+
+    border-radius:7px;
+
+    font-size:13px;
+
+    color:#475569;
+}
+
+
+/* =========================================
+   REWARD
+========================================= */
+
+.job-right{
+    min-width:150px;
+
+    text-align:right;
+}
+
+
+.reward{
+    color:#16a34a;
+
+    font-size:20px;
+
+    font-weight:800;
+
+    margin-bottom:10px;
+}
+
+
+.reward-label{
+    font-size:12px;
+
+    color:#64748b;
+
+    margin-bottom:3px;
+}
+
+
+/* =========================================
+   BUTTON
+========================================= */
+
+.view-btn{
+    display:inline-block;
+
+    background:#16a34a;
+
+    color:white;
+
+    text-decoration:none;
+
+    padding:10px 17px;
+
+    border-radius:8px;
+
+    font-size:14px;
+
+    font-weight:600;
+
+    transition:.2s;
+}
+
+
+.view-btn:hover{
+    background:#15803d;
+}
+
+
+/* =========================================
+   EMPTY
+========================================= */
+
+.loading{
+    color:#64748b;
+
+    padding:20px 0;
+}
+
+
+.error{
+    color:#dc2626;
+
+    background:#fef2f2;
+
+    border:1px solid #fecaca;
+
+    padding:12px;
+
+    border-radius:8px;
+}
+
+
+.empty{
+    text-align:center;
+
+    padding:35px 20px;
+
+    color:#64748b;
+}
+
+
+.empty-icon{
+    font-size:45px;
+
+    margin-bottom:10px;
+}
+
+
+/* =========================================
+   PROFILE
+========================================= */
+
+.profile-row{
+    display:flex;
+
+    justify-content:space-between;
+
+    padding:13px 0;
+
+    border-bottom:1px solid #e5e7eb;
+}
+
+
+.profile-row:last-child{
+    border-bottom:none;
+}
+
+
+.profile-label{
+    color:#64748b;
+}
+
+
+.profile-value{
+    font-weight:600;
+}
+
+
+/* =========================================
+   SUBMISSION STATUS
+========================================= */
+
+.status{
+    display:inline-block;
+
+    padding:6px 10px;
+
+    border-radius:6px;
+
+    font-size:12px;
+
+    font-weight:700;
+
+    text-transform:capitalize;
+}
+
+
+.status.pending{
+    background:#fef3c7;
+
+    color:#92400e;
+}
+
+
+.status.approved{
+    background:#dcfce7;
+
+    color:#166534;
+}
+
+
+.status.rejected{
+    background:#fee2e2;
+
+    color:#991b1b;
+}
+
+
+.status.completed{
+    background:#dbeafe;
+
+    color:#1e40af;
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media(max-width:1000px){
+
+    .cards{
+        grid-template-columns:
+            repeat(2,1fr);
     }
 
-    .main {
-        margin-left: 200px;
-    }
-
-    .cards {
-        grid-template-columns: repeat(2, 1fr);
-    }
 }
 
-@media (max-width: 650px) {
 
-    .sidebar {
-        position: relative;
-        width: 100%;
-        height: auto;
+@media(max-width:700px){
+
+    .sidebar{
+        position:relative;
+
+        width:100%;
+
+        height:auto;
+
+        padding:15px;
     }
 
-    .sidebar a {
-        display: inline-block;
+
+    .logo{
+        margin-bottom:15px;
     }
 
-    .logout {
-        position: relative;
-        left: auto;
-        right: auto;
-        bottom: auto;
+
+    .sidebar a{
+        display:inline-block;
+
+        margin-right:5px;
+
+        padding:10px;
     }
 
-    .main {
-        margin-left: 0;
-        padding: 20px;
+
+    .logout{
+        position:relative;
+
+        left:auto;
+        right:auto;
+        bottom:auto;
+
+        display:block !important;
+
+        margin-top:10px;
     }
 
-    .cards {
-        grid-template-columns: 1fr;
+
+    .main{
+        margin-left:0;
+
+        padding:20px;
     }
 
-    .job {
-        display: block;
+
+    .topbar{
+        display:block;
     }
 
-    .view-btn {
-        margin-top: 12px;
+
+    .topbar h1{
+        font-size:24px;
+
+        margin-bottom:15px;
     }
+
+
+    .cards{
+        grid-template-columns:1fr;
+    }
+
+
+    .job{
+        display:block;
+    }
+
+
+    .job-right{
+        text-align:left;
+
+        margin-top:15px;
+    }
+
+
+    .view-btn{
+        margin-top:5px;
+    }
+
+
+    .profile-row{
+        display:block;
+    }
+
+
+    .profile-value{
+        display:block;
+
+        margin-top:5px;
+    }
+
 }
+
 </style>
+
 </head>
 
+
 <body>
+
+
+<!-- =========================================
+     SIDEBAR
+========================================= -->
 
 <aside class="sidebar">
 
@@ -235,98 +663,162 @@ body {
         Earn<span>Task</span>
     </div>
 
-    <a href="worker-dashboard.html" class="active">
+
+    <a
+        href="worker-dashboard.html"
+        class="active"
+    >
         🏠 Dashboard
     </a>
+
 
     <a href="#jobs">
         💼 Available Jobs
     </a>
 
+
     <a href="#submissions">
         📤 My Submissions
     </a>
+
 
     <a href="#earnings">
         💰 Earnings
     </a>
 
+
     <a href="#withdraw">
         💸 Withdraw
     </a>
+
 
     <a href="#profile">
         👤 Profile
     </a>
 
-    <a href="#" class="logout" id="logoutBtn">
+
+    <a
+        href="#"
+        class="logout"
+        id="logoutBtn"
+    >
         🚪 Logout
     </a>
 
 </aside>
 
 
+<!-- =========================================
+     MAIN
+========================================= -->
+
 <main class="main">
+
+
+    <!-- TOPBAR -->
 
     <div class="topbar">
 
-        <h1>Worker Dashboard</h1>
+        <h1>
+            Worker Dashboard
+        </h1>
 
-        <div class="user-name" id="userName">
+
+        <div
+            class="user-name"
+            id="userName"
+        >
             Loading...
         </div>
 
     </div>
 
 
+
+    <!-- =====================================
+         CARDS
+    ====================================== -->
+
     <div class="cards">
 
+
         <div class="card">
 
-            <div class="icon">💰</div>
+            <div class="icon">
+                💰
+            </div>
 
-            <h3>Available Balance</h3>
+            <h3>
+                Available Balance
+            </h3>
 
-            <div class="number" id="balance">
+            <div
+                class="number"
+                id="balance"
+            >
                 $0.00
             </div>
 
         </div>
 
 
+
         <div class="card">
 
-            <div class="icon">⏳</div>
+            <div class="icon">
+                ⏳
+            </div>
 
-            <h3>Pending Balance</h3>
+            <h3>
+                Pending Balance
+            </h3>
 
-            <div class="number" id="pendingBalance">
+            <div
+                class="number"
+                id="pendingBalance"
+            >
                 $0.00
             </div>
 
         </div>
 
 
+
         <div class="card">
 
-            <div class="icon">🏆</div>
+            <div class="icon">
+                🏆
+            </div>
 
-            <h3>Total Earned</h3>
+            <h3>
+                Total Earned
+            </h3>
 
-            <div class="number" id="totalEarned">
+            <div
+                class="number"
+                id="totalEarned"
+            >
                 $0.00
             </div>
 
         </div>
 
 
+
         <div class="card">
 
-            <div class="icon">✅</div>
+            <div class="icon">
+                ✅
+            </div>
 
-            <h3>Completed Jobs</h3>
+            <h3>
+                Completed Jobs
+            </h3>
 
-            <div class="number" id="completedJobs">
+            <div
+                class="number"
+                id="completedJobs"
+            >
                 0
             </div>
 
@@ -335,9 +827,20 @@ body {
     </div>
 
 
-    <section class="section" id="jobs">
 
-        <h2>Available Jobs</h2>
+    <!-- =====================================
+         AVAILABLE JOBS
+    ====================================== -->
+
+    <section
+        class="section"
+        id="jobs"
+    >
+
+        <h2>
+            💼 Available Jobs
+        </h2>
+
 
         <div id="jobsList">
 
@@ -350,9 +853,20 @@ body {
     </section>
 
 
-    <section class="section" id="submissions">
 
-        <h2>My Recent Submissions</h2>
+    <!-- =====================================
+         SUBMISSIONS
+    ====================================== -->
+
+    <section
+        class="section"
+        id="submissions"
+    >
+
+        <h2>
+            📤 My Recent Submissions
+        </h2>
+
 
         <div id="submissionsList">
 
@@ -365,401 +879,1094 @@ body {
     </section>
 
 
-    <section class="section" id="profile">
 
-        <h2>My Profile</h2>
+    <!-- =====================================
+         PROFILE
+    ====================================== -->
 
-        <p>
-            <strong>Name:</strong>
-            <span id="profileName">Loading...</span>
-        </p>
+    <section
+        class="section"
+        id="profile"
+    >
 
-        <br>
+        <h2>
+            👤 My Profile
+        </h2>
 
-        <p>
-            <strong>Username:</strong>
-            <span id="profileUsername">Loading...</span>
-        </p>
 
-        <br>
+        <div class="profile-row">
 
-        <p>
-            <strong>Role:</strong>
-            <span id="profileRole">Loading...</span>
-        </p>
+            <span class="profile-label">
+                Name
+            </span>
 
-        <br>
+            <span
+                class="profile-value"
+                id="profileName"
+            >
+                Loading...
+            </span>
 
-        <p>
-            <strong>Success Rate:</strong>
-            <span id="successRate">100%</span>
-        </p>
+        </div>
+
+
+        <div class="profile-row">
+
+            <span class="profile-label">
+                Username
+            </span>
+
+            <span
+                class="profile-value"
+                id="profileUsername"
+            >
+                Loading...
+            </span>
+
+        </div>
+
+
+        <div class="profile-row">
+
+            <span class="profile-label">
+                Role
+            </span>
+
+            <span
+                class="profile-value"
+                id="profileRole"
+            >
+                Loading...
+            </span>
+
+        </div>
+
+
+        <div class="profile-row">
+
+            <span class="profile-label">
+                Success Rate
+            </span>
+
+            <span
+                class="profile-value"
+                id="successRate"
+            >
+                100%
+            </span>
+
+        </div>
 
     </section>
+
 
 </main>
 
 
+
+<!-- =========================================
+     JAVASCRIPT
+========================================= -->
+
 <script type="module">
 
-const SUPABASE_URL = "https://rvwboegeisnrhwicvvhj.supabase.co";
 
-const SUPABASE_KEY = "sb_publishable_Kz3hgj9W0khG3JEIclhx2g_HZ6eSyQQ";
+/* =========================================
+   SUPABASE
+========================================= */
+
+const SUPABASE_URL =
+"https://rvwboegeisnrhwicvvhj.supabase.co";
+
+
+const SUPABASE_KEY =
+"sb_publishable_Kz3hgj9W0khG3JEIclhx2g_HZ6eSyQQ";
 
 
 import {
     createClient
-} from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+}
+from
+"https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
 
 
-const supabase = createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
-);
+const supabase =
+    createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
 
 
-async function loadDashboard() {
+
+/* =========================================
+   HTML ESCAPE
+========================================= */
+
+function escapeHtml(value){
+
+    return String(
+        value ?? ""
+    )
+
+    .replace(
+        /&/g,
+        "&amp;"
+    )
+
+    .replace(
+        /</g,
+        "&lt;"
+    )
+
+    .replace(
+        />/g,
+        "&gt;"
+    )
+
+    .replace(
+        /"/g,
+        "&quot;"
+    )
+
+    .replace(
+        /'/g,
+        "&#039;"
+    );
+
+}
+
+
+
+/* =========================================
+   LOAD DASHBOARD
+========================================= */
+
+async function loadDashboard(){
+
 
     /*
-     * Check logged-in user
+     * GET LOGGED-IN USER
      */
 
     const {
-        data: {
+        data:{
             user
-        }
-    } = await supabase.auth.getUser();
+        },
+        error:userError
+    } =
+    await supabase
+        .auth
+        .getUser();
 
 
-    if (!user) {
+    if(
+        userError ||
+        !user
+    ){
 
-        window.location.href = "login.html";
+        window.location.href =
+            "login.html";
 
         return;
 
     }
 
 
+
     /*
-     * Get profile
+     * GET PROFILE
      */
 
     const {
-        data: profile,
-        error: profileError
-    } = await supabase
+        data:profile,
+        error:profileError
+    } =
+    await supabase
 
         .from("profiles")
 
         .select("*")
 
-        .eq("id", user.id)
+        .eq(
+            "id",
+            user.id
+        )
 
         .single();
 
 
-    if (profileError) {
 
-        console.error(profileError);
+    if(profileError){
 
-        return;
+        console.error(
+            profileError
+        );
+
+        document.getElementById(
+            "userName"
+        ).textContent =
+            "Worker";
 
     }
 
 
+
     /*
-     * Only workers can access this dashboard.
+     * CHECK ROLE
      */
 
-    if (profile.role !== "worker") {
+    if(profile){
 
-        if (profile.role === "employer") {
+        if(
+            profile.role !==
+            "worker"
+        ){
 
-            window.location.href =
-                "employer-dashboard.html";
+            if(
+                profile.role ===
+                "employer"
+            ){
 
-        } else if (profile.role === "admin") {
+                window.location.href =
+                    "employer-dashboard.html";
 
-            window.location.href =
-                "admin-dashboard.html";
+                return;
+
+            }
+
+
+            if(
+                profile.role ===
+                "admin"
+            ){
+
+                window.location.href =
+                    "admin-dashboard.html";
+
+                return;
+
+            }
 
         }
 
-        return;
+
+
+        /*
+         * PROFILE INFO
+         */
+
+        document.getElementById(
+            "userName"
+        ).textContent =
+
+            profile.full_name ||
+            profile.username ||
+            "Worker";
+
+
+        document.getElementById(
+            "profileName"
+        ).textContent =
+
+            profile.full_name ||
+            "-";
+
+
+        document.getElementById(
+            "profileUsername"
+        ).textContent =
+
+            profile.username ||
+            "-";
+
+
+        document.getElementById(
+            "profileRole"
+        ).textContent =
+
+            profile.role ||
+            "worker";
+
+
+        document.getElementById(
+            "successRate"
+        ).textContent =
+
+            (
+                profile.success_rate ??
+                100
+            ) + "%";
+
+
+        document.getElementById(
+            "completedJobs"
+        ).textContent =
+
+            profile.completed_jobs ??
+            0;
 
     }
 
 
-    /*
-     * Profile information
-     */
-
-    document.getElementById("userName").textContent =
-        profile.full_name || profile.username || "Worker";
-
-
-    document.getElementById("profileName").textContent =
-        profile.full_name || "-";
-
-
-    document.getElementById("profileUsername").textContent =
-        profile.username || "-";
-
-
-    document.getElementById("profileRole").textContent =
-        profile.role;
-
-
-    document.getElementById("successRate").textContent =
-        (profile.success_rate || 100) + "%";
-
 
     /*
-     * Get wallet
+     * GET WALLET
      */
 
     const {
-        data: wallet,
-        error: walletError
-    } = await supabase
+        data:wallet,
+        error:walletError
+    } =
+    await supabase
 
         .from("wallets")
 
         .select("*")
 
-        .eq("user_id", user.id)
+        .eq(
+            "user_id",
+            user.id
+        )
 
-        .single();
-
-
-    if (!walletError && wallet) {
-
-        document.getElementById("balance").textContent =
-            "$" + Number(wallet.balance).toFixed(2);
+        .maybeSingle();
 
 
-        document.getElementById("pendingBalance").textContent =
-            "$" + Number(wallet.pending_balance).toFixed(2);
+
+    if(
+        !walletError &&
+        wallet
+    ){
+
+        document.getElementById(
+            "balance"
+        ).textContent =
+
+            "$" +
+            Number(
+                wallet.balance || 0
+            ).toFixed(2);
 
 
-        document.getElementById("totalEarned").textContent =
-            "$" + Number(wallet.total_earned).toFixed(2);
+        document.getElementById(
+            "pendingBalance"
+        ).textContent =
+
+            "$" +
+            Number(
+                wallet.pending_balance || 0
+            ).toFixed(2);
 
 
-        document.getElementById("completedJobs").textContent =
-            profile.completed_jobs || 0;
+        document.getElementById(
+            "totalEarned"
+        ).textContent =
+
+            "$" +
+            Number(
+                wallet.total_earned || 0
+            ).toFixed(2);
 
     }
 
 
+
     /*
-     * Load available jobs
+     * LOAD AVAILABLE JOBS
+     */
+
+    await loadAvailableJobs();
+
+
+
+    /*
+     * LOAD SUBMISSIONS
+     */
+
+    await loadSubmissions();
+
+}
+
+
+
+/* =========================================
+   LOAD AVAILABLE JOBS
+========================================= */
+
+async function loadAvailableJobs(){
+
+
+    const jobsList =
+        document.getElementById(
+            "jobsList"
+        );
+
+
+    jobsList.innerHTML =
+
+        `
+        <div class="loading">
+            Loading available jobs...
+        </div>
+        `;
+
+
+
+    /*
+     * IMPORTANT:
+     *
+     * We show pending,
+     * approved and active jobs.
+     *
+     * This is for testing.
      */
 
     const {
-        data: jobs,
-        error: jobsError
-    } = await supabase
+        data:jobs,
+        error:jobsError
+    } =
+    await supabase
 
         .from("jobs")
 
         .select("*")
 
-        .in("status", ["approved", "active"])
+        .in(
+            "status",
+            [
+                "pending",
+                "approved",
+                "active"
+            ]
+        )
 
-        .order("created_at", {
-            ascending: false
-        })
+        .order(
+            "created_at",
+            {
+                ascending:false
+            }
+        )
 
-        .limit(10);
+        .limit(50);
 
 
-    const jobsList =
-        document.getElementById("jobsList");
 
+    if(jobsError){
 
-    if (jobsError) {
+        console.error(
+            "Jobs Error:",
+            jobsError
+        );
+
 
         jobsList.innerHTML =
-            '<div class="error">Unable to load jobs.</div>';
 
-    } else if (!jobs || jobs.length === 0) {
+            `
+            <div class="error">
+
+                ❌ Unable to load available jobs.
+
+                <br><br>
+
+                ${escapeHtml(
+                    jobsError.message
+                )}
+
+            </div>
+            `;
+
+        return;
+
+    }
+
+
+
+    if(
+        !jobs ||
+        jobs.length === 0
+    ){
 
         jobsList.innerHTML =
-            '<div class="loading">No jobs available right now.</div>';
 
-    } else {
+            `
+            <div class="empty">
 
-        jobsList.innerHTML = "";
+                <div class="empty-icon">
+                    💼
+                </div>
 
-        jobs.forEach(function(job) {
+                <strong>
+                    No Jobs Available
+                </strong>
+
+                <p style="margin-top:8px;">
+                    There are no available jobs right now.
+                </p>
+
+            </div>
+            `;
+
+        return;
+
+    }
+
+
+
+    jobsList.innerHTML = "";
+
+
+
+    /*
+     * CREATE JOB CARDS
+     */
+
+    jobs.forEach(
+        function(job){
 
             const item =
-                document.createElement("div");
+                document.createElement(
+                    "div"
+                );
 
-            item.className = "job";
 
-            item.innerHTML = `
+            item.className =
+                "job";
+
+
+
+            /*
+             * WORKERS
+             */
+
+            const workersNeeded =
+
+                Number(
+                    job.workers_needed ??
+                    job.workers ??
+                    0
+                );
+
+
+            const workersCompleted =
+
+                Number(
+                    job.workers_completed ??
+                    0
+                );
+
+
+            const remaining =
+
+                Math.max(
+                    workersNeeded -
+                    workersCompleted,
+                    0
+                );
+
+
+
+            /*
+             * REWARD
+             */
+
+            const reward =
+
+                Number(
+                    job.reward ??
+                    job.reward_per_worker ??
+                    0
+                );
+
+
+
+            /*
+             * CATEGORY
+             */
+
+            const category =
+
+                job.category ||
+                "Other";
+
+
+            /*
+             * SUBCATEGORY
+             */
+
+            const subcategory =
+
+                job.subcategory ||
+                "General";
+
+
+
+            /*
+             * DEADLINE
+             */
+
+            let deadlineText =
+                "No deadline";
+
+
+            if(job.deadline){
+
+                const date =
+                    new Date(
+                        job.deadline
+                    );
+
+
+                if(
+                    !isNaN(
+                        date.getTime()
+                    )
+                ){
+
+                    deadlineText =
+                        date.toLocaleDateString();
+
+                }
+
+            }
+
+
+
+            /*
+             * STATUS
+             */
+
+            const status =
+
+                job.status ||
+                "pending";
+
+
+
+            /*
+             * JOB HTML
+             */
+
+            item.innerHTML =
+
+                `
 
                 <div class="job-info">
 
-                    <h3>${escapeHtml(job.title)}</h3>
+                    <div>
+
+                        <span
+                            class="job-category"
+                        >
+                            ${escapeHtml(
+                                category
+                            )}
+                        </span>
+
+
+                        <span
+                            class="job-subcategory"
+                        >
+                            ${escapeHtml(
+                                subcategory
+                            )}
+                        </span>
+
+                    </div>
+
+
+                    <h3>
+                        ${escapeHtml(
+                            job.title ||
+                            "Untitled Job"
+                        )}
+                    </h3>
+
 
                     <p>
-                        ${escapeHtml(job.category)}
-                        •
-                        ${job.workers_completed}/${job.workers_needed}
-                        completed
+
+                        ${escapeHtml(
+                            (
+                                job.description ||
+                                "No description available."
+                            )
+                            .substring(
+                                0,
+                                150
+                            )
+                        )}
+
+                        ${
+                            (
+                                job.description ||
+                                ""
+                            ).length > 150
+                            ? "..."
+                            : ""
+                        }
+
                     </p>
+
+
+                    <div class="job-meta">
+
+                        <span
+                            class="meta-item"
+                        >
+                            👥
+                            ${workersCompleted}
+                            /${workersNeeded}
+                            completed
+                        </span>
+
+
+                        <span
+                            class="meta-item"
+                        >
+                            📌
+                            ${remaining}
+                            available
+                        </span>
+
+
+                        <span
+                            class="meta-item"
+                        >
+                            📅
+                            Deadline:
+                            ${escapeHtml(
+                                deadlineText
+                            )}
+                        </span>
+
+
+                        <span
+                            class="meta-item"
+                        >
+                            🔵
+                            ${escapeHtml(
+                                status
+                            )}
+                        </span>
+
+                    </div>
 
                 </div>
 
-                <div>
+
+
+                <div class="job-right">
+
+                    <div
+                        class="reward-label"
+                    >
+                        Reward per worker
+                    </div>
+
 
                     <div class="reward">
-                        $${Number(job.reward).toFixed(2)}
+
+                        $${reward.toFixed(2)}
+
                     </div>
+
 
                     <a
                         class="view-btn"
-                        href="job.html?id=${encodeURIComponent(job.id)}"
+                        href="job.html?id=${encodeURIComponent(
+                            job.id
+                        )}"
                     >
-                        View Job
+                        View Job →
                     </a>
 
                 </div>
 
-            `;
+                `;
 
-            jobsList.appendChild(item);
 
-        });
+            jobsList.appendChild(
+                item
+            );
+
+        }
+    );
+
+}
+
+
+
+/* =========================================
+   LOAD SUBMISSIONS
+========================================= */
+
+async function loadSubmissions(){
+
+
+    const submissionsList =
+        document.getElementById(
+            "submissionsList"
+        );
+
+
+    submissionsList.innerHTML =
+
+        `
+        <div class="loading">
+            Loading submissions...
+        </div>
+        `;
+
+
+
+    const {
+        data:{
+            user
+        }
+    } =
+    await supabase
+        .auth
+        .getUser();
+
+
+
+    if(!user){
+
+        return;
 
     }
 
 
-    /*
-     * Load worker submissions
-     */
 
     const {
-        data: submissions,
-        error: submissionsError
-    } = await supabase
+        data:submissions,
+        error:submissionsError
+    } =
+    await supabase
 
         .from("job_submissions")
 
-        .select("*, jobs(title)")
+        .select(
+            "*, jobs(title)"
+        )
 
-        .eq("worker_id", user.id)
+        .eq(
+            "worker_id",
+            user.id
+        )
 
-        .order("submitted_at", {
-            ascending: false
-        })
+        .order(
+            "submitted_at",
+            {
+                ascending:false
+            }
+        )
 
-        .limit(5);
+        .limit(10);
 
 
-    const submissionsList =
-        document.getElementById("submissionsList");
 
+    if(submissionsError){
 
-    if (submissionsError) {
+        console.error(
+            "Submission Error:",
+            submissionsError
+        );
+
 
         submissionsList.innerHTML =
-            '<div class="error">Unable to load submissions.</div>';
 
-    } else if (!submissions || submissions.length === 0) {
+            `
+            <div class="error">
+
+                Unable to load submissions.
+
+            </div>
+            `;
+
+        return;
+
+    }
+
+
+
+    if(
+        !submissions ||
+        submissions.length === 0
+    ){
 
         submissionsList.innerHTML =
-            '<div class="loading">No submissions yet.</div>';
 
-    } else {
+            `
+            <div class="empty">
 
-        submissionsList.innerHTML = "";
+                <div class="empty-icon">
+                    📤
+                </div>
 
-        submissions.forEach(function(item) {
+                <strong>
+                    No Submissions Yet
+                </strong>
+
+                <p style="margin-top:8px;">
+                    Your submitted jobs will appear here.
+                </p>
+
+            </div>
+            `;
+
+        return;
+
+    }
+
+
+
+    submissionsList.innerHTML = "";
+
+
+
+    submissions.forEach(
+        function(item){
 
             const row =
-                document.createElement("div");
+                document.createElement(
+                    "div"
+                );
 
-            row.className = "job";
+
+            row.className =
+                "job";
+
+
 
             const title =
-                item.jobs
-                    ? item.jobs.title
-                    : "Job";
+
+                item.jobs?.title ||
+                "Job";
 
 
-            row.innerHTML = `
+            const status =
+
+                item.status ||
+                "pending";
+
+
+            let submittedDate =
+                "-";
+
+
+            if(
+                item.submitted_at
+            ){
+
+                const date =
+                    new Date(
+                        item.submitted_at
+                    );
+
+
+                if(
+                    !isNaN(
+                        date.getTime()
+                    )
+                ){
+
+                    submittedDate =
+                        date.toLocaleDateString();
+
+                }
+
+            }
+
+
+
+            row.innerHTML =
+
+                `
 
                 <div class="job-info">
 
-                    <h3>${escapeHtml(title)}</h3>
+                    <h3>
+                        ${escapeHtml(
+                            title
+                        )}
+                    </h3>
+
 
                     <p>
                         Submitted:
-                        ${new Date(item.submitted_at)
-                            .toLocaleDateString()}
+                        ${escapeHtml(
+                            submittedDate
+                        )}
                     </p>
 
                 </div>
 
+
                 <div>
 
-                    <strong>
-                        ${escapeHtml(item.status)}
-                    </strong>
+                    <span
+                        class="status ${escapeHtml(
+                            status
+                        )}"
+                    >
+                        ${escapeHtml(
+                            status
+                        )}
+                    </span>
 
                 </div>
 
-            `;
-
-            submissionsList.appendChild(row);
-
-        });
-
-    }
-
-}
+                `;
 
 
-/*
- * Simple HTML escaping
- */
+            submissionsList.appendChild(
+                row
+            );
 
-function escapeHtml(value) {
-
-    return String(value ?? "")
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+        }
+    );
 
 }
 
 
-/*
- * Logout
- */
+
+/* =========================================
+   LOGOUT
+========================================= */
 
 document
-    .getElementById("logoutBtn")
-    .addEventListener("click", async function(event) {
+    .getElementById(
+        "logoutBtn"
+    )
+    .addEventListener(
+        "click",
+        async function(event){
 
-        event.preventDefault();
+            event.preventDefault();
 
-        await supabase.auth.signOut();
 
-        window.location.href = "login.html";
+            await supabase
+                .auth
+                .signOut();
 
-    });
 
+            window.location.href =
+                "login.html";
+
+        }
+    );
+
+
+
+/* =========================================
+   START DASHBOARD
+========================================= */
 
 loadDashboard();
+
 
 </script>
 
 </body>
+
 </html>
+```
