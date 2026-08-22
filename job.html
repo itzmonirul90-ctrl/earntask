@@ -1,0 +1,1132 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>Job Details - EarnTask</title>
+
+
+<style>
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+
+body{
+    font-family:Arial,sans-serif;
+    background:#f8fafc;
+    color:#172033;
+}
+
+
+.header{
+    background:#111827;
+    color:white;
+
+    padding:18px 30px;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+
+.logo{
+    font-size:25px;
+    font-weight:800;
+}
+
+
+.logo span{
+    color:#22c55e;
+}
+
+
+.back-btn{
+    color:white;
+    text-decoration:none;
+
+    background:#374151;
+
+    padding:9px 15px;
+
+    border-radius:7px;
+
+    font-size:14px;
+}
+
+
+.back-btn:hover{
+    background:#4b5563;
+}
+
+
+.container{
+    max-width:900px;
+
+    margin:30px auto;
+
+    padding:0 20px;
+}
+
+
+.card{
+    background:white;
+
+    border-radius:14px;
+
+    padding:30px;
+
+    box-shadow:
+        0 5px 20px rgba(0,0,0,.06);
+
+    margin-bottom:20px;
+}
+
+
+.loading{
+    text-align:center;
+
+    padding:50px;
+
+    color:#64748b;
+}
+
+
+.error{
+    background:#fef2f2;
+
+    border:1px solid #fecaca;
+
+    color:#b91c1c;
+
+    padding:15px;
+
+    border-radius:8px;
+}
+
+
+.badges{
+    margin-bottom:15px;
+}
+
+
+.badge{
+    display:inline-block;
+
+    padding:6px 10px;
+
+    border-radius:6px;
+
+    font-size:12px;
+
+    font-weight:700;
+
+    margin-right:5px;
+}
+
+
+.category{
+    background:#eff6ff;
+    color:#2563eb;
+}
+
+
+.subcategory{
+    background:#f0fdf4;
+    color:#15803d;
+}
+
+
+.status{
+    background:#fef3c7;
+    color:#92400e;
+}
+
+
+h1{
+    font-size:30px;
+
+    margin-bottom:20px;
+}
+
+
+.description{
+    color:#475569;
+
+    line-height:1.7;
+
+    white-space:pre-wrap;
+}
+
+
+.info-grid{
+    display:grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap:15px;
+
+    margin-top:25px;
+}
+
+
+.info{
+    background:#f8fafc;
+
+    border:1px solid #e5e7eb;
+
+    padding:16px;
+
+    border-radius:9px;
+}
+
+
+.info-label{
+    color:#64748b;
+
+    font-size:12px;
+
+    margin-bottom:6px;
+}
+
+
+.info-value{
+    font-weight:800;
+
+    font-size:17px;
+}
+
+
+.reward{
+    color:#16a34a;
+}
+
+
+.section-title{
+    font-size:20px;
+
+    margin-bottom:12px;
+}
+
+
+.instructions{
+    background:#f8fafc;
+
+    border:1px solid #e5e7eb;
+
+    padding:18px;
+
+    border-radius:9px;
+
+    line-height:1.7;
+
+    white-space:pre-wrap;
+}
+
+
+.proof-list{
+    padding-left:20px;
+}
+
+
+.proof-list li{
+    margin-bottom:8px;
+}
+
+
+.start-area{
+    text-align:center;
+
+    padding-top:10px;
+}
+
+
+.start-btn{
+    border:none;
+
+    background:#16a34a;
+
+    color:white;
+
+    padding:13px 30px;
+
+    border-radius:8px;
+
+    font-size:16px;
+
+    font-weight:700;
+
+    cursor:pointer;
+}
+
+
+.start-btn:hover{
+    background:#15803d;
+}
+
+
+.start-btn:disabled{
+    background:#94a3b8;
+
+    cursor:not-allowed;
+}
+
+
+.message{
+    margin-top:15px;
+
+    font-size:14px;
+}
+
+
+.success{
+    color:#15803d;
+}
+
+
+.warning{
+    color:#b45309;
+}
+
+
+@media(max-width:700px){
+
+    .header{
+        padding:15px;
+
+        gap:10px;
+    }
+
+
+    .container{
+        margin-top:20px;
+
+        padding:0 12px;
+    }
+
+
+    .card{
+        padding:20px;
+    }
+
+
+    h1{
+        font-size:24px;
+    }
+
+
+    .info-grid{
+        grid-template-columns:1fr;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<header class="header">
+
+    <div class="logo">
+        Earn<span>Task</span>
+    </div>
+
+
+    <a
+        href="worker-dashboard.html#jobs"
+        class="back-btn"
+    >
+        ← Back to Jobs
+    </a>
+
+</header>
+
+
+
+<main class="container">
+
+
+    <!-- JOB DETAILS -->
+
+    <div
+        class="card"
+        id="jobCard"
+    >
+
+        <div class="loading">
+            Loading job...
+        </div>
+
+    </div>
+
+
+
+    <!-- INSTRUCTIONS -->
+
+    <div
+        class="card"
+        id="instructionsCard"
+        style="display:none;"
+    >
+
+        <h2 class="section-title">
+            📋 Instructions
+        </h2>
+
+
+        <div
+            class="instructions"
+            id="instructions"
+        ></div>
+
+    </div>
+
+
+
+    <!-- PROOF REQUIREMENTS -->
+
+    <div
+        class="card"
+        id="proofCard"
+        style="display:none;"
+    >
+
+        <h2 class="section-title">
+            📝 Proof Requirements
+        </h2>
+
+
+        <div id="proofRequirements"></div>
+
+    </div>
+
+
+
+    <!-- START JOB -->
+
+    <div
+        class="card"
+        id="startCard"
+        style="display:none;"
+    >
+
+        <div class="start-area">
+
+            <button
+                class="start-btn"
+                id="startBtn"
+            >
+                🚀 Start Job
+            </button>
+
+
+            <div
+                class="message"
+                id="startMessage"
+            ></div>
+
+        </div>
+
+    </div>
+
+</main>
+
+
+
+<script type="module">
+
+
+/* =========================================
+   SUPABASE
+========================================= */
+
+const SUPABASE_URL =
+"https://rvwboegeisnrhwicvvhj.supabase.co";
+
+
+const SUPABASE_KEY =
+"sb_publishable_Kz3hgj9W0khG3JEIclhx2g_HZ6eSyQQ";
+
+
+import {
+    createClient
+}
+from
+"https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+
+
+const supabase =
+    createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
+
+
+
+/* =========================================
+   ESCAPE HTML
+========================================= */
+
+function escapeHtml(value){
+
+    return String(
+        value ?? ""
+    )
+
+    .replace(
+        /&/g,
+        "&amp;"
+    )
+
+    .replace(
+        /</g,
+        "&lt;"
+    )
+
+    .replace(
+        />/g,
+        "&gt;"
+    )
+
+    .replace(
+        /"/g,
+        "&quot;"
+    )
+
+    .replace(
+        /'/g,
+        "&#039;"
+    );
+
+}
+
+
+
+/* =========================================
+   GET JOB ID
+========================================= */
+
+const params =
+    new URLSearchParams(
+        window.location.search
+    );
+
+
+const jobId =
+    params.get("id");
+
+
+
+/* =========================================
+   LOAD JOB
+========================================= */
+
+async function loadJob(){
+
+
+    const jobCard =
+        document.getElementById(
+            "jobCard"
+        );
+
+
+    if(!jobId){
+
+        jobCard.innerHTML =
+
+            `
+            <div class="error">
+                Job ID was not provided.
+            </div>
+            `;
+
+        return;
+
+    }
+
+
+
+    /*
+     * CHECK USER
+     */
+
+    const {
+        data:{
+            user
+        }
+    } =
+    await supabase
+        .auth
+        .getUser();
+
+
+    if(!user){
+
+        window.location.href =
+            "login.html";
+
+        return;
+
+    }
+
+
+
+    /*
+     * GET JOB
+     */
+
+    const {
+        data:job,
+        error
+    } =
+    await supabase
+
+        .from("jobs")
+
+        .select("*")
+
+        .eq(
+            "id",
+            jobId
+        )
+
+        .single();
+
+
+
+    if(error){
+
+        console.error(
+            error
+        );
+
+
+        jobCard.innerHTML =
+
+            `
+            <div class="error">
+
+                Unable to load this job.
+
+                <br><br>
+
+                ${escapeHtml(
+                    error.message
+                )}
+
+            </div>
+            `;
+
+        return;
+
+    }
+
+
+
+    if(!job){
+
+        jobCard.innerHTML =
+
+            `
+            <div class="error">
+                Job not found.
+            </div>
+            `;
+
+        return;
+
+    }
+
+
+
+    /*
+     * JOB DATA
+     */
+
+    const reward =
+
+        Number(
+            job.reward ??
+            job.reward_per_worker ??
+            0
+        );
+
+
+    const workersNeeded =
+
+        Number(
+            job.workers_needed ??
+            job.workers ??
+            0
+        );
+
+
+    const workersCompleted =
+
+        Number(
+            job.workers_completed ??
+            0
+        );
+
+
+    const remaining =
+
+        Math.max(
+            workersNeeded -
+            workersCompleted,
+            0
+        );
+
+
+
+    let deadline =
+        "No deadline";
+
+
+    if(job.deadline){
+
+        const date =
+            new Date(
+                job.deadline
+            );
+
+
+        if(
+            !isNaN(
+                date.getTime()
+            )
+        ){
+
+            deadline =
+                date.toLocaleDateString();
+
+        }
+
+    }
+
+
+
+    /*
+     * DISPLAY JOB
+     */
+
+    jobCard.innerHTML =
+
+        `
+
+        <div class="badges">
+
+            <span class="badge category">
+                ${escapeHtml(
+                    job.category ||
+                    "Other"
+                )}
+            </span>
+
+
+            <span class="badge subcategory">
+                ${escapeHtml(
+                    job.subcategory ||
+                    "General"
+                )}
+            </span>
+
+
+            <span class="badge status">
+                ${escapeHtml(
+                    job.status ||
+                    "pending"
+                )}
+            </span>
+
+        </div>
+
+
+        <h1>
+            ${escapeHtml(
+                job.title ||
+                "Untitled Job"
+            )}
+        </h1>
+
+
+        <div class="description">
+
+            ${escapeHtml(
+                job.description ||
+                "No description available."
+            )}
+
+        </div>
+
+
+        <div class="info-grid">
+
+
+            <div class="info">
+
+                <div class="info-label">
+                    Reward per Worker
+                </div>
+
+                <div
+                    class="info-value reward"
+                >
+                    $${reward.toFixed(2)}
+                </div>
+
+            </div>
+
+
+            <div class="info">
+
+                <div class="info-label">
+                    Workers Needed
+                </div>
+
+                <div class="info-value">
+                    ${workersNeeded}
+                </div>
+
+            </div>
+
+
+            <div class="info">
+
+                <div class="info-label">
+                    Workers Remaining
+                </div>
+
+                <div class="info-value">
+                    ${remaining}
+                </div>
+
+            </div>
+
+
+            <div class="info">
+
+                <div class="info-label">
+                    Deadline
+                </div>
+
+                <div class="info-value">
+                    ${escapeHtml(
+                        deadline
+                    )}
+                </div>
+
+            </div>
+
+
+            <div class="info">
+
+                <div class="info-label">
+                    Location
+                </div>
+
+                <div class="info-value">
+                    ${escapeHtml(
+                        job.location_type ||
+                        "International"
+                    )}
+                </div>
+
+            </div>
+
+
+            <div class="info">
+
+                <div class="info-label">
+                    Job Status
+                </div>
+
+                <div class="info-value">
+                    ${escapeHtml(
+                        job.status ||
+                        "pending"
+                    )}
+                </div>
+
+            </div>
+
+
+        </div>
+
+        `;
+
+
+
+    /*
+     * INSTRUCTIONS
+     */
+
+    if(job.instructions){
+
+        document.getElementById(
+            "instructions"
+        ).textContent =
+            job.instructions;
+
+
+        document.getElementById(
+            "instructionsCard"
+        ).style.display =
+            "block";
+
+    }
+
+
+
+    /*
+     * PROOF REQUIREMENTS
+     */
+
+    const proofCard =
+        document.getElementById(
+            "proofCard"
+        );
+
+
+    const proofContainer =
+        document.getElementById(
+            "proofRequirements"
+        );
+
+
+    let proofs = job.proofs;
+
+
+
+    if(
+        typeof proofs ===
+        "string"
+    ){
+
+        try{
+
+            proofs =
+                JSON.parse(
+                    proofs
+                );
+
+        }catch(e){
+
+            proofs = [];
+
+        }
+
+    }
+
+
+
+    if(
+        Array.isArray(proofs) &&
+        proofs.length > 0
+    ){
+
+        const list =
+            document.createElement(
+                "ul"
+            );
+
+
+        list.className =
+            "proof-list";
+
+
+        proofs.forEach(
+            function(proof){
+
+                const li =
+                    document.createElement(
+                        "li"
+                    );
+
+
+                if(
+                    typeof proof ===
+                    "string"
+                ){
+
+                    li.textContent =
+                        proof;
+
+                }else{
+
+                    li.textContent =
+                        proof.text ||
+                        proof.requirement ||
+                        proof.type ||
+                        "Proof required";
+
+                }
+
+
+                list.appendChild(
+                    li
+                );
+
+            }
+        );
+
+
+        proofContainer.appendChild(
+            list
+        );
+
+
+        proofCard.style.display =
+            "block";
+
+    }else{
+
+        proofContainer.innerHTML =
+
+            `
+            <p>
+                No specific proof requirements provided.
+            </p>
+            `;
+
+        proofCard.style.display =
+            "block";
+
+    }
+
+
+
+    /*
+     * START JOB BUTTON
+     */
+
+    document.getElementById(
+        "startCard"
+    ).style.display =
+        "block";
+
+
+    const startBtn =
+        document.getElementById(
+            "startBtn"
+        );
+
+
+    const startMessage =
+        document.getElementById(
+            "startMessage"
+        );
+
+
+
+    /*
+     * CHECK IF JOB AVAILABLE
+     */
+
+    if(
+        remaining <= 0
+    ){
+
+        startBtn.disabled =
+            true;
+
+        startBtn.textContent =
+            "Job Full";
+
+        startMessage.textContent =
+            "All worker positions are filled.";
+
+        startMessage.className =
+            "message warning";
+
+        return;
+
+    }
+
+
+
+    /*
+     * PENDING JOB
+     */
+
+    if(
+        job.status ===
+        "pending"
+    ){
+
+        startBtn.disabled =
+            true;
+
+        startBtn.textContent =
+            "Waiting for Approval";
+
+        startMessage.textContent =
+            "This job is waiting for approval.";
+
+        startMessage.className =
+            "message warning";
+
+        return;
+
+    }
+
+
+
+    /*
+     * START JOB
+     */
+
+    startBtn.addEventListener(
+        "click",
+        function(){
+
+            startMessage.textContent =
+                "Job is ready to start.";
+
+            startMessage.className =
+                "message success";
+
+
+            /*
+             * Next step will connect
+             * this button with a
+             * worker_jobs table.
+             */
+
+        }
+    );
+
+}
+
+
+
+/* =========================================
+   START
+========================================= */
+
+loadJob();
+
+
+</script>
+
+</body>
+
+</html>
+```
