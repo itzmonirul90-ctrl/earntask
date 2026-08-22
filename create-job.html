@@ -3013,55 +3013,60 @@ async function publishJob(){
 
     const insertData = {
 
-        employer_id:
-            userData.user.id,
+    employer_id:
+        userData.user.id,
 
-        title:
-            title,
+    title:
+        title,
 
-        description:
-            description,
+    description:
+        description,
 
-        instructions:
-            instructions,
+    instructions:
+        instructions,
 
-        category:
-            selectedCategory,
+    category:
+        selectedCategory,
 
-        subcategory:
-            selectedSubcategory,
+    subcategory:
+        selectedSubcategory,
 
-        location_type:
-            selectedLocation,
+    location_type:
+        selectedLocation,
 
-        countries:
-            countries,
+    countries:
+        countries,
 
-        reward_per_worker:
-            reward,
+    /* Existing jobs table column */
+    reward:
+        reward,
 
-        workers:
-            workers,
+    /* Our new/used column */
+    reward_per_worker:
+        reward,
 
-        worker_cost:
-            workerCost,
+    workers:
+        workers,
 
-        platform_fee:
-            platformFee,
+    worker_cost:
+        workerCost,
 
-        total_budget:
-            totalBudget,
+    platform_fee:
+        platformFee,
 
-        deadline:
-            deadline,
+    total_budget:
+        totalBudget,
 
-        proofs:
-            proofs,
+    deadline:
+        deadline,
 
-        status:
-            "published"
+    proofs:
+        proofs,
 
-    };
+    status:
+        "published"
+
+};
 
 
     const {
