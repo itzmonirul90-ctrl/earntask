@@ -1,0 +1,1222 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>Submit Job - EarnTask</title>
+
+<style>
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    font-family:Arial,sans-serif;
+    background:#f8fafc;
+    color:#172033;
+}
+
+.header{
+    background:#111827;
+    color:white;
+    padding:18px 30px;
+}
+
+.logo{
+    font-size:26px;
+    font-weight:800;
+}
+
+.logo span{
+    color:#22c55e;
+}
+
+.container{
+    max-width:900px;
+    margin:35px auto;
+    padding:0 20px;
+}
+
+.card{
+    background:white;
+    border-radius:14px;
+    padding:25px;
+    margin-bottom:20px;
+    box-shadow:0 5px 20px rgba(0,0,0,.06);
+}
+
+h1{
+    font-size:28px;
+    margin-bottom:8px;
+}
+
+h2{
+    font-size:20px;
+    margin-bottom:15px;
+}
+
+.job-title{
+    font-size:22px;
+    font-weight:800;
+    margin-bottom:10px;
+}
+
+.job-description{
+    color:#64748b;
+    line-height:1.6;
+    white-space:pre-wrap;
+}
+
+.info{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:15px;
+    margin-top:20px;
+}
+
+.info-box{
+    background:#f8fafc;
+    padding:15px;
+    border-radius:10px;
+}
+
+.info-box strong{
+    display:block;
+    color:#64748b;
+    font-size:13px;
+    margin-bottom:5px;
+}
+
+.info-box span{
+    font-weight:700;
+}
+
+label{
+    display:block;
+    font-weight:700;
+    margin-bottom:8px;
+}
+
+textarea{
+    width:100%;
+    min-height:150px;
+    border:1px solid #cbd5e1;
+    border-radius:9px;
+    padding:12px;
+    font-size:15px;
+    resize:vertical;
+    outline:none;
+}
+
+textarea:focus{
+    border-color:#16a34a;
+}
+
+input[type="file"]{
+    width:100%;
+    border:1px solid #cbd5e1;
+    border-radius:9px;
+    padding:12px;
+    background:white;
+}
+
+.help{
+    color:#64748b;
+    font-size:13px;
+    margin-top:7px;
+}
+
+.preview{
+    display:none;
+    margin-top:15px;
+    max-width:300px;
+    border-radius:10px;
+    border:1px solid #e5e7eb;
+}
+
+.submit-btn{
+    width:100%;
+    background:#16a34a;
+    color:white;
+    border:none;
+    padding:14px;
+    border-radius:9px;
+    font-size:16px;
+    font-weight:800;
+    cursor:pointer;
+}
+
+.submit-btn:hover{
+    background:#15803d;
+}
+
+.submit-btn:disabled{
+    opacity:.6;
+    cursor:not-allowed;
+}
+
+.back-btn{
+    display:inline-block;
+    margin-bottom:20px;
+    text-decoration:none;
+    background:#e2e8f0;
+    color:#172033;
+    padding:10px 15px;
+    border-radius:8px;
+    font-weight:700;
+}
+
+.message{
+    display:none;
+    padding:14px;
+    border-radius:9px;
+    margin-bottom:20px;
+}
+
+.message.success{
+    display:block;
+    background:#dcfce7;
+    color:#166534;
+}
+
+.message.error{
+    display:block;
+    background:#fee2e2;
+    color:#991b1b;
+}
+
+.loading{
+    text-align:center;
+    color:#64748b;
+    padding:30px;
+}
+
+.requirement{
+    background:#f0fdf4;
+    border-left:4px solid #16a34a;
+    padding:15px;
+    line-height:1.6;
+}
+
+@media(max-width:700px){
+
+    .header{
+        padding:15px 20px;
+    }
+
+    .container{
+        margin:20px auto;
+    }
+
+    .info{
+        grid-template-columns:1fr;
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+
+<header class="header">
+
+    <div class="logo">
+        Earn<span>Task</span>
+    </div>
+
+</header>
+
+
+<main class="container">
+
+
+<a href="worker-dashboard.html"
+   class="back-btn">
+
+    ← Back to Dashboard
+
+</a>
+
+
+<div id="message"
+     class="message">
+</div>
+
+
+<div id="loading"
+     class="card loading">
+
+    Loading job...
+
+</div>
+
+
+<div id="jobContent"
+     style="display:none;">
+
+
+    <!-- JOB INFORMATION -->
+
+    <section class="card">
+
+        <h1>
+            Submit Job
+        </h1>
+
+        <br>
+
+        <div class="job-title"
+             id="jobTitle">
+
+            Job Title
+
+        </div>
+
+
+        <div class="job-description"
+             id="jobDescription">
+
+        </div>
+
+
+        <div class="info">
+
+            <div class="info-box">
+
+                <strong>
+                    Category
+                </strong>
+
+                <span id="jobCategory">
+                    -
+                </span>
+
+            </div>
+
+
+            <div class="info-box">
+
+                <strong>
+                    Reward
+                </strong>
+
+                <span id="jobReward">
+                    ৳0.00
+                </span>
+
+            </div>
+
+
+            <div class="info-box">
+
+                <strong>
+                    Deadline
+                </strong>
+
+                <span id="jobDeadline">
+                    -
+                </span>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- INSTRUCTIONS -->
+
+    <section class="card">
+
+        <h2>
+            📋 Job Instructions
+        </h2>
+
+        <div class="requirement"
+             id="jobInstructions">
+
+            No special instructions.
+
+        </div>
+
+    </section>
+
+
+
+    <!-- PROOF -->
+
+    <section class="card">
+
+        <h2>
+            📤 Submit Your Proof
+        </h2>
+
+
+        <br>
+
+
+        <!-- SCREENSHOT -->
+
+        <label for="screenshot">
+
+            📸 Screenshot Proof
+            <span style="color:red;">
+                *
+            </span>
+
+        </label>
+
+
+        <input
+            type="file"
+            id="screenshot"
+            accept="image/png,image/jpeg,image/jpg,image/webp"
+        >
+
+
+        <div class="help">
+
+            Upload a clear screenshot showing that
+            you completed the job.
+
+            Maximum file size: 5 MB.
+
+        </div>
+
+
+        <img
+            id="preview"
+            class="preview"
+            alt="Screenshot preview"
+        >
+
+
+        <br><br><br>
+
+
+        <!-- TEXT ANSWER -->
+
+        <label for="textAnswer">
+
+            📝 Text Answer
+            <span style="color:red;">
+                *
+            </span>
+
+        </label>
+
+
+        <textarea
+            id="textAnswer"
+            placeholder="Enter your proof / answer here..."
+        ></textarea>
+
+
+        <div class="help">
+
+            Explain briefly how you completed the job
+            or provide the required answer.
+
+        </div>
+
+
+        <br><br>
+
+
+        <button
+            id="submitBtn"
+            class="submit-btn">
+
+            ✅ Submit Proof
+
+        </button>
+
+    </section>
+
+</div>
+
+
+</main>
+
+
+
+<script type="module">
+
+
+/* =========================================
+   SUPABASE
+========================================= */
+
+const SUPABASE_URL =
+"https://rvwboegeisnrhwicvvhj.supabase.co";
+
+
+const SUPABASE_KEY =
+"sb_publishable_Kz3hgj9W0khG3JEIclhx2g_HZ6eSyQQ";
+
+
+import {
+    createClient
+}
+from
+"https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+
+
+const supabase =
+    createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
+
+
+
+/* =========================================
+   GET JOB ID
+========================================= */
+
+const params =
+    new URLSearchParams(
+        window.location.search
+    );
+
+
+const jobId =
+    params.get("id");
+
+
+
+if(!jobId){
+
+    showMessage(
+        "Job ID is missing.",
+        "error"
+    );
+
+}
+
+
+
+/* =========================================
+   HTML ESCAPE
+========================================= */
+
+function escapeHtml(value){
+
+    return String(value ?? "")
+
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+
+        .replace(
+            /</g,
+            "&lt;"
+        )
+
+        .replace(
+            />/g,
+            "&gt;"
+        )
+
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+}
+
+
+
+/* =========================================
+   MESSAGE
+========================================= */
+
+function showMessage(
+    text,
+    type
+){
+
+    const message =
+        document.getElementById(
+            "message"
+        );
+
+
+    message.textContent =
+        text;
+
+
+    message.className =
+        "message " +
+        type;
+
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+
+}
+
+
+
+/* =========================================
+   CHECK USER
+========================================= */
+
+async function getCurrentUser(){
+
+    const {
+        data:{
+            user
+        },
+        error
+    } =
+    await supabase
+        .auth
+        .getUser();
+
+
+    if(error || !user){
+
+        window.location.href =
+            "login.html";
+
+        return null;
+
+    }
+
+
+    return user;
+
+}
+
+
+
+/* =========================================
+   LOAD JOB
+========================================= */
+
+async function loadJob(){
+
+    if(!jobId){
+
+        return;
+
+    }
+
+
+    const user =
+        await getCurrentUser();
+
+
+    if(!user){
+
+        return;
+
+    }
+
+
+
+    const {
+        data:job,
+        error
+    } =
+    await supabase
+
+        .from("jobs")
+
+        .select("*")
+
+        .eq(
+            "id",
+            jobId
+        )
+
+        .single();
+
+
+
+    if(error){
+
+        console.error(error);
+
+
+        document.getElementById(
+            "loading"
+        ).innerHTML =
+
+            "Unable to load this job.<br><br>" +
+            escapeHtml(error.message);
+
+        return;
+
+    }
+
+
+
+    if(!job){
+
+        document.getElementById(
+            "loading"
+        ).textContent =
+            "Job not found.";
+
+        return;
+
+    }
+
+
+
+    /* =====================================
+       CHECK JOB STATUS
+    ===================================== */
+
+    if(
+        job.status !== "active"
+    ){
+
+        document.getElementById(
+            "loading"
+        ).textContent =
+            "This job is not currently active.";
+
+        return;
+
+    }
+
+
+
+    /* =====================================
+       LOAD JOB DATA
+    ===================================== */
+
+    document.getElementById(
+        "jobTitle"
+    ).textContent =
+        job.title || "Untitled Job";
+
+
+    document.getElementById(
+        "jobDescription"
+    ).textContent =
+        job.description || "No description.";
+
+
+    document.getElementById(
+        "jobCategory"
+    ).textContent =
+        job.category || "Other";
+
+
+    const reward =
+        Number(
+            job.reward ??
+            job.reward_per_worker ??
+            0
+        );
+
+
+    document.getElementById(
+        "jobReward"
+    ).textContent =
+        "৳" +
+        reward.toFixed(2);
+
+
+    document.getElementById(
+        "jobDeadline"
+    ).textContent =
+        job.deadline || "No deadline";
+
+
+    document.getElementById(
+        "jobInstructions"
+    ).textContent =
+        job.instructions ||
+        "No special instructions.";
+
+
+
+    /* =====================================
+       CHECK EXISTING SUBMISSION
+    ===================================== */
+
+    const {
+        data:existing,
+        error:existingError
+    } =
+    await supabase
+
+        .from("job_submissions")
+
+        .select("id,status")
+
+        .eq(
+            "job_id",
+            jobId
+        )
+
+        .eq(
+            "worker_id",
+            user.id
+        )
+
+        .maybeSingle();
+
+
+
+    if(!existingError && existing){
+
+        document.getElementById(
+            "submitBtn"
+        ).disabled = true;
+
+
+        document.getElementById(
+            "submitBtn"
+        ).textContent =
+            "Already Submitted";
+
+
+        showMessage(
+            "You have already submitted this job. Status: " +
+            existing.status,
+            "success"
+        );
+
+    }
+
+
+
+    document.getElementById(
+        "loading"
+    ).style.display =
+        "none";
+
+
+    document.getElementById(
+        "jobContent"
+    ).style.display =
+        "block";
+
+}
+
+
+
+/* =========================================
+   SCREENSHOT PREVIEW
+========================================= */
+
+document
+    .getElementById("screenshot")
+    .addEventListener(
+        "change",
+        function(){
+
+            const file =
+                this.files[0];
+
+
+            const preview =
+                document.getElementById(
+                    "preview"
+                );
+
+
+            if(!file){
+
+                preview.style.display =
+                    "none";
+
+                return;
+
+            }
+
+
+            if(
+                file.size >
+                5 * 1024 * 1024
+            ){
+
+                showMessage(
+                    "Screenshot must be smaller than 5 MB.",
+                    "error"
+                );
+
+
+                this.value = "";
+
+
+                preview.style.display =
+                    "none";
+
+
+                return;
+
+            }
+
+
+            const reader =
+                new FileReader();
+
+
+            reader.onload =
+                function(event){
+
+                    preview.src =
+                        event.target.result;
+
+
+                    preview.style.display =
+                        "block";
+
+                };
+
+
+            reader.readAsDataURL(file);
+
+        }
+    );
+
+
+
+/* =========================================
+   SUBMIT PROOF
+========================================= */
+
+document
+    .getElementById("submitBtn")
+    .addEventListener(
+        "click",
+        submitProof
+    );
+
+
+
+async function submitProof(){
+
+    const button =
+        document.getElementById(
+            "submitBtn"
+        );
+
+
+    const screenshotInput =
+        document.getElementById(
+            "screenshot"
+        );
+
+
+    const textAnswer =
+        document.getElementById(
+            "textAnswer"
+        ).value.trim();
+
+
+
+    /* =====================================
+       VALIDATION
+    ===================================== */
+
+    if(!screenshotInput.files.length){
+
+        showMessage(
+            "Please upload a screenshot proof.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    if(!textAnswer){
+
+        showMessage(
+            "Please enter your text answer.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+
+    const file =
+        screenshotInput.files[0];
+
+
+    if(
+        file.size >
+        5 * 1024 * 1024
+    ){
+
+        showMessage(
+            "Screenshot must be smaller than 5 MB.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+
+    button.disabled =
+        true;
+
+
+    button.textContent =
+        "Submitting...";
+
+
+
+    try{
+
+
+        /* =================================
+           USER
+        ================================= */
+
+        const user =
+            await getCurrentUser();
+
+
+        if(!user){
+
+            return;
+
+        }
+
+
+
+        /* =================================
+           CHECK DUPLICATE
+        ================================= */
+
+        const {
+            data:existing
+        } =
+        await supabase
+
+            .from("job_submissions")
+
+            .select("id,status")
+
+            .eq(
+                "job_id",
+                jobId
+            )
+
+            .eq(
+                "worker_id",
+                user.id
+            )
+
+            .maybeSingle();
+
+
+        if(existing){
+
+            throw new Error(
+                "You have already submitted this job."
+            );
+
+        }
+
+
+
+        /* =================================
+           FILE EXTENSION
+        ================================= */
+
+        const extension =
+            file.name
+                .split(".")
+                .pop()
+                .toLowerCase();
+
+
+        const filePath =
+            user.id +
+            "/" +
+            jobId +
+            "-" +
+            Date.now() +
+            "." +
+            extension;
+
+
+
+        /* =================================
+           UPLOAD SCREENSHOT
+        ================================= */
+
+        const {
+            error:uploadError
+        } =
+        await supabase
+            .storage
+            .from("proofs")
+            .upload(
+                filePath,
+                file,
+                {
+                    upsert:false,
+                    contentType:file.type
+                }
+            );
+
+
+        if(uploadError){
+
+            throw uploadError;
+
+        }
+
+
+
+        /* =================================
+           PUBLIC URL
+        ================================= */
+
+        const {
+            data:publicData
+        } =
+        supabase
+            .storage
+            .from("proofs")
+            .getPublicUrl(
+                filePath
+            );
+
+
+        const screenshotUrl =
+            publicData.publicUrl;
+
+
+
+        /* =================================
+           INSERT SUBMISSION
+        ================================= */
+
+        const {
+            error:insertError
+        } =
+        await supabase
+
+            .from("job_submissions")
+
+            .insert({
+
+                job_id:
+                    jobId,
+
+                worker_id:
+                    user.id,
+
+                status:
+                    "pending",
+
+                proof_text:
+                    textAnswer,
+
+                screenshot_url:
+                    screenshotUrl
+
+            });
+
+
+        if(insertError){
+
+            throw insertError;
+
+        }
+
+
+
+        /* =================================
+           SUCCESS
+        ================================= */
+
+        showMessage(
+            "Proof submitted successfully! Waiting for approval.",
+            "success"
+        );
+
+
+        button.textContent =
+            "✅ Proof Submitted";
+
+
+        screenshotInput.disabled =
+            true;
+
+
+        document.getElementById(
+            "textAnswer"
+        ).disabled =
+            true;
+
+
+
+    }
+
+    catch(error){
+
+        console.error(error);
+
+
+        showMessage(
+            "Submit failed: " +
+            error.message,
+            "error"
+        );
+
+
+        button.disabled =
+            false;
+
+
+        button.textContent =
+            "✅ Submit Proof";
+
+    }
+
+}
+
+
+
+/* =========================================
+   START
+========================================= */
+
+loadJob();
+
+</script>
+
+</body>
+
+</html>
+```
