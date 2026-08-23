@@ -30,6 +30,10 @@ body{
 }
 
 
+/* ================================
+   HEADER
+================================ */
+
 .header{
     background:#111827;
     color:white;
@@ -37,13 +41,15 @@ body{
     padding:18px 30px;
 
     display:flex;
+
     justify-content:space-between;
+
     align-items:center;
 }
 
 
 .logo{
-    font-size:25px;
+    font-size:27px;
     font-weight:800;
 }
 
@@ -72,93 +78,156 @@ body{
 }
 
 
-.container{
-    max-width:900px;
 
-    margin:30px auto;
+/* ================================
+   MAIN
+================================ */
+
+.main{
+    max-width:1000px;
+
+    margin:35px auto;
 
     padding:0 20px;
 }
 
 
-.card{
-    background:white;
 
-    border-radius:14px;
+/* ================================
+   JOB HEADER
+================================ */
+
+.job-header{
+    background:white;
 
     padding:30px;
 
+    border-radius:15px;
+
     box-shadow:
-        0 5px 20px rgba(0,0,0,.06);
+        0 5px 20px rgba(0,0,0,.05);
 
     margin-bottom:20px;
 }
 
 
-.loading{
-    text-align:center;
+.job-header h1{
+    font-size:30px;
 
-    padding:50px;
-
-    color:#64748b;
-}
-
-
-.error{
-    background:#fef2f2;
-
-    border:1px solid #fecaca;
-
-    color:#b91c1c;
-
-    padding:15px;
-
-    border-radius:8px;
+    margin-bottom:15px;
 }
 
 
 .badges{
-    margin-bottom:15px;
+    display:flex;
+
+    flex-wrap:wrap;
+
+    gap:8px;
 }
 
 
 .badge{
     display:inline-block;
 
-    padding:6px 10px;
+    padding:7px 11px;
 
-    border-radius:6px;
+    border-radius:7px;
 
-    font-size:12px;
+    font-size:13px;
 
     font-weight:700;
-
-    margin-right:5px;
 }
 
 
 .category{
     background:#eff6ff;
+
     color:#2563eb;
 }
 
 
-.subcategory{
+.status{
+    background:#dcfce7;
+
+    color:#166534;
+}
+
+
+.reward-badge{
     background:#f0fdf4;
+
     color:#15803d;
 }
 
 
-.status{
-    background:#fef3c7;
-    color:#92400e;
+
+/* ================================
+   JOB INFO GRID
+================================ */
+
+.info-grid{
+    display:grid;
+
+    grid-template-columns:
+        repeat(4,1fr);
+
+    gap:15px;
+
+    margin-top:25px;
 }
 
 
-h1{
-    font-size:30px;
+.info-box{
+    background:#f8fafc;
+
+    border:1px solid #e5e7eb;
+
+    padding:18px;
+
+    border-radius:10px;
+}
+
+
+.info-box .label{
+    color:#64748b;
+
+    font-size:13px;
+
+    margin-bottom:7px;
+}
+
+
+.info-box .value{
+    font-size:18px;
+
+    font-weight:800;
+}
+
+
+
+/* ================================
+   CONTENT SECTIONS
+================================ */
+
+.section{
+    background:white;
+
+    padding:25px;
+
+    border-radius:15px;
+
+    box-shadow:
+        0 5px 20px rgba(0,0,0,.05);
 
     margin-bottom:20px;
+}
+
+
+.section h2{
+    font-size:20px;
+
+    margin-bottom:15px;
 }
 
 
@@ -171,65 +240,14 @@ h1{
 }
 
 
-.info-grid{
-    display:grid;
-
-    grid-template-columns:
-        repeat(3,1fr);
-
-    gap:15px;
-
-    margin-top:25px;
-}
-
-
-.info{
-    background:#f8fafc;
-
-    border:1px solid #e5e7eb;
-
-    padding:16px;
-
-    border-radius:9px;
-}
-
-
-.info-label{
-    color:#64748b;
-
-    font-size:12px;
-
-    margin-bottom:6px;
-}
-
-
-.info-value{
-    font-weight:800;
-
-    font-size:17px;
-}
-
-
-.reward{
-    color:#16a34a;
-}
-
-
-.section-title{
-    font-size:20px;
-
-    margin-bottom:12px;
-}
-
-
 .instructions{
     background:#f8fafc;
 
     border:1px solid #e5e7eb;
 
-    padding:18px;
+    border-radius:10px;
 
-    border-radius:9px;
+    padding:18px;
 
     line-height:1.7;
 
@@ -237,20 +255,53 @@ h1{
 }
 
 
+
+/* ================================
+   PROOF REQUIREMENTS
+================================ */
+
 .proof-list{
     padding-left:20px;
 }
 
 
 .proof-list li{
-    margin-bottom:8px;
+    margin:8px 0;
+
+    color:#475569;
 }
 
 
-.start-area{
+
+/* ================================
+   START JOB BOX
+================================ */
+
+.start-box{
+    background:white;
+
+    padding:30px;
+
+    border-radius:15px;
+
+    box-shadow:
+        0 5px 20px rgba(0,0,0,.05);
+
     text-align:center;
 
-    padding-top:10px;
+    margin-bottom:30px;
+}
+
+
+.start-box h2{
+    margin-bottom:10px;
+}
+
+
+.start-box p{
+    color:#64748b;
+
+    margin-bottom:20px;
 }
 
 
@@ -261,13 +312,13 @@ h1{
 
     color:white;
 
-    padding:13px 30px;
+    font-size:17px;
+
+    font-weight:800;
+
+    padding:13px 28px;
 
     border-radius:8px;
-
-    font-size:16px;
-
-    font-weight:700;
 
     cursor:pointer;
 }
@@ -285,51 +336,147 @@ h1{
 }
 
 
+
+/* ================================
+   MESSAGE
+================================ */
+
 .message{
-    margin-top:15px;
+    display:none;
+
+    padding:14px;
+
+    border-radius:9px;
+
+    margin-bottom:20px;
 
     font-size:14px;
 }
 
 
-.success{
-    color:#15803d;
+.message.success{
+    display:block;
+
+    background:#dcfce7;
+
+    color:#166534;
+
+    border:1px solid #bbf7d0;
 }
 
 
-.warning{
-    color:#b45309;
+.message.error{
+    display:block;
+
+    background:#fef2f2;
+
+    color:#991b1b;
+
+    border:1px solid #fecaca;
 }
 
 
-@media(max-width:700px){
+
+/* ================================
+   LOADING
+================================ */
+
+.loading{
+    text-align:center;
+
+    padding:60px 20px;
+
+    color:#64748b;
+}
+
+
+.error-page{
+    text-align:center;
+
+    background:white;
+
+    padding:50px 25px;
+
+    border-radius:15px;
+
+    box-shadow:
+        0 5px 20px rgba(0,0,0,.05);
+}
+
+
+.error-page h2{
+    margin-bottom:12px;
+}
+
+
+.error-page p{
+    color:#64748b;
+
+    margin-bottom:20px;
+}
+
+
+
+/* ================================
+   MOBILE
+================================ */
+
+@media(max-width:800px){
 
     .header{
-        padding:15px;
-
-        gap:10px;
+        padding:15px 18px;
     }
 
 
-    .container{
+    .main{
         margin-top:20px;
-
-        padding:0 12px;
     }
 
 
-    .card{
-        padding:20px;
+    .job-header{
+        padding:22px;
     }
 
 
-    h1{
+    .job-header h1{
         font-size:24px;
     }
 
 
     .info-grid{
+        grid-template-columns:
+            repeat(2,1fr);
+    }
+
+}
+
+
+@media(max-width:500px){
+
+    .header{
+        display:block;
+    }
+
+
+    .back-btn{
+        display:inline-block;
+
+        margin-top:12px;
+    }
+
+
+    .info-grid{
         grid-template-columns:1fr;
+    }
+
+
+    .job-header h1{
+        font-size:22px;
+    }
+
+
+    .start-box{
+        padding:25px 18px;
     }
 
 }
@@ -342,6 +489,10 @@ h1{
 <body>
 
 
+<!-- =================================
+     HEADER
+================================= -->
+
 <header class="header">
 
     <div class="logo">
@@ -350,101 +501,302 @@ h1{
 
 
     <a
-        href="worker-dashboard.html#jobs"
+        href="worker-dashboard.html"
         class="back-btn"
     >
-        ← Back to Jobs
+        ← Worker Dashboard
     </a>
 
 </header>
 
 
 
-<main class="container">
+<!-- =================================
+     MAIN
+================================= -->
+
+<main class="main">
 
 
-    <!-- JOB DETAILS -->
+    <!-- LOADING -->
 
     <div
-        class="card"
-        id="jobCard"
+        id="loading"
+        class="loading"
     >
 
-        <div class="loading">
-            Loading job...
+        Loading job...
+
+    </div>
+
+
+
+    <!-- JOB CONTENT -->
+
+    <div
+        id="jobContent"
+        style="display:none;"
+    >
+
+
+        <!-- ==========================
+             JOB HEADER
+        =========================== -->
+
+        <div class="job-header">
+
+
+            <h1 id="jobTitle">
+                Job Title
+            </h1>
+
+
+            <div class="badges">
+
+
+                <span
+                    class="badge category"
+                    id="jobCategory"
+                >
+                    Category
+                </span>
+
+
+                <span
+                    class="badge status"
+                    id="jobStatus"
+                >
+                    Active
+                </span>
+
+
+                <span
+                    class="badge reward-badge"
+                >
+                    Reward:
+                    $<span id="jobReward">
+                        0.00
+                    </span>
+                </span>
+
+            </div>
+
+
+
+            <!-- INFO -->
+
+            <div class="info-grid">
+
+
+                <div class="info-box">
+
+                    <div class="label">
+                        Reward Per Worker
+                    </div>
+
+                    <div class="value">
+                        $<span id="rewardValue">
+                            0.00
+                        </span>
+                    </div>
+
+                </div>
+
+
+
+                <div class="info-box">
+
+                    <div class="label">
+                        Workers Needed
+                    </div>
+
+                    <div class="value">
+                        <span id="workersNeeded">
+                            0
+                        </span>
+                    </div>
+
+                </div>
+
+
+
+                <div class="info-box">
+
+                    <div class="label">
+                        Workers Completed
+                    </div>
+
+                    <div class="value">
+                        <span id="workersCompleted">
+                            0
+                        </span>
+                    </div>
+
+                </div>
+
+
+
+                <div class="info-box">
+
+                    <div class="label">
+                        Deadline
+                    </div>
+
+                    <div class="value">
+                        <span id="deadline">
+                            No deadline
+                        </span>
+                    </div>
+
+                </div>
+
+
+            </div>
+
         </div>
 
-    </div>
 
 
-
-    <!-- INSTRUCTIONS -->
-
-    <div
-        class="card"
-        id="instructionsCard"
-        style="display:none;"
-    >
-
-        <h2 class="section-title">
-            📋 Instructions
-        </h2>
-
+        <!-- MESSAGE -->
 
         <div
-            class="instructions"
-            id="instructions"
+            id="message"
+            class="message"
         ></div>
 
-    </div>
+
+
+        <!-- ==========================
+             DESCRIPTION
+        =========================== -->
+
+        <section class="section">
+
+            <h2>
+                📝 Job Description
+            </h2>
+
+
+            <div
+                class="description"
+                id="jobDescription"
+            >
+                No description provided.
+            </div>
+
+        </section>
 
 
 
-    <!-- PROOF REQUIREMENTS -->
+        <!-- ==========================
+             INSTRUCTIONS
+        =========================== -->
 
-    <div
-        class="card"
-        id="proofCard"
-        style="display:none;"
-    >
+        <section class="section">
 
-        <h2 class="section-title">
-            📝 Proof Requirements
-        </h2>
+            <h2>
+                📋 Instructions
+            </h2>
 
 
-        <div id="proofRequirements"></div>
+            <div
+                class="instructions"
+                id="jobInstructions"
+            >
+                No instructions provided.
+            </div>
 
-    </div>
+        </section>
 
 
 
-    <!-- START JOB -->
+        <!-- ==========================
+             PROOF
+        =========================== -->
 
-    <div
-        class="card"
-        id="startCard"
-        style="display:none;"
-    >
+        <section class="section">
 
-        <div class="start-area">
+            <h2>
+                📸 Proof Requirements
+            </h2>
+
+
+            <ul
+                class="proof-list"
+                id="proofList"
+            >
+
+                <li>
+                    Follow the employer's instructions.
+                </li>
+
+            </ul>
+
+        </section>
+
+
+
+        <!-- ==========================
+             START JOB
+        =========================== -->
+
+        <div class="start-box">
+
+
+            <h2>
+                Ready to Start?
+            </h2>
+
+
+            <p id="startText">
+
+                Click the button below to start
+                working on this job.
+
+            </p>
+
 
             <button
-                class="start-btn"
                 id="startBtn"
+                class="start-btn"
             >
                 🚀 Start Job
             </button>
 
-
-            <div
-                class="message"
-                id="startMessage"
-            ></div>
-
         </div>
 
+
     </div>
+
+
+
+    <!-- ERROR -->
+
+    <div
+        id="errorPage"
+        class="error-page"
+        style="display:none;"
+    >
+
+        <h2>
+            Job Not Found
+        </h2>
+
+
+        <p id="errorText">
+            This job could not be loaded.
+        </p>
+
+
+        <a
+            href="worker-dashboard.html"
+            class="back-btn"
+        >
+            ← Back to Dashboard
+        </a>
+
+    </div>
+
 
 </main>
 
@@ -453,9 +805,9 @@ h1{
 <script type="module">
 
 
-/* =========================================
+/* =================================
    SUPABASE
-========================================= */
+================================= */
 
 const SUPABASE_URL =
 "https://rvwboegeisnrhwicvvhj.supabase.co";
@@ -480,9 +832,24 @@ const supabase =
 
 
 
-/* =========================================
-   ESCAPE HTML
-========================================= */
+/* =================================
+   GET JOB ID
+================================= */
+
+const params =
+    new URLSearchParams(
+        window.location.search
+    );
+
+
+const jobId =
+    params.get("id");
+
+
+
+/* =================================
+   HTML ESCAPE
+================================= */
 
 function escapeHtml(value){
 
@@ -519,53 +886,38 @@ function escapeHtml(value){
 
 
 
-/* =========================================
-   GET JOB ID
-========================================= */
+/* =================================
+   MESSAGE
+================================= */
 
-const params =
-    new URLSearchParams(
-        window.location.search
-    );
+function showMessage(
+    text,
+    type="success"
+){
 
-
-const jobId =
-    params.get("id");
-
-
-
-/* =========================================
-   LOAD JOB
-========================================= */
-
-async function loadJob(){
-
-
-    const jobCard =
+    const message =
         document.getElementById(
-            "jobCard"
+            "message"
         );
 
 
-    if(!jobId){
+    message.textContent =
+        text;
 
-        jobCard.innerHTML =
 
-            `
-            <div class="error">
-                Job ID was not provided.
-            </div>
-            `;
+    message.className =
+        "message " +
+        type;
 
-        return;
-
-    }
+}
 
 
 
-    /*
-     * CHECK USER
-     */
+/* =================================
+   CHECK LOGIN
+================================= */
+
+async function getCurrentUser(){
 
     const {
         data:{
@@ -575,6 +927,35 @@ async function loadJob(){
     await supabase
         .auth
         .getUser();
+
+
+    return user || null;
+
+}
+
+
+
+/* =================================
+   LOAD JOB
+================================= */
+
+async function loadJob(){
+
+
+    if(!jobId){
+
+        showError(
+            "No Job ID was provided."
+        );
+
+        return;
+
+    }
+
+
+
+    const user =
+        await getCurrentUser();
 
 
     if(!user){
@@ -587,10 +968,6 @@ async function loadJob(){
     }
 
 
-
-    /*
-     * GET JOB
-     */
 
     const {
         data:job,
@@ -618,21 +995,9 @@ async function loadJob(){
         );
 
 
-        jobCard.innerHTML =
-
-            `
-            <div class="error">
-
-                Unable to load this job.
-
-                <br><br>
-
-                ${escapeHtml(
-                    error.message
-                )}
-
-            </div>
-            `;
+        showError(
+            error.message
+        );
 
         return;
 
@@ -642,13 +1007,9 @@ async function loadJob(){
 
     if(!job){
 
-        jobCard.innerHTML =
-
-            `
-            <div class="error">
-                Job not found.
-            </div>
-            `;
+        showError(
+            "This job does not exist."
+        );
 
         return;
 
@@ -656,9 +1017,28 @@ async function loadJob(){
 
 
 
-    /*
-     * JOB DATA
-     */
+    /* ==========================
+       ONLY ACTIVE JOBS
+    =========================== */
+
+    if(
+        job.status !==
+        "active"
+    ){
+
+        showError(
+            "This job is not currently available."
+        );
+
+        return;
+
+    }
+
+
+
+    /* ==========================
+       JOB DATA
+    =========================== */
 
     const reward =
 
@@ -686,274 +1066,118 @@ async function loadJob(){
         );
 
 
-    const remaining =
 
-        Math.max(
-            workersNeeded -
-            workersCompleted,
-            0
-        );
+    document.getElementById(
+        "jobTitle"
+    ).textContent =
+
+        job.title ||
+        "Untitled Job";
 
 
 
-    let deadline =
+    document.getElementById(
+        "jobCategory"
+    ).textContent =
+
+        job.category ||
+        "Other";
+
+
+
+    document.getElementById(
+        "jobStatus"
+    ).textContent =
+
+        job.status ||
+        "active";
+
+
+
+    document.getElementById(
+        "jobReward"
+    ).textContent =
+
+        reward.toFixed(2);
+
+
+
+    document.getElementById(
+        "rewardValue"
+    ).textContent =
+
+        reward.toFixed(2);
+
+
+
+    document.getElementById(
+        "workersNeeded"
+    ).textContent =
+
+        workersNeeded;
+
+
+
+    document.getElementById(
+        "workersCompleted"
+    ).textContent =
+
+        workersCompleted;
+
+
+
+    document.getElementById(
+        "deadline"
+    ).textContent =
+
+        job.deadline ||
         "No deadline";
 
 
-    if(job.deadline){
 
-        const date =
-            new Date(
-                job.deadline
-            );
+    document.getElementById(
+        "jobDescription"
+    ).textContent =
 
+        job.description ||
+        "No description provided.";
 
-        if(
-            !isNaN(
-                date.getTime()
-            )
-        ){
 
-            deadline =
-                date.toLocaleDateString();
 
-        }
+    document.getElementById(
+        "jobInstructions"
+    ).textContent =
 
-    }
+        job.instructions ||
+        "No instructions provided.";
 
 
 
-    /*
-     * DISPLAY JOB
-     */
+    /* ==========================
+       PROOF REQUIREMENTS
+    =========================== */
 
-    jobCard.innerHTML =
-
-        `
-
-        <div class="badges">
-
-            <span class="badge category">
-                ${escapeHtml(
-                    job.category ||
-                    "Other"
-                )}
-            </span>
-
-
-            <span class="badge subcategory">
-                ${escapeHtml(
-                    job.subcategory ||
-                    "General"
-                )}
-            </span>
-
-
-            <span class="badge status">
-                ${escapeHtml(
-                    job.status ||
-                    "pending"
-                )}
-            </span>
-
-        </div>
-
-
-        <h1>
-            ${escapeHtml(
-                job.title ||
-                "Untitled Job"
-            )}
-        </h1>
-
-
-        <div class="description">
-
-            ${escapeHtml(
-                job.description ||
-                "No description available."
-            )}
-
-        </div>
-
-
-        <div class="info-grid">
-
-
-            <div class="info">
-
-                <div class="info-label">
-                    Reward per Worker
-                </div>
-
-                <div
-                    class="info-value reward"
-                >
-                    $${reward.toFixed(2)}
-                </div>
-
-            </div>
-
-
-            <div class="info">
-
-                <div class="info-label">
-                    Workers Needed
-                </div>
-
-                <div class="info-value">
-                    ${workersNeeded}
-                </div>
-
-            </div>
-
-
-            <div class="info">
-
-                <div class="info-label">
-                    Workers Remaining
-                </div>
-
-                <div class="info-value">
-                    ${remaining}
-                </div>
-
-            </div>
-
-
-            <div class="info">
-
-                <div class="info-label">
-                    Deadline
-                </div>
-
-                <div class="info-value">
-                    ${escapeHtml(
-                        deadline
-                    )}
-                </div>
-
-            </div>
-
-
-            <div class="info">
-
-                <div class="info-label">
-                    Location
-                </div>
-
-                <div class="info-value">
-                    ${escapeHtml(
-                        job.location_type ||
-                        "International"
-                    )}
-                </div>
-
-            </div>
-
-
-            <div class="info">
-
-                <div class="info-label">
-                    Job Status
-                </div>
-
-                <div class="info-value">
-                    ${escapeHtml(
-                        job.status ||
-                        "pending"
-                    )}
-                </div>
-
-            </div>
-
-
-        </div>
-
-        `;
-
-
-
-    /*
-     * INSTRUCTIONS
-     */
-
-    if(job.instructions){
-
+    const proofList =
         document.getElementById(
-            "instructions"
-        ).textContent =
-            job.instructions;
-
-
-        document.getElementById(
-            "instructionsCard"
-        ).style.display =
-            "block";
-
-    }
-
-
-
-    /*
-     * PROOF REQUIREMENTS
-     */
-
-    const proofCard =
-        document.getElementById(
-            "proofCard"
+            "proofList"
         );
 
 
-    const proofContainer =
-        document.getElementById(
-            "proofRequirements"
-        );
+    proofList.innerHTML = "";
 
 
-    let proofs = job.proofs;
+
+    const proof =
+        job.proof_requirements;
 
 
 
     if(
-        typeof proofs ===
-        "string"
+        Array.isArray(proof)
     ){
 
-        try{
-
-            proofs =
-                JSON.parse(
-                    proofs
-                );
-
-        }catch(e){
-
-            proofs = [];
-
-        }
-
-    }
-
-
-
-    if(
-        Array.isArray(proofs) &&
-        proofs.length > 0
-    ){
-
-        const list =
-            document.createElement(
-                "ul"
-            );
-
-
-        list.className =
-            "proof-list";
-
-
-        proofs.forEach(
-            function(proof){
+        proof.forEach(
+            function(item){
 
                 const li =
                     document.createElement(
@@ -961,154 +1185,107 @@ async function loadJob(){
                     );
 
 
-                if(
-                    typeof proof ===
-                    "string"
-                ){
-
-                    li.textContent =
-                        proof;
-
-                }else{
-
-                    li.textContent =
-                        proof.text ||
-                        proof.requirement ||
-                        proof.type ||
-                        "Proof required";
-
-                }
+                li.textContent =
+                    item;
 
 
-                list.appendChild(
+                proofList.appendChild(
                     li
                 );
 
             }
         );
 
+    }
 
-        proofContainer.appendChild(
-            list
+    else if(
+        typeof proof ===
+        "string" &&
+        proof.trim()
+    ){
+
+        const parts =
+            proof
+                .split("\n")
+                .filter(
+                    item =>
+                    item.trim()
+                );
+
+
+        parts.forEach(
+            function(item){
+
+                const li =
+                    document.createElement(
+                        "li"
+                    );
+
+
+                li.textContent =
+                    item;
+
+
+                proofList.appendChild(
+                    li
+                );
+
+            }
         );
 
+    }
 
-        proofCard.style.display =
-            "block";
+    else{
 
-    }else{
+        const li =
+            document.createElement(
+                "li"
+            );
 
-        proofContainer.innerHTML =
 
-            `
-            <p>
-                No specific proof requirements provided.
-            </p>
-            `;
+        li.textContent =
+            "Complete the job according to the employer's instructions.";
 
-        proofCard.style.display =
-            "block";
+
+        proofList.appendChild(
+            li
+        );
 
     }
 
 
 
-    /*
-     * START JOB BUTTON
-     */
+    /* ==========================
+       SHOW CONTENT
+    =========================== */
 
     document.getElementById(
-        "startCard"
+        "loading"
+    ).style.display =
+        "none";
+
+
+    document.getElementById(
+        "jobContent"
     ).style.display =
         "block";
 
 
-    const startBtn =
-        document.getElementById(
-            "startBtn"
-        );
 
+    /* ==========================
+       START BUTTON
+    =========================== */
 
-    const startMessage =
-        document.getElementById(
-            "startMessage"
-        );
-
-
-
-    /*
-     * CHECK IF JOB AVAILABLE
-     */
-
-    if(
-        remaining <= 0
-    ){
-
-        startBtn.disabled =
-            true;
-
-        startBtn.textContent =
-            "Job Full";
-
-        startMessage.textContent =
-            "All worker positions are filled.";
-
-        startMessage.className =
-            "message warning";
-
-        return;
-
-    }
-
-
-
-    /*
-     * PENDING JOB
-     */
-
-    if(
-        job.status ===
-        "pending"
-    ){
-
-        startBtn.disabled =
-            true;
-
-        startBtn.textContent =
-            "Waiting for Approval";
-
-        startMessage.textContent =
-            "This job is waiting for approval.";
-
-        startMessage.className =
-            "message warning";
-
-        return;
-
-    }
-
-
-
-    /*
-     * START JOB
-     */
-
-    startBtn.addEventListener(
+    document.getElementById(
+        "startBtn"
+    ).addEventListener(
         "click",
         function(){
 
-            startMessage.textContent =
-                "Job is ready to start.";
-
-            startMessage.className =
-                "message success";
-
-
-            /*
-             * Next step will connect
-             * this button with a
-             * worker_jobs table.
-             */
+            startJob(
+                job,
+                user
+            );
 
         }
     );
@@ -1117,12 +1294,243 @@ async function loadJob(){
 
 
 
-/* =========================================
+/* =================================
+   START JOB
+================================= */
+
+async function startJob(
+    job,
+    user
+){
+
+
+    const button =
+        document.getElementById(
+            "startBtn"
+        );
+
+
+    button.disabled =
+        true;
+
+
+    button.textContent =
+        "Starting...";
+
+
+
+    /*
+     * Check whether the worker
+     * already submitted this job.
+     */
+
+    const {
+        data:existing,
+        error:existingError
+    } =
+    await supabase
+
+        .from("job_submissions")
+
+        .select("id,status")
+
+        .eq(
+            "job_id",
+            job.id
+        )
+
+        .eq(
+            "worker_id",
+            user.id
+        )
+
+        .maybeSingle();
+
+
+
+    if(existingError){
+
+        console.error(
+            existingError
+        );
+
+
+        showMessage(
+            "Unable to check job status: " +
+            existingError.message,
+            "error"
+        );
+
+
+        button.disabled =
+            false;
+
+
+        button.textContent =
+            "🚀 Start Job";
+
+
+        return;
+
+    }
+
+
+
+    if(existing){
+
+        showMessage(
+            "You have already started or submitted this job.",
+            "error"
+        );
+
+
+        button.disabled =
+            true;
+
+
+        button.textContent =
+            "Job Already Started";
+
+
+        return;
+
+    }
+
+
+
+    /*
+     * Create submission
+     */
+
+    const {
+        data:submission,
+        error:submissionError
+    } =
+    await supabase
+
+        .from("job_submissions")
+
+        .insert({
+
+            job_id:
+                job.id,
+
+            worker_id:
+                user.id,
+
+            status:
+                "started"
+
+        })
+
+        .select()
+        .single();
+
+
+
+    if(submissionError){
+
+        console.error(
+            submissionError
+        );
+
+
+        showMessage(
+            "Start Job failed: " +
+            submissionError.message,
+            "error"
+        );
+
+
+        button.disabled =
+            false;
+
+
+        button.textContent =
+            "🚀 Start Job";
+
+
+        return;
+
+    }
+
+
+
+    showMessage(
+        "Job started successfully!"
+    );
+
+
+    button.textContent =
+        "✓ Job Started";
+
+
+    /*
+     * Next page will be used
+     * for proof submission.
+     */
+
+    setTimeout(
+        function(){
+
+            window.location.href =
+                "submit-job.html?id=" +
+                encodeURIComponent(
+                    job.id
+                ) +
+                "&submission=" +
+                encodeURIComponent(
+                    submission.id
+                );
+
+        },
+        800
+    );
+
+}
+
+
+
+/* =================================
+   ERROR PAGE
+================================= */
+
+function showError(
+    message
+){
+
+    document.getElementById(
+        "loading"
+    ).style.display =
+        "none";
+
+
+    document.getElementById(
+        "jobContent"
+    ).style.display =
+        "none";
+
+
+    document.getElementById(
+        "errorPage"
+    ).style.display =
+        "block";
+
+
+    document.getElementById(
+        "errorText"
+    ).textContent =
+        message;
+
+}
+
+
+
+/* =================================
    START
-========================================= */
+================================= */
 
 loadJob();
-
 
 </script>
 
