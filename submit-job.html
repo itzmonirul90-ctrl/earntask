@@ -1078,7 +1078,7 @@ async function submitProof(){
         } =
         await supabase
             .storage
-            .from("proofs")
+            .from("job-proofs")
             .upload(
                 filePath,
                 file,
