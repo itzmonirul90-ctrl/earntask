@@ -1166,31 +1166,221 @@ function createSubmissionCard(
    APPROVE SUBMISSION
 ========================================= */
 
+```javascript
 window.approveSubmission =
 async function(submissionId){
 
     const confirmed =
         confirm(
-            "Approve this submission?"
+            "Approve this submission and add the reward to the worker wallet?"
         );
 
-
     if(!confirmed){
-
         return;
-
     }
 
 
+    /* =====================================
+       GET SUBMISSION
+    ===================================== */
+
     const {
-        error
+        data:submission,
+        error:submissionError
+    } =
+    await supabase
+
+        .from("job_submissions")
+
+        .select(`
+            id,
+            worker_id,
+            status,
+            jobs(
+                reward
+            )
+        `)
+
+        .eq(
+            "id",
+            submissionId
+        )
+
+        .eq(
+            "status",
+            "pending"
+        )
+
+        .single();
+
+
+    if(submissionError){
+
+        console.error(
+            submissionError
+        );
+
+        showMessage(
+            "Could not find submission: " +
+            submissionError.message,
+            "error"
+        );
+
+        return;
+    }
+
+
+    if(!submission){
+
+        showMessage(
+            "Submission is no longer pending.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    /* =====================================
+       GET REWARD
+    ===================================== */
+
+    const reward =
+        Number(
+            submission.jobs?.reward || 0
+        );
+
+
+    if(reward <= 0){
+
+        showMessage(
+            "Invalid job reward.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    const workerId =
+        submission.worker_id;
+
+
+    /* =====================================
+       GET WORKER WALLET
+    ===================================== */
+
+    const {
+        data:wallet,
+        error:walletError
+    } =
+    await supabase
+
+        .from("wallets")
+
+        .select(
+            "id,balance,pending_balance,total_earned"
+        )
+
+        .eq(
+            "user_id",
+            workerId
+        )
+
+        .single();
+
+
+    if(walletError){
+
+        console.error(
+            walletError
+        );
+
+        showMessage(
+            "Worker wallet not found: " +
+            walletError.message,
+            "error"
+        );
+
+        return;
+    }
+
+
+    /* =====================================
+       NEW WALLET VALUES
+    ===================================== */
+
+    const newBalance =
+        Number(wallet.balance || 0)
+        +
+        reward;
+
+
+    const newTotalEarned =
+        Number(wallet.total_earned || 0)
+        +
+        reward;
+
+
+    /* =====================================
+       UPDATE WALLET
+    ===================================== */
+
+    const {
+        error:updateWalletError
+    } =
+    await supabase
+
+        .from("wallets")
+
+        .update({
+
+            balance:
+                newBalance,
+
+            total_earned:
+                newTotalEarned
+
+        })
+
+        .eq(
+            "id",
+            wallet.id
+        );
+
+
+    if(updateWalletError){
+
+        console.error(
+            updateWalletError
+        );
+
+        showMessage(
+            "Wallet update failed: " +
+            updateWalletError.message,
+            "error"
+        );
+
+        return;
+    }
+
+
+    /* =====================================
+       APPROVE SUBMISSION
+    ===================================== */
+
+    const {
+        error:updateSubmissionError
     } =
     await supabase
 
         .from("job_submissions")
 
         .update({
-            status:"approved"
+
+            status:
+                "approved"
+
         })
 
         .eq(
@@ -1204,23 +1394,81 @@ async function(submissionId){
         );
 
 
-    if(error){
+    if(updateSubmissionError){
 
-        console.error(error);
+        console.error(
+            updateSubmissionError
+        );
 
         showMessage(
-            "Approve failed: " +
-            error.message,
+            "Submission approval failed: " +
+            updateSubmissionError.message,
             "error"
         );
 
         return;
+    }
+
+
+    /* =====================================
+       UPDATE COMPLETED JOBS
+    ===================================== */
+
+    const {
+        data:profile,
+        error:profileError
+    } =
+    await supabase
+
+        .from("profiles")
+
+        .select(
+            "completed_jobs"
+        )
+
+        .eq(
+            "id",
+            workerId
+        )
+
+        .single();
+
+
+    if(!profileError){
+
+        const completedJobs =
+            Number(
+                profile.completed_jobs || 0
+            )
+            +
+            1;
+
+
+        await supabase
+
+            .from("profiles")
+
+            .update({
+
+                completed_jobs:
+                    completedJobs
+
+            })
+
+            .eq(
+                "id",
+                workerId
+            );
 
     }
 
 
+    /* =====================================
+       SUCCESS
+    ===================================== */
+
     showMessage(
-        "Submission approved successfully."
+        "Submission approved. Worker reward added successfully."
     );
 
 
@@ -1229,6 +1477,8 @@ async function(submissionId){
     await loadSubmissions();
 
 };
+```
+
 
 
 /* =========================================
