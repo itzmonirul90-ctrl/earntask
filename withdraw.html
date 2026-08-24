@@ -1,9 +1,9 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Withdraw - EarnTask</title>
 
 <style>
@@ -120,6 +120,16 @@ body{
     margin-bottom:25px;
 }
 
+.limit-box{
+    background:#f0fdf4;
+    border:1px solid #bbf7d0;
+    color:#166534;
+    padding:15px;
+    border-radius:8px;
+    margin-bottom:20px;
+    line-height:1.7;
+}
+
 .form-group{
     margin-bottom:20px;
 }
@@ -185,10 +195,21 @@ button:disabled{
     color:#991b1b;
 }
 
+.bank-fields,
+.paypal-fields{
+    display:none;
+}
+
+.bank-fields.show,
+.paypal-fields.show{
+    display:block;
+}
+
 .note{
     margin-top:15px;
     color:#64748b;
     font-size:13px;
+    line-height:1.6;
 }
 
 @media(max-width:800px){
@@ -235,7 +256,7 @@ button:disabled{
         🏠 Dashboard
     </a>
 
-    <a href="worker-dashboard.html#availableJobs">
+    <a href="worker-dashboard.html#jobs">
         💼 Available Jobs
     </a>
 
@@ -251,10 +272,6 @@ button:disabled{
         💸 Withdraw
     </a>
 
-    <a href="profile.html">
-        👤 Profile
-    </a>
-
     <a href="#" id="logoutBtn" class="logout">
         🚪 Logout
     </a>
@@ -266,9 +283,14 @@ button:disabled{
 
     <div class="topbar">
 
-        <h1>Withdraw</h1>
+        <h1>
+            Withdraw
+        </h1>
 
-        <div class="user" id="userName">
+        <div
+            class="user"
+            id="userName"
+        >
             Loading...
         </div>
 
@@ -281,7 +303,10 @@ button:disabled{
             Available Balance
         </div>
 
-        <div class="balance" id="balance">
+        <div
+            class="balance"
+            id="balance"
+        >
             $0.00
         </div>
 
@@ -290,10 +315,35 @@ button:disabled{
 
     <div class="withdraw-box">
 
-        <h2>💸 Request Withdrawal</h2>
+        <h2>
+            💸 Request Withdrawal
+        </h2>
 
-        <div id="message" class="message"></div>
 
+        <div class="limit-box">
+
+            <strong>Withdrawal Limits</strong>
+
+            <br>
+
+            Minimum Withdrawal:
+            <strong>$110.00</strong>
+
+            <br>
+
+            Maximum Withdrawal:
+            <strong>$25,000.00</strong>
+
+        </div>
+
+
+        <div
+            id="message"
+            class="message"
+        ></div>
+
+
+        <!-- PAYMENT METHOD -->
 
         <div class="form-group">
 
@@ -315,8 +365,16 @@ button:disabled{
                     Nagad
                 </option>
 
+                <option value="Rocket">
+                    Rocket
+                </option>
+
                 <option value="PayPal">
                     PayPal
+                </option>
+
+                <option value="International Bank Account">
+                    International Bank Account
                 </option>
 
             </select>
@@ -324,20 +382,136 @@ button:disabled{
         </div>
 
 
-        <div class="form-group">
+        <!-- MOBILE PAYMENT -->
 
-            <label>
-                Payment Account / Number
+        <div
+            class="form-group"
+            id="mobileAccountBox"
+            style="display:none;"
+        >
+
+            <label id="mobileLabel">
+                Payment Number
             </label>
 
             <input
                 type="text"
                 id="paymentAccount"
-                placeholder="Enter bKash/Nagad number or PayPal email"
+                placeholder="Enter payment number"
             >
 
         </div>
 
+
+        <!-- PAYPAL -->
+
+        <div
+            class="paypal-fields"
+            id="paypalFields"
+        >
+
+            <div class="form-group">
+
+                <label>
+                    PayPal Email Address
+                </label>
+
+                <input
+                    type="email"
+                    id="paypalEmail"
+                    placeholder="Enter your PayPal email"
+                >
+
+            </div>
+
+        </div>
+
+
+        <!-- INTERNATIONAL BANK -->
+
+        <div
+            class="bank-fields"
+            id="bankFields"
+        >
+
+            <div class="form-group">
+
+                <label>
+                    Account Holder Name
+                </label>
+
+                <input
+                    type="text"
+                    id="accountHolder"
+                    placeholder="Enter account holder name"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Bank Name
+                </label>
+
+                <input
+                    type="text"
+                    id="bankName"
+                    placeholder="Enter bank name"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Account Number / IBAN
+                </label>
+
+                <input
+                    type="text"
+                    id="accountNumber"
+                    placeholder="Enter account number or IBAN"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    SWIFT / BIC Code
+                </label>
+
+                <input
+                    type="text"
+                    id="swiftCode"
+                    placeholder="Enter SWIFT / BIC Code"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Bank Country
+                </label>
+
+                <input
+                    type="text"
+                    id="bankCountry"
+                    placeholder="Enter bank country"
+                >
+
+            </div>
+
+        </div>
+
+
+        <!-- AMOUNT -->
 
         <div class="form-group">
 
@@ -348,9 +522,10 @@ button:disabled{
             <input
                 type="number"
                 id="amount"
-                min="1"
+                min="110"
+                max="25000"
                 step="0.01"
-                placeholder="Enter amount"
+                placeholder="Minimum $110 - Maximum $25,000"
             >
 
         </div>
@@ -364,7 +539,19 @@ button:disabled{
 
 
         <div class="note">
-            Minimum withdrawal amount will be configured in the next step.
+
+            Minimum withdrawal:
+            <strong>$110.00</strong>
+
+            <br>
+
+            Maximum withdrawal:
+            <strong>$25,000.00</strong>
+
+            <br>
+
+            Withdrawal requests will be reviewed by Admin.
+
         </div>
 
     </div>
@@ -373,6 +560,10 @@ button:disabled{
 
 
 <script type="module">
+
+/* =========================================
+   SUPABASE
+========================================= */
 
 const SUPABASE_URL =
 "https://rvwboegeisnrhwicvvhj.supabase.co";
@@ -393,13 +584,19 @@ const supabase =
     );
 
 
+/* =========================================
+   MESSAGE
+========================================= */
+
 function showMessage(
     text,
     type
 ){
 
     const message =
-        document.getElementById("message");
+        document.getElementById(
+            "message"
+        );
 
     message.textContent =
         text;
@@ -410,18 +607,27 @@ function showMessage(
 }
 
 
+/* =========================================
+   LOAD USER + WALLET
+========================================= */
+
 async function loadUser(){
 
     const {
         data:{
             user
         },
-        error
+        error:userError
     } =
-    await supabase.auth.getUser();
+    await supabase
+        .auth
+        .getUser();
 
 
-    if(error || !user){
+    if(
+        userError ||
+        !user
+    ){
 
         window.location.href =
             "login.html";
@@ -441,14 +647,15 @@ async function loadUser(){
 
         .select("*")
 
-        .eq("id",user.id)
+        .eq(
+            "id",
+            user.id
+        )
 
         .single();
 
 
     if(profileError){
-
-        console.error(profileError);
 
         showMessage(
             "Unable to load profile: " +
@@ -470,13 +677,40 @@ async function loadUser(){
         "Worker";
 
 
-    /*
-       Balance field support
-    */
+    const {
+        data:wallet,
+        error:walletError
+    } =
+    await supabase
+
+        .from("wallets")
+
+        .select("balance")
+
+        .eq(
+            "user_id",
+            user.id
+        )
+
+        .single();
+
+
+    if(walletError){
+
+        showMessage(
+            "Unable to load wallet: " +
+            walletError.message,
+            "error"
+        );
+
+        return null;
+
+    }
+
 
     const balance =
         Number(
-            profile.balance ?? 0
+            wallet.balance || 0
         );
 
 
@@ -490,27 +724,129 @@ async function loadUser(){
 
     return {
         user,
-        profile
+        profile,
+        wallet
     };
 
 }
 
 
+/* =========================================
+   PAYMENT METHOD
+========================================= */
+
 document
-.getElementById("withdrawBtn")
+.getElementById(
+    "paymentMethod"
+)
+.addEventListener(
+    "change",
+    function(){
+
+        const method =
+            this.value;
+
+
+        const mobileBox =
+            document.getElementById(
+                "mobileAccountBox"
+            );
+
+        const mobileLabel =
+            document.getElementById(
+                "mobileLabel"
+            );
+
+        const paypalFields =
+            document.getElementById(
+                "paypalFields"
+            );
+
+        const bankFields =
+            document.getElementById(
+                "bankFields"
+            );
+
+
+        mobileBox.style.display =
+            "none";
+
+        paypalFields.classList.remove(
+            "show"
+        );
+
+        bankFields.classList.remove(
+            "show"
+        );
+
+
+        if(
+            method === "bKash" ||
+            method === "Nagad" ||
+            method === "Rocket"
+        ){
+
+            mobileBox.style.display =
+                "block";
+
+            mobileLabel.textContent =
+                method +
+                " Number";
+
+        }
+
+
+        if(
+            method === "PayPal"
+        ){
+
+            paypalFields.classList.add(
+                "show"
+            );
+
+        }
+
+
+        if(
+            method ===
+            "International Bank Account"
+        ){
+
+            bankFields.classList.add(
+                "show"
+            );
+
+        }
+
+    }
+);
+
+
+/* =========================================
+   WITHDRAW VALIDATION
+========================================= */
+
+document
+.getElementById(
+    "withdrawBtn"
+)
 .addEventListener(
     "click",
     async function(){
+
+        const button =
+            this;
+
+
+        button.disabled =
+            true;
+
 
         const method =
             document.getElementById(
                 "paymentMethod"
             ).value;
 
-        const account =
-            document.getElementById(
-                "paymentAccount"
-            ).value.trim();
 
         const amount =
             Number(
@@ -527,29 +863,43 @@ document
                 "error"
             );
 
-            return;
-
-        }
-
-
-        if(!account){
-
-            showMessage(
-                "Please enter your payment account.",
-                "error"
-            );
+            button.disabled =
+                false;
 
             return;
 
         }
 
 
-        if(!amount || amount <= 0){
+        if(
+            !amount ||
+            amount < 110
+        ){
 
             showMessage(
-                "Please enter a valid withdrawal amount.",
+                "Minimum withdrawal amount is $110.00.",
                 "error"
             );
+
+            button.disabled =
+                false;
+
+            return;
+
+        }
+
+
+        if(
+            amount > 25000
+        ){
+
+            showMessage(
+                "Maximum withdrawal amount is $25,000.00.",
+                "error"
+            );
+
+            button.disabled =
+                false;
 
             return;
 
@@ -562,6 +912,9 @@ document
 
         if(!current){
 
+            button.disabled =
+                false;
+
             return;
 
         }
@@ -569,48 +922,201 @@ document
 
         const balance =
             Number(
-                current.profile.balance ?? 0
+                current.wallet.balance || 0
             );
 
 
-        if(amount > balance){
+        if(
+            amount > balance
+        ){
 
             showMessage(
-                "Insufficient balance.",
+                "Insufficient balance. Available balance: $" +
+                balance.toFixed(2),
                 "error"
             );
+
+            button.disabled =
+                false;
 
             return;
 
         }
 
 
-        /*
-         IMPORTANT:
+        /* Mobile Payment */
 
-         Withdrawal database insert will be
-         connected in the next step after
-         the withdrawals table is created.
-        */
+        if(
+            method === "bKash" ||
+            method === "Nagad" ||
+            method === "Rocket"
+        ){
+
+            const account =
+                document.getElementById(
+                    "paymentAccount"
+                ).value.trim();
+
+
+            if(!account){
+
+                showMessage(
+                    "Please enter your " +
+                    method +
+                    " number.",
+                    "error"
+                );
+
+                button.disabled =
+                    false;
+
+                return;
+
+            }
+
+        }
+
+
+        /* PayPal */
+
+        if(
+            method === "PayPal"
+        ){
+
+            const email =
+                document.getElementById(
+                    "paypalEmail"
+                ).value.trim();
+
+
+            if(!email){
+
+                showMessage(
+                    "Please enter your PayPal email.",
+                    "error"
+                );
+
+                button.disabled =
+                    false;
+
+                return;
+
+            }
+
+
+            if(
+                !email.includes("@")
+            ){
+
+                showMessage(
+                    "Please enter a valid PayPal email.",
+                    "error"
+                );
+
+                button.disabled =
+                    false;
+
+                return;
+
+            }
+
+        }
+
+
+        /* International Bank */
+
+        if(
+            method ===
+            "International Bank Account"
+        ){
+
+            const holder =
+                document.getElementById(
+                    "accountHolder"
+                ).value.trim();
+
+            const bank =
+                document.getElementById(
+                    "bankName"
+                ).value.trim();
+
+            const account =
+                document.getElementById(
+                    "accountNumber"
+                ).value.trim();
+
+            const swift =
+                document.getElementById(
+                    "swiftCode"
+                ).value.trim();
+
+            const country =
+                document.getElementById(
+                    "bankCountry"
+                ).value.trim();
+
+
+            if(
+                !holder ||
+                !bank ||
+                !account ||
+                !swift ||
+                !country
+            ){
+
+                showMessage(
+                    "Please complete all international bank account information.",
+                    "error"
+                );
+
+                button.disabled =
+                    false;
+
+                return;
+
+            }
+
+        }
+
+
+        /*
+         * Validation successful.
+         * Database connection will be added
+         * after withdrawals table is created.
+         */
 
         showMessage(
-            "Withdrawal form is working. Database setup is the next step.",
+            "Withdrawal information is valid. Ready for withdrawal request.",
             "success"
         );
+
+
+        button.disabled =
+            false;
 
     }
 );
 
 
+/* =========================================
+   LOGOUT
+========================================= */
+
 document
-.getElementById("logoutBtn")
+.getElementById(
+    "logoutBtn"
+)
 .addEventListener(
     "click",
     async function(event){
 
         event.preventDefault();
 
-        await supabase.auth.signOut();
+
+        await supabase
+            .auth
+            .signOut();
+
 
         window.location.href =
             "login.html";
@@ -619,9 +1125,14 @@ document
 );
 
 
+/* =========================================
+   START
+========================================= */
+
 loadUser();
 
 </script>
 
 </body>
 </html>
+```
