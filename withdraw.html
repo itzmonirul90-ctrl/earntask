@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Withdraw - EarnTask</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    font-family:Arial,sans-serif;
+    background:#f8fafc;
+    color:#172033;
+}
+
+.sidebar{
+    position:fixed;
+    left:0;
+    top:0;
+    width:230px;
+    height:100vh;
+    background:#111827;
+    color:white;
+    padding:25px 10px;
+}
+
+.logo{
+    text-align:center;
+    font-size:28px;
+    font-weight:800;
+    margin-bottom:35px;
+}
+
+.logo span{
+    color:#22c55e;
+}
+
+.sidebar a{
+    display:block;
+    color:#d1d5db;
+    text-decoration:none;
+    padding:13px 15px;
+    margin-bottom:7px;
+    border-radius:8px;
+}
+
+.sidebar a:hover,
+.sidebar a.active{
+    background:#16a34a;
+    color:white;
+}
+
+.logout{
+    position:absolute;
+    bottom:25px;
+    left:10px;
+    right:10px;
+    background:#dc2626 !important;
+    text-align:center;
+}
+
+.main{
+    margin-left:230px;
+    padding:35px;
+    max-width:1000px;
+}
+
+.topbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:30px;
+}
+
+.topbar h1{
+    font-size:32px;
+}
+
+.user{
+    background:white;
+    padding:11px 18px;
+    border-radius:10px;
+    box-shadow:0 3px 15px rgba(0,0,0,.05);
+}
+
+.balance-card{
+    background:linear-gradient(135deg,#16a34a,#15803d);
+    color:white;
+    padding:30px;
+    border-radius:16px;
+    margin-bottom:25px;
+    box-shadow:0 8px 25px rgba(0,0,0,.08);
+}
+
+.balance-title{
+    font-size:15px;
+    opacity:.9;
+    margin-bottom:10px;
+}
+
+.balance{
+    font-size:38px;
+    font-weight:800;
+}
+
+.withdraw-box{
+    background:white;
+    padding:30px;
+    border-radius:16px;
+    box-shadow:0 5px 20px rgba(0,0,0,.05);
+}
+
+.withdraw-box h2{
+    margin-bottom:25px;
+}
+
+.form-group{
+    margin-bottom:20px;
+}
+
+label{
+    display:block;
+    font-weight:700;
+    margin-bottom:8px;
+}
+
+select,
+input{
+    width:100%;
+    padding:13px;
+    border:1px solid #d1d5db;
+    border-radius:8px;
+    font-size:15px;
+    outline:none;
+}
+
+select:focus,
+input:focus{
+    border-color:#16a34a;
+}
+
+button{
+    width:100%;
+    border:none;
+    padding:14px;
+    border-radius:8px;
+    background:#16a34a;
+    color:white;
+    font-size:16px;
+    font-weight:700;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#15803d;
+}
+
+button:disabled{
+    opacity:.6;
+    cursor:not-allowed;
+}
+
+.message{
+    display:none;
+    padding:13px;
+    border-radius:8px;
+    margin-bottom:20px;
+}
+
+.message.success{
+    display:block;
+    background:#dcfce7;
+    color:#166534;
+}
+
+.message.error{
+    display:block;
+    background:#fef2f2;
+    color:#991b1b;
+}
+
+.note{
+    margin-top:15px;
+    color:#64748b;
+    font-size:13px;
+}
+
+@media(max-width:800px){
+
+    .sidebar{
+        position:relative;
+        width:100%;
+        height:auto;
+    }
+
+    .logout{
+        position:relative;
+        left:auto;
+        right:auto;
+        bottom:auto;
+    }
+
+    .main{
+        margin-left:0;
+        padding:20px;
+    }
+
+    .topbar{
+        display:block;
+    }
+
+    .user{
+        display:inline-block;
+        margin-top:12px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<aside class="sidebar">
+
+    <div class="logo">
+        Earn<span>Task</span>
+    </div>
+
+    <a href="worker-dashboard.html">
+        🏠 Dashboard
+    </a>
+
+    <a href="worker-dashboard.html#availableJobs">
+        💼 Available Jobs
+    </a>
+
+    <a href="submissions.html">
+        📤 My Submissions
+    </a>
+
+    <a href="#">
+        💰 Earnings
+    </a>
+
+    <a href="withdraw.html" class="active">
+        💸 Withdraw
+    </a>
+
+    <a href="profile.html">
+        👤 Profile
+    </a>
+
+    <a href="#" id="logoutBtn" class="logout">
+        🚪 Logout
+    </a>
+
+</aside>
+
+
+<main class="main">
+
+    <div class="topbar">
+
+        <h1>Withdraw</h1>
+
+        <div class="user" id="userName">
+            Loading...
+        </div>
+
+    </div>
+
+
+    <div class="balance-card">
+
+        <div class="balance-title">
+            Available Balance
+        </div>
+
+        <div class="balance" id="balance">
+            $0.00
+        </div>
+
+    </div>
+
+
+    <div class="withdraw-box">
+
+        <h2>💸 Request Withdrawal</h2>
+
+        <div id="message" class="message"></div>
+
+
+        <div class="form-group">
+
+            <label>
+                Payment Method
+            </label>
+
+            <select id="paymentMethod">
+
+                <option value="">
+                    Select Payment Method
+                </option>
+
+                <option value="bKash">
+                    bKash
+                </option>
+
+                <option value="Nagad">
+                    Nagad
+                </option>
+
+                <option value="PayPal">
+                    PayPal
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>
+                Payment Account / Number
+            </label>
+
+            <input
+                type="text"
+                id="paymentAccount"
+                placeholder="Enter bKash/Nagad number or PayPal email"
+            >
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>
+                Withdrawal Amount
+            </label>
+
+            <input
+                type="number"
+                id="amount"
+                min="1"
+                step="0.01"
+                placeholder="Enter amount"
+            >
+
+        </div>
+
+
+        <button
+            id="withdrawBtn"
+        >
+            Request Withdrawal
+        </button>
+
+
+        <div class="note">
+            Minimum withdrawal amount will be configured in the next step.
+        </div>
+
+    </div>
+
+</main>
+
+
+<script type="module">
+
+const SUPABASE_URL =
+"https://rvwboegeisnrhwicvvhj.supabase.co";
+
+const SUPABASE_KEY =
+"sb_publishable_Kz3hgj9W0khG3JEIclhx2g_HZ6eSyQQ";
+
+import {
+    createClient
+}
+from
+"https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+
+const supabase =
+    createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
+
+
+function showMessage(
+    text,
+    type
+){
+
+    const message =
+        document.getElementById("message");
+
+    message.textContent =
+        text;
+
+    message.className =
+        "message " + type;
+
+}
+
+
+async function loadUser(){
+
+    const {
+        data:{
+            user
+        },
+        error
+    } =
+    await supabase.auth.getUser();
+
+
+    if(error || !user){
+
+        window.location.href =
+            "login.html";
+
+        return null;
+
+    }
+
+
+    const {
+        data:profile,
+        error:profileError
+    } =
+    await supabase
+
+        .from("profiles")
+
+        .select("*")
+
+        .eq("id",user.id)
+
+        .single();
+
+
+    if(profileError){
+
+        console.error(profileError);
+
+        showMessage(
+            "Unable to load profile: " +
+            profileError.message,
+            "error"
+        );
+
+        return null;
+
+    }
+
+
+    document.getElementById(
+        "userName"
+    ).textContent =
+
+        profile.full_name ||
+        profile.username ||
+        "Worker";
+
+
+    /*
+       Balance field support
+    */
+
+    const balance =
+        Number(
+            profile.balance ?? 0
+        );
+
+
+    document.getElementById(
+        "balance"
+    ).textContent =
+
+        "$" +
+        balance.toFixed(2);
+
+
+    return {
+        user,
+        profile
+    };
+
+}
+
+
+document
+.getElementById("withdrawBtn")
+.addEventListener(
+    "click",
+    async function(){
+
+        const method =
+            document.getElementById(
+                "paymentMethod"
+            ).value;
+
+        const account =
+            document.getElementById(
+                "paymentAccount"
+            ).value.trim();
+
+        const amount =
+            Number(
+                document.getElementById(
+                    "amount"
+                ).value
+            );
+
+
+        if(!method){
+
+            showMessage(
+                "Please select a payment method.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        if(!account){
+
+            showMessage(
+                "Please enter your payment account.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        if(!amount || amount <= 0){
+
+            showMessage(
+                "Please enter a valid withdrawal amount.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        const current =
+            await loadUser();
+
+
+        if(!current){
+
+            return;
+
+        }
+
+
+        const balance =
+            Number(
+                current.profile.balance ?? 0
+            );
+
+
+        if(amount > balance){
+
+            showMessage(
+                "Insufficient balance.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        /*
+         IMPORTANT:
+
+         Withdrawal database insert will be
+         connected in the next step after
+         the withdrawals table is created.
+        */
+
+        showMessage(
+            "Withdrawal form is working. Database setup is the next step.",
+            "success"
+        );
+
+    }
+);
+
+
+document
+.getElementById("logoutBtn")
+.addEventListener(
+    "click",
+    async function(event){
+
+        event.preventDefault();
+
+        await supabase.auth.signOut();
+
+        window.location.href =
+            "login.html";
+
+    }
+);
+
+
+loadUser();
+
+</script>
+
+</body>
+</html>
