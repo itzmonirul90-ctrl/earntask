@@ -7,11 +7,7 @@
 <title>Withdraw - EarnTask</title>
 
 <style>
-*{
-    box-sizing:border-box;
-    margin:0;
-    padding:0;
-}
+*{box-sizing:border-box;margin:0;padding:0}
 
 body{
     font-family:Arial,sans-serif;
@@ -37,9 +33,7 @@ body{
     margin-bottom:35px;
 }
 
-.logo span{
-    color:#22c55e;
-}
+.logo span{color:#22c55e}
 
 .sidebar a{
     display:block;
@@ -61,7 +55,7 @@ body{
     bottom:25px;
     left:10px;
     right:10px;
-    background:#dc2626 !important;
+    background:#dc2626!important;
     text-align:center;
 }
 
@@ -78,9 +72,7 @@ body{
     margin-bottom:30px;
 }
 
-.topbar h1{
-    font-size:32px;
-}
+.topbar h1{font-size:32px}
 
 .user{
     background:white;
@@ -95,7 +87,6 @@ body{
     padding:30px;
     border-radius:16px;
     margin-bottom:25px;
-    box-shadow:0 8px 25px rgba(0,0,0,.08);
 }
 
 .balance-title{
@@ -116,9 +107,7 @@ body{
     box-shadow:0 5px 20px rgba(0,0,0,.05);
 }
 
-.withdraw-box h2{
-    margin-bottom:25px;
-}
+.withdraw-box h2{margin-bottom:25px}
 
 .limit-box{
     background:#f0fdf4;
@@ -130,9 +119,7 @@ body{
     line-height:1.7;
 }
 
-.form-group{
-    margin-bottom:20px;
-}
+.form-group{margin-bottom:20px}
 
 label{
     display:block;
@@ -167,9 +154,7 @@ button{
     cursor:pointer;
 }
 
-button:hover{
-    background:#15803d;
-}
+button:hover{background:#15803d}
 
 button:disabled{
     opacity:.6;
@@ -283,9 +268,7 @@ button:disabled{
 
     <div class="topbar">
 
-        <h1>
-            Withdraw
-        </h1>
+        <h1>Withdraw</h1>
 
         <div
             class="user"
@@ -315,9 +298,7 @@ button:disabled{
 
     <div class="withdraw-box">
 
-        <h2>
-            💸 Request Withdrawal
-        </h2>
+        <h2>💸 Request Withdrawal</h2>
 
 
         <div class="limit-box">
@@ -343,13 +324,9 @@ button:disabled{
         ></div>
 
 
-        <!-- PAYMENT METHOD -->
-
         <div class="form-group">
 
-            <label>
-                Payment Method
-            </label>
+            <label>Payment Method</label>
 
             <select id="paymentMethod">
 
@@ -382,12 +359,12 @@ button:disabled{
         </div>
 
 
-        <!-- MOBILE PAYMENT -->
+        <!-- bKASH / NAGAD / ROCKET -->
 
         <div
             class="form-group"
             id="mobileAccountBox"
-            style="display:none;"
+            style="display:none"
         >
 
             <label id="mobileLabel">
@@ -531,9 +508,7 @@ button:disabled{
         </div>
 
 
-        <button
-            id="withdrawBtn"
-        >
+        <button id="withdrawBtn">
             Request Withdrawal
         </button>
 
@@ -550,7 +525,7 @@ button:disabled{
 
             <br>
 
-            Withdrawal requests will be reviewed by Admin.
+            Your withdrawal request will be reviewed by Admin.
 
         </div>
 
@@ -585,7 +560,7 @@ const supabase =
 
 
 /* =========================================
-   MESSAGE
+   SHOW MESSAGE
 ========================================= */
 
 function showMessage(
@@ -608,7 +583,7 @@ function showMessage(
 
 
 /* =========================================
-   LOAD USER + WALLET
+   LOAD USER
 ========================================= */
 
 async function loadUser(){
@@ -658,7 +633,7 @@ async function loadUser(){
     if(profileError){
 
         showMessage(
-            "Unable to load profile: " +
+            "Profile error: " +
             profileError.message,
             "error"
         );
@@ -698,7 +673,7 @@ async function loadUser(){
     if(walletError){
 
         showMessage(
-            "Unable to load wallet: " +
+            "Wallet error: " +
             walletError.message,
             "error"
         );
@@ -725,14 +700,15 @@ async function loadUser(){
     return {
         user,
         profile,
-        wallet
+        wallet,
+        balance
     };
 
 }
 
 
 /* =========================================
-   PAYMENT METHOD
+   PAYMENT METHOD CHANGE
 ========================================= */
 
 document
@@ -790,8 +766,7 @@ document
                 "block";
 
             mobileLabel.textContent =
-                method +
-                " Number";
+                method + " Number";
 
         }
 
@@ -823,7 +798,7 @@ document
 
 
 /* =========================================
-   WITHDRAW VALIDATION
+   REQUEST WITHDRAWAL
 ========================================= */
 
 document
@@ -837,262 +812,484 @@ document
         const button =
             this;
 
-
         button.disabled =
             true;
 
+        button.textContent =
+            "Submitting...";
 
-        const method =
+
+        try{
+
+            const method =
+                document.getElementById(
+                    "paymentMethod"
+                ).value;
+
+
+            const amount =
+                Number(
+                    document.getElementById(
+                        "amount"
+                    ).value
+                );
+
+
+            /* METHOD CHECK */
+
+            if(!method){
+
+                showMessage(
+                    "Please select a payment method.",
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            /* AMOUNT CHECK */
+
+            if(
+                !amount ||
+                amount < 110
+            ){
+
+                showMessage(
+                    "Minimum withdrawal amount is $110.00.",
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            if(
+                amount > 25000
+            ){
+
+                showMessage(
+                    "Maximum withdrawal amount is $25,000.00.",
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            /* LOAD USER */
+
+            const current =
+                await loadUser();
+
+
+            if(!current){
+
+                return;
+
+            }
+
+
+            const balance =
+                Number(
+                    current.balance || 0
+                );
+
+
+            /* BALANCE CHECK */
+
+            if(
+                amount > balance
+            ){
+
+                showMessage(
+                    "Insufficient balance. Available balance: $" +
+                    balance.toFixed(2),
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            /* PAYMENT DATA */
+
+            let paymentAccount = null;
+
+            let accountHolderName = null;
+
+            let bankName = null;
+
+            let accountNumber = null;
+
+            let swiftCode = null;
+
+            let bankCountry = null;
+
+
+            /* MOBILE */
+
+            if(
+                method === "bKash" ||
+                method === "Nagad" ||
+                method === "Rocket"
+            ){
+
+                paymentAccount =
+                    document
+                    .getElementById(
+                        "paymentAccount"
+                    )
+                    .value
+                    .trim();
+
+
+                if(!paymentAccount){
+
+                    showMessage(
+                        "Please enter your " +
+                        method +
+                        " number.",
+                        "error"
+                    );
+
+                    return;
+
+                }
+
+            }
+
+
+            /* PAYPAL */
+
+            if(
+                method === "PayPal"
+            ){
+
+                paymentAccount =
+                    document
+                    .getElementById(
+                        "paypalEmail"
+                    )
+                    .value
+                    .trim();
+
+
+                if(!paymentAccount){
+
+                    showMessage(
+                        "Please enter your PayPal email.",
+                        "error"
+                    );
+
+                    return;
+
+                }
+
+
+                if(
+                    !paymentAccount.includes("@")
+                ){
+
+                    showMessage(
+                        "Please enter a valid PayPal email.",
+                        "error"
+                    );
+
+                    return;
+
+                }
+
+            }
+
+
+            /* BANK */
+
+            if(
+                method ===
+                "International Bank Account"
+            ){
+
+                accountHolderName =
+                    document
+                    .getElementById(
+                        "accountHolder"
+                    )
+                    .value
+                    .trim();
+
+
+                bankName =
+                    document
+                    .getElementById(
+                        "bankName"
+                    )
+                    .value
+                    .trim();
+
+
+                accountNumber =
+                    document
+                    .getElementById(
+                        "accountNumber"
+                    )
+                    .value
+                    .trim();
+
+
+                swiftCode =
+                    document
+                    .getElementById(
+                        "swiftCode"
+                    )
+                    .value
+                    .trim();
+
+
+                bankCountry =
+                    document
+                    .getElementById(
+                        "bankCountry"
+                    )
+                    .value
+                    .trim();
+
+
+                if(
+                    !accountHolderName ||
+                    !bankName ||
+                    !accountNumber ||
+                    !swiftCode ||
+                    !bankCountry
+                ){
+
+                    showMessage(
+                        "Please complete all international bank account information.",
+                        "error"
+                    );
+
+                    return;
+
+                }
+
+            }
+
+
+            /* =================================
+               CHECK EXISTING PENDING REQUEST
+            ================================= */
+
+            const {
+                data:existing,
+                error:existingError
+            } =
+            await supabase
+
+                .from("withdrawals")
+
+                .select("id")
+
+                .eq(
+                    "user_id",
+                    current.user.id
+                )
+
+                .eq(
+                    "status",
+                    "pending"
+                )
+                
+                .limit(1);
+
+
+            if(existingError){
+
+                showMessage(
+                    "Unable to check withdrawal request: " +
+                    existingError.message,
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            if(
+                existing &&
+                existing.length > 0
+            ){
+
+                showMessage(
+                    "You already have a pending withdrawal request.",
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            /* =================================
+               INSERT WITHDRAWAL
+            ================================= */
+
+            const {
+                data:withdrawal,
+                error:insertError
+            } =
+            await supabase
+
+                .from("withdrawals")
+
+                .insert({
+
+                    user_id:
+                        current.user.id,
+
+                    amount:
+                        amount,
+
+                    payment_method:
+                        method,
+
+                    payment_account:
+                        paymentAccount,
+
+                    account_holder_name:
+                        accountHolderName,
+
+                    bank_name:
+                        bankName,
+
+                    account_number:
+                        accountNumber,
+
+                    swift_code:
+                        swiftCode,
+
+                    bank_country:
+                        bankCountry,
+
+                    status:
+                        "pending"
+
+                })
+
+                .select()
+                .single();
+
+
+            if(insertError){
+
+                console.error(
+                    insertError
+                );
+
+                showMessage(
+                    "Withdrawal failed: " +
+                    insertError.message,
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            showMessage(
+                "Withdrawal request submitted successfully! Waiting for Admin approval.",
+                "success"
+            );
+
+
+            /* CLEAR FORM */
+
             document.getElementById(
                 "paymentMethod"
-            ).value;
+            ).value = "";
+
+            document.getElementById(
+                "paymentAccount"
+            ).value = "";
+
+            document.getElementById(
+                "paypalEmail"
+            ).value = "";
+
+            document.getElementById(
+                "accountHolder"
+            ).value = "";
+
+            document.getElementById(
+                "bankName"
+            ).value = "";
+
+            document.getElementById(
+                "accountNumber"
+            ).value = "";
+
+            document.getElementById(
+                "swiftCode"
+            ).value = "";
+
+            document.getElementById(
+                "bankCountry"
+            ).value = "";
+
+            document.getElementById(
+                "amount"
+            ).value = "";
 
 
-        const amount =
-            Number(
-                document.getElementById(
-                    "amount"
-                ).value
+            document.getElementById(
+                "mobileAccountBox"
+            ).style.display =
+                "none";
+
+
+            document.getElementById(
+                "paypalFields"
+            ).classList.remove(
+                "show"
             );
 
 
-        if(!method){
+            document.getElementById(
+                "bankFields"
+            ).classList.remove(
+                "show"
+            );
+
+        }
+
+        catch(error){
+
+            console.error(
+                error
+            );
 
             showMessage(
-                "Please select a payment method.",
+                "Unexpected error: " +
+                error.message,
                 "error"
             );
 
-            button.disabled =
-                false;
-
-            return;
-
         }
 
-
-        if(
-            !amount ||
-            amount < 110
-        ){
-
-            showMessage(
-                "Minimum withdrawal amount is $110.00.",
-                "error"
-            );
+        finally{
 
             button.disabled =
                 false;
 
-            return;
+            button.textContent =
+                "Request Withdrawal";
 
         }
-
-
-        if(
-            amount > 25000
-        ){
-
-            showMessage(
-                "Maximum withdrawal amount is $25,000.00.",
-                "error"
-            );
-
-            button.disabled =
-                false;
-
-            return;
-
-        }
-
-
-        const current =
-            await loadUser();
-
-
-        if(!current){
-
-            button.disabled =
-                false;
-
-            return;
-
-        }
-
-
-        const balance =
-            Number(
-                current.wallet.balance || 0
-            );
-
-
-        if(
-            amount > balance
-        ){
-
-            showMessage(
-                "Insufficient balance. Available balance: $" +
-                balance.toFixed(2),
-                "error"
-            );
-
-            button.disabled =
-                false;
-
-            return;
-
-        }
-
-
-        /* Mobile Payment */
-
-        if(
-            method === "bKash" ||
-            method === "Nagad" ||
-            method === "Rocket"
-        ){
-
-            const account =
-                document.getElementById(
-                    "paymentAccount"
-                ).value.trim();
-
-
-            if(!account){
-
-                showMessage(
-                    "Please enter your " +
-                    method +
-                    " number.",
-                    "error"
-                );
-
-                button.disabled =
-                    false;
-
-                return;
-
-            }
-
-        }
-
-
-        /* PayPal */
-
-        if(
-            method === "PayPal"
-        ){
-
-            const email =
-                document.getElementById(
-                    "paypalEmail"
-                ).value.trim();
-
-
-            if(!email){
-
-                showMessage(
-                    "Please enter your PayPal email.",
-                    "error"
-                );
-
-                button.disabled =
-                    false;
-
-                return;
-
-            }
-
-
-            if(
-                !email.includes("@")
-            ){
-
-                showMessage(
-                    "Please enter a valid PayPal email.",
-                    "error"
-                );
-
-                button.disabled =
-                    false;
-
-                return;
-
-            }
-
-        }
-
-
-        /* International Bank */
-
-        if(
-            method ===
-            "International Bank Account"
-        ){
-
-            const holder =
-                document.getElementById(
-                    "accountHolder"
-                ).value.trim();
-
-            const bank =
-                document.getElementById(
-                    "bankName"
-                ).value.trim();
-
-            const account =
-                document.getElementById(
-                    "accountNumber"
-                ).value.trim();
-
-            const swift =
-                document.getElementById(
-                    "swiftCode"
-                ).value.trim();
-
-            const country =
-                document.getElementById(
-                    "bankCountry"
-                ).value.trim();
-
-
-            if(
-                !holder ||
-                !bank ||
-                !account ||
-                !swift ||
-                !country
-            ){
-
-                showMessage(
-                    "Please complete all international bank account information.",
-                    "error"
-                );
-
-                button.disabled =
-                    false;
-
-                return;
-
-            }
-
-        }
-
-
-        /*
-         * Validation successful.
-         * Database connection will be added
-         * after withdrawals table is created.
-         */
-
-        showMessage(
-            "Withdrawal information is valid. Ready for withdrawal request.",
-            "success"
-        );
-
-
-        button.disabled =
-            false;
 
     }
 );
@@ -1112,11 +1309,9 @@ document
 
         event.preventDefault();
 
-
         await supabase
             .auth
             .signOut();
-
 
         window.location.href =
             "login.html";
