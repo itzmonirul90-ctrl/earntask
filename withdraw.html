@@ -3,16 +3,20 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Withdraw - EarnTask</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Admin Withdrawal - EarnTask</title>
 
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
 
 body{
     font-family:Arial,sans-serif;
-    background:#f8fafc;
-    color:#172033;
+    background:#f3f4f6;
+    color:#111827;
 }
 
 .sidebar{
@@ -23,7 +27,7 @@ body{
     height:100vh;
     background:#111827;
     color:white;
-    padding:25px 10px;
+    padding:25px 12px;
 }
 
 .logo{
@@ -33,14 +37,16 @@ body{
     margin-bottom:35px;
 }
 
-.logo span{color:#22c55e}
+.logo span{
+    color:#22c55e;
+}
 
 .sidebar a{
     display:block;
-    color:#d1d5db;
-    text-decoration:none;
     padding:13px 15px;
     margin-bottom:7px;
+    color:#d1d5db;
+    text-decoration:none;
     border-radius:8px;
 }
 
@@ -50,128 +56,81 @@ body{
     color:white;
 }
 
-.logout{
-    position:absolute;
-    bottom:25px;
-    left:10px;
-    right:10px;
-    background:#dc2626!important;
-    text-align:center;
-}
-
 .main{
     margin-left:230px;
     padding:35px;
-    max-width:1000px;
 }
 
-.topbar{
+.header{
     display:flex;
     justify-content:space-between;
     align-items:center;
-    margin-bottom:30px;
+    margin-bottom:25px;
 }
 
-.topbar h1{font-size:32px}
+.header h1{
+    font-size:30px;
+}
 
-.user{
+.admin{
     background:white;
-    padding:11px 18px;
+    padding:12px 18px;
     border-radius:10px;
+    box-shadow:0 3px 12px rgba(0,0,0,.06);
+}
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:20px;
+    margin-bottom:25px;
+}
+
+.stat{
+    background:white;
+    padding:22px;
+    border-radius:14px;
     box-shadow:0 3px 15px rgba(0,0,0,.05);
 }
 
-.balance-card{
-    background:linear-gradient(135deg,#16a34a,#15803d);
-    color:white;
-    padding:30px;
-    border-radius:16px;
-    margin-bottom:25px;
-}
-
-.balance-title{
-    font-size:15px;
-    opacity:.9;
-    margin-bottom:10px;
-}
-
-.balance{
-    font-size:38px;
-    font-weight:800;
-}
-
-.withdraw-box{
-    background:white;
-    padding:30px;
-    border-radius:16px;
-    box-shadow:0 5px 20px rgba(0,0,0,.05);
-}
-
-.withdraw-box h2{
-    margin-bottom:25px;
-}
-
-.limit-box{
-    background:#f0fdf4;
-    border:1px solid #bbf7d0;
-    color:#166534;
-    padding:15px;
-    border-radius:8px;
-    margin-bottom:20px;
-    line-height:1.7;
-}
-
-.form-group{
-    margin-bottom:20px;
-}
-
-label{
-    display:block;
-    font-weight:700;
+.stat-title{
+    color:#64748b;
     margin-bottom:8px;
 }
 
-select,
-input{
-    width:100%;
-    padding:13px;
-    border:1px solid #d1d5db;
-    border-radius:8px;
-    font-size:15px;
-    outline:none;
+.stat-number{
+    font-size:30px;
+    font-weight:800;
 }
 
-select:focus,
-input:focus{
-    border-color:#16a34a;
+.pending-number{
+    color:#d97706;
 }
 
-button{
-    width:100%;
-    border:none;
-    padding:14px;
-    border-radius:8px;
-    background:#16a34a;
-    color:white;
-    font-size:16px;
-    font-weight:700;
-    cursor:pointer;
+.approved-number{
+    color:#16a34a;
 }
 
-button:hover{
-    background:#15803d;
+.rejected-number{
+    color:#dc2626;
 }
 
-button:disabled{
-    opacity:.6;
-    cursor:not-allowed;
+.panel{
+    background:white;
+    border-radius:14px;
+    padding:25px;
+    box-shadow:0 3px 15px rgba(0,0,0,.05);
+}
+
+.panel h2{
+    margin-bottom:20px;
 }
 
 .message{
     display:none;
-    padding:13px;
-    border-radius:8px;
+    padding:14px;
     margin-bottom:20px;
+    border-radius:8px;
 }
 
 .message.success{
@@ -182,25 +141,116 @@ button:disabled{
 
 .message.error{
     display:block;
-    background:#fef2f2;
+    background:#fee2e2;
     color:#991b1b;
 }
 
-.bank-fields,
-.paypal-fields{
-    display:none;
+.withdrawal{
+    border:1px solid #e5e7eb;
+    border-radius:12px;
+    padding:20px;
+    margin-bottom:15px;
 }
 
-.bank-fields.show,
-.paypal-fields.show{
-    display:block;
+.withdrawal-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:15px;
 }
 
-.note{
-    margin-top:15px;
-    color:#64748b;
+.amount{
+    font-size:25px;
+    font-weight:800;
+    color:#16a34a;
+}
+
+.status{
+    padding:6px 12px;
+    border-radius:20px;
     font-size:13px;
-    line-height:1.6;
+    font-weight:700;
+}
+
+.status.pending{
+    background:#fef3c7;
+    color:#92400e;
+}
+
+.status.approved{
+    background:#dcfce7;
+    color:#166534;
+}
+
+.status.rejected{
+    background:#fee2e2;
+    color:#991b1b;
+}
+
+.info-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:10px;
+    margin-bottom:18px;
+}
+
+.info{
+    background:#f8fafc;
+    padding:10px;
+    border-radius:7px;
+}
+
+.info strong{
+    display:block;
+    font-size:12px;
+    color:#64748b;
+    margin-bottom:4px;
+}
+
+.actions{
+    display:flex;
+    gap:10px;
+}
+
+.actions button{
+    border:none;
+    padding:11px 20px;
+    border-radius:7px;
+    color:white;
+    font-weight:700;
+    cursor:pointer;
+}
+
+.approve{
+    background:#16a34a;
+}
+
+.approve:hover{
+    background:#15803d;
+}
+
+.reject{
+    background:#dc2626;
+}
+
+.reject:hover{
+    background:#b91c1c;
+}
+
+.actions button:disabled{
+    opacity:.5;
+    cursor:not-allowed;
+}
+
+.empty{
+    text-align:center;
+    padding:40px;
+    color:#64748b;
+}
+
+.loading{
+    text-align:center;
+    padding:30px;
 }
 
 @media(max-width:800px){
@@ -211,23 +261,24 @@ button:disabled{
         height:auto;
     }
 
-    .logout{
-        position:relative;
-        left:auto;
-        right:auto;
-        bottom:auto;
-    }
-
     .main{
         margin-left:0;
         padding:20px;
     }
 
-    .topbar{
+    .stats{
+        grid-template-columns:1fr;
+    }
+
+    .info-grid{
+        grid-template-columns:1fr;
+    }
+
+    .header{
         display:block;
     }
 
-    .user{
+    .admin{
         display:inline-block;
         margin-top:12px;
     }
@@ -243,27 +294,23 @@ button:disabled{
         Earn<span>Task</span>
     </div>
 
-    <a href="worker-dashboard.html">
+    <a href="admin-dashboard.html">
         🏠 Dashboard
     </a>
 
-    <a href="worker-dashboard.html#jobs">
-        💼 Available Jobs
+    <a href="admin-dashboard.html">
+        💼 Jobs
+    </a>
+
+    <a href="admin-withdrawals.html" class="active">
+        💸 Withdrawals
     </a>
 
     <a href="submissions.html">
-        📤 My Submissions
+        📤 Submissions
     </a>
 
-    <a href="#">
-        💰 Earnings
-    </a>
-
-    <a href="withdraw.html" class="active">
-        💸 Withdraw
-    </a>
-
-    <a href="#" id="logoutBtn" class="logout">
+    <a href="#" id="logoutBtn">
         🚪 Logout
     </a>
 
@@ -272,278 +319,87 @@ button:disabled{
 
 <main class="main">
 
-    <div class="topbar">
+    <div class="header">
 
-        <h1>Withdraw</h1>
+        <h1>
+            Withdrawal Requests
+        </h1>
 
-        <div
-            class="user"
-            id="userName"
-        >
-            Loading...
+        <div class="admin">
+            👑 Admin
         </div>
 
     </div>
 
 
-    <div class="balance-card">
+    <div class="stats">
 
-        <div class="balance-title">
-            Available Balance
+        <div class="stat">
+
+            <div class="stat-title">
+                Pending
+            </div>
+
+            <div
+                class="stat-number pending-number"
+                id="pendingCount"
+            >
+                0
+            </div>
+
         </div>
 
-        <div
-            class="balance"
-            id="balance"
-        >
-            $0.00
+
+        <div class="stat">
+
+            <div class="stat-title">
+                Approved
+            </div>
+
+            <div
+                class="stat-number approved-number"
+                id="approvedCount"
+            >
+                0
+            </div>
+
+        </div>
+
+
+        <div class="stat">
+
+            <div class="stat-title">
+                Rejected
+            </div>
+
+            <div
+                class="stat-number rejected-number"
+                id="rejectedCount"
+            >
+                0
+            </div>
+
         </div>
 
     </div>
 
 
-    <div class="withdraw-box">
+    <div class="panel">
 
         <h2>
-            💸 Request Withdrawal
+            💸 Withdrawal Requests
         </h2>
-
-
-        <div class="limit-box">
-
-            <strong>Withdrawal Limits</strong>
-
-            <br>
-
-            Minimum Withdrawal:
-            <strong>$1.00</strong>
-
-            <br>
-
-            Maximum Withdrawal:
-            <strong>$25,000.00</strong>
-
-            <br><br>
-
-            <strong>⚠️ Testing Mode:</strong>
-            Minimum withdrawal is temporarily $1.
-
-        </div>
-
 
         <div
             id="message"
             class="message"
         ></div>
 
-
-        <!-- PAYMENT METHOD -->
-
-        <div class="form-group">
-
-            <label>
-                Payment Method
-            </label>
-
-            <select id="paymentMethod">
-
-                <option value="">
-                    Select Payment Method
-                </option>
-
-                <option value="bKash">
-                    bKash
-                </option>
-
-                <option value="Nagad">
-                    Nagad
-                </option>
-
-                <option value="Rocket">
-                    Rocket
-                </option>
-
-                <option value="PayPal">
-                    PayPal
-                </option>
-
-                <option value="International Bank Account">
-                    International Bank Account
-                </option>
-
-            </select>
-
-        </div>
-
-
-        <!-- MOBILE PAYMENT -->
-
         <div
-            class="form-group"
-            id="mobileAccountBox"
-            style="display:none"
+            id="withdrawals"
+            class="loading"
         >
-
-            <label id="mobileLabel">
-                Payment Number
-            </label>
-
-            <input
-                type="text"
-                id="paymentAccount"
-                placeholder="Enter payment number"
-            >
-
-        </div>
-
-
-        <!-- PAYPAL -->
-
-        <div
-            class="paypal-fields"
-            id="paypalFields"
-        >
-
-            <div class="form-group">
-
-                <label>
-                    PayPal Email Address
-                </label>
-
-                <input
-                    type="email"
-                    id="paypalEmail"
-                    placeholder="Enter your PayPal email"
-                >
-
-            </div>
-
-        </div>
-
-
-        <!-- INTERNATIONAL BANK -->
-
-        <div
-            class="bank-fields"
-            id="bankFields"
-        >
-
-            <div class="form-group">
-
-                <label>
-                    Account Holder Name
-                </label>
-
-                <input
-                    type="text"
-                    id="accountHolder"
-                    placeholder="Enter account holder name"
-                >
-
-            </div>
-
-
-            <div class="form-group">
-
-                <label>
-                    Bank Name
-                </label>
-
-                <input
-                    type="text"
-                    id="bankName"
-                    placeholder="Enter bank name"
-                >
-
-            </div>
-
-
-            <div class="form-group">
-
-                <label>
-                    Account Number / IBAN
-                </label>
-
-                <input
-                    type="text"
-                    id="accountNumber"
-                    placeholder="Enter account number or IBAN"
-                >
-
-            </div>
-
-
-            <div class="form-group">
-
-                <label>
-                    SWIFT / BIC Code
-                </label>
-
-                <input
-                    type="text"
-                    id="swiftCode"
-                    placeholder="Enter SWIFT / BIC Code"
-                >
-
-            </div>
-
-
-            <div class="form-group">
-
-                <label>
-                    Bank Country
-                </label>
-
-                <input
-                    type="text"
-                    id="bankCountry"
-                    placeholder="Enter bank country"
-                >
-
-            </div>
-
-        </div>
-
-
-        <!-- AMOUNT -->
-
-        <div class="form-group">
-
-            <label>
-                Withdrawal Amount
-            </label>
-
-            <input
-                type="number"
-                id="amount"
-                min="1"
-                max="25000"
-                step="0.01"
-                placeholder="Minimum $1 - Maximum $25,000"
-            >
-
-        </div>
-
-
-        <button id="withdrawBtn">
-            Request Withdrawal
-        </button>
-
-
-        <div class="note">
-
-            Minimum withdrawal:
-            <strong>$1.00</strong>
-
-            <br>
-
-            Maximum withdrawal:
-            <strong>$25,000.00</strong>
-
-            <br>
-
-            Your withdrawal request will be reviewed by Admin.
-
+            Loading withdrawals...
         </div>
 
     </div>
@@ -552,6 +408,10 @@ button:disabled{
 
 
 <script type="module">
+
+/* =====================================
+   SUPABASE
+===================================== */
 
 const SUPABASE_URL =
 "https://rvwboegeisnrhwicvvhj.supabase.co";
@@ -566,702 +426,511 @@ from
 "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
 
 const supabase =
-    createClient(
-        SUPABASE_URL,
-        SUPABASE_KEY
-    );
+createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+);
 
+
+/* =====================================
+   MESSAGE
+===================================== */
 
 function showMessage(
     text,
     type
 ){
 
-    const message =
-        document.getElementById(
-            "message"
-        );
+    const box =
+    document.getElementById(
+        "message"
+    );
 
-    message.textContent =
-        text;
+    box.textContent =
+    text;
 
-    message.className =
-        "message " + type;
+    box.className =
+    "message " + type;
 
 }
 
 
-async function loadUser(){
+/* =====================================
+   CHECK ADMIN
+===================================== */
+
+async function checkAdmin(){
 
     const {
         data:{
             user
-        },
-        error:userError
+        }
     } =
     await supabase
-        .auth
-        .getUser();
+    .auth
+    .getUser();
 
 
-    if(
-        userError ||
-        !user
-    ){
+    if(!user){
 
         window.location.href =
-            "login.html";
+        "login.html";
 
-        return null;
+        return false;
 
     }
 
 
     const {
         data:profile,
-        error:profileError
+        error
     } =
     await supabase
 
-        .from("profiles")
+    .from("profiles")
 
-        .select("*")
+    .select("role")
 
-        .eq(
-            "id",
-            user.id
-        )
+    .eq(
+        "id",
+        user.id
+    )
 
-        .single();
+    .single();
 
 
-    if(profileError){
+    if(
+        error ||
+        !profile ||
+        profile.role !== "admin"
+    ){
 
-        showMessage(
-            "Profile error: " +
-            profileError.message,
-            "error"
+        alert(
+            "Admin access required."
         );
 
-        return null;
+        window.location.href =
+        "worker-dashboard.html";
+
+        return false;
 
     }
 
 
-    document.getElementById(
-        "userName"
-    ).textContent =
-
-        profile.full_name ||
-        profile.username ||
-        "Worker";
-
-
-    const {
-        data:wallet,
-        error:walletError
-    } =
-    await supabase
-
-        .from("wallets")
-
-        .select("balance")
-
-        .eq(
-            "user_id",
-            user.id
-        )
-
-        .single();
-
-
-    if(walletError){
-
-        showMessage(
-            "Wallet error: " +
-            walletError.message,
-            "error"
-        );
-
-        return null;
-
-    }
-
-
-    const balance =
-        Number(
-            wallet.balance || 0
-        );
-
-
-    document.getElementById(
-        "balance"
-    ).textContent =
-        "$" +
-        balance.toFixed(2);
-
-
-    return {
-        user,
-        profile,
-        wallet,
-        balance
-    };
+    return true;
 
 }
 
 
-/* PAYMENT METHOD */
+/* =====================================
+   LOAD WITHDRAWALS
+===================================== */
 
-document
-.getElementById(
-    "paymentMethod"
-)
-.addEventListener(
-    "change",
-    function(){
+async function loadWithdrawals(){
 
-        const method =
-            this.value;
-
-        const mobileBox =
-            document.getElementById(
-                "mobileAccountBox"
-            );
-
-        const mobileLabel =
-            document.getElementById(
-                "mobileLabel"
-            );
-
-        const paypalFields =
-            document.getElementById(
-                "paypalFields"
-            );
-
-        const bankFields =
-            document.getElementById(
-                "bankFields"
-            );
+    const container =
+    document.getElementById(
+        "withdrawals"
+    );
 
 
-        mobileBox.style.display =
-            "none";
+    container.innerHTML =
+    "Loading withdrawals...";
 
-        paypalFields.classList.remove(
-            "show"
+
+    const {
+        data,
+        error
+    } =
+    await supabase
+
+    .from("withdrawals")
+
+    .select("*")
+
+    .order(
+        "created_at",
+        {
+            ascending:false
+        }
+    );
+
+
+    if(error){
+
+        container.innerHTML =
+        "";
+
+        showMessage(
+            "Failed to load withdrawals: " +
+            error.message,
+            "error"
         );
 
-        bankFields.classList.remove(
-            "show"
-        );
-
-
-        if(
-            method === "bKash" ||
-            method === "Nagad" ||
-            method === "Rocket"
-        ){
-
-            mobileBox.style.display =
-                "block";
-
-            mobileLabel.textContent =
-                method + " Number";
-
-        }
-
-
-        if(
-            method === "PayPal"
-        ){
-
-            paypalFields.classList.add(
-                "show"
-            );
-
-        }
-
-
-        if(
-            method ===
-            "International Bank Account"
-        ){
-
-            bankFields.classList.add(
-                "show"
-            );
-
-        }
+        return;
 
     }
-);
 
 
-/* REQUEST WITHDRAWAL */
-
-document
-.getElementById(
-    "withdrawBtn"
-)
-.addEventListener(
-    "click",
-    async function(){
-
-        const button =
-            this;
-
-        button.disabled =
-            true;
-
-        button.textContent =
-            "Submitting...";
+    let pending = 0;
+    let approved = 0;
+    let rejected = 0;
 
 
-        try{
+    data.forEach(
+        withdrawal => {
 
-            const method =
-                document.getElementById(
-                    "paymentMethod"
-                ).value;
+            if(
+                withdrawal.status ===
+                "pending"
+            )
+                pending++;
+
+            if(
+                withdrawal.status ===
+                "approved"
+            )
+                approved++;
+
+            if(
+                withdrawal.status ===
+                "rejected"
+            )
+                rejected++;
+
+        }
+    );
 
 
-            const amount =
-                Number(
-                    document.getElementById(
-                        "amount"
-                    ).value
-                );
+    document.getElementById(
+        "pendingCount"
+    ).textContent =
+    pending;
 
 
-            if(!method){
+    document.getElementById(
+        "approvedCount"
+    ).textContent =
+    approved;
 
-                showMessage(
-                    "Please select a payment method.",
-                    "error"
-                );
 
-                return;
+    document.getElementById(
+        "rejectedCount"
+    ).textContent =
+    rejected;
 
-            }
+
+    if(!data.length){
+
+        container.innerHTML =
+        `
+        <div class="empty">
+            No withdrawal requests found.
+        </div>
+        `;
+
+        return;
+
+    }
+
+
+    container.className =
+    "";
+
+
+    container.innerHTML =
+    data.map(
+        withdrawal => {
+
+            const created =
+            withdrawal.created_at
+            ?
+            new Date(
+                withdrawal.created_at
+            ).toLocaleString()
+            :
+            "-";
+
+
+            let account =
+            withdrawal.payment_account
+            || "-";
 
 
             if(
-                !amount ||
-                amount < 1
-            ){
-
-                showMessage(
-                    "Minimum withdrawal amount is $1.00.",
-                    "error"
-                );
-
-                return;
-
-            }
-
-
-            if(
-                amount > 25000
-            ){
-
-                showMessage(
-                    "Maximum withdrawal amount is $25,000.00.",
-                    "error"
-                );
-
-                return;
-
-            }
-
-
-            const current =
-                await loadUser();
-
-
-            if(!current){
-
-                return;
-
-            }
-
-
-            const balance =
-                Number(
-                    current.balance || 0
-                );
-
-
-            if(
-                amount > balance
-            ){
-
-                showMessage(
-                    "Insufficient balance. Available balance: $" +
-                    balance.toFixed(2),
-                    "error"
-                );
-
-                return;
-
-            }
-
-
-            let paymentAccount = null;
-            let accountHolderName = null;
-            let bankName = null;
-            let accountNumber = null;
-            let swiftCode = null;
-            let bankCountry = null;
-
-
-            /* MOBILE */
-
-            if(
-                method === "bKash" ||
-                method === "Nagad" ||
-                method === "Rocket"
-            ){
-
-                paymentAccount =
-                    document
-                    .getElementById(
-                        "paymentAccount"
-                    )
-                    .value
-                    .trim();
-
-
-                if(!paymentAccount){
-
-                    showMessage(
-                        "Please enter your " +
-                        method +
-                        " number.",
-                        "error"
-                    );
-
-                    return;
-
-                }
-
-            }
-
-
-            /* PAYPAL */
-
-            if(
-                method === "PayPal"
-            ){
-
-                paymentAccount =
-                    document
-                    .getElementById(
-                        "paypalEmail"
-                    )
-                    .value
-                    .trim();
-
-
-                if(!paymentAccount){
-
-                    showMessage(
-                        "Please enter your PayPal email.",
-                        "error"
-                    );
-
-                    return;
-
-                }
-
-
-                if(
-                    !paymentAccount.includes("@")
-                ){
-
-                    showMessage(
-                        "Please enter a valid PayPal email.",
-                        "error"
-                    );
-
-                    return;
-
-                }
-
-            }
-
-
-            /* INTERNATIONAL BANK */
-
-            if(
-                method ===
+                withdrawal.payment_method ===
                 "International Bank Account"
             ){
 
-                accountHolderName =
-                    document
-                    .getElementById(
-                        "accountHolder"
-                    )
-                    .value
-                    .trim();
-
-                bankName =
-                    document
-                    .getElementById(
-                        "bankName"
-                    )
-                    .value
-                    .trim();
-
-                accountNumber =
-                    document
-                    .getElementById(
-                        "accountNumber"
-                    )
-                    .value
-                    .trim();
-
-                swiftCode =
-                    document
-                    .getElementById(
-                        "swiftCode"
-                    )
-                    .value
-                    .trim();
-
-                bankCountry =
-                    document
-                    .getElementById(
-                        "bankCountry"
-                    )
-                    .value
-                    .trim();
-
-
-                if(
-                    !accountHolderName ||
-                    !bankName ||
-                    !accountNumber ||
-                    !swiftCode ||
-                    !bankCountry
-                ){
-
-                    showMessage(
-                        "Please complete all international bank account information.",
-                        "error"
-                    );
-
-                    return;
-
-                }
+                account =
+                `
+                ${withdrawal.account_holder_name || "-"}
+                <br>
+                ${withdrawal.bank_name || "-"}
+                <br>
+                ${withdrawal.account_number || "-"}
+                <br>
+                SWIFT: ${withdrawal.swift_code || "-"}
+                <br>
+                Country: ${withdrawal.bank_country || "-"}
+                `;
 
             }
 
 
-            /* CHECK PENDING REQUEST */
+            const buttons =
+            withdrawal.status ===
+            "pending"
+            ?
+            `
+            <div class="actions">
 
-            const {
-                data:existing,
-                error:existingError
-            } =
-            await supabase
+                <button
+                    class="approve"
+                    onclick="approveWithdrawal('${withdrawal.id}')"
+                >
+                    ✓ Approve
+                </button>
 
-                .from("withdrawals")
+                <button
+                    class="reject"
+                    onclick="rejectWithdrawal('${withdrawal.id}')"
+                >
+                    ✕ Reject
+                </button>
 
-                .select("id")
-
-                .eq(
-                    "user_id",
-                    current.user.id
-                )
-
-                .eq(
-                    "status",
-                    "pending"
-                )
-
-                .limit(1);
-
-
-            if(existingError){
-
-                showMessage(
-                    "Unable to check withdrawal request: " +
-                    existingError.message,
-                    "error"
-                );
-
-                return;
-
-            }
+            </div>
+            `
+            :
+            "";
 
 
-            if(
-                existing &&
-                existing.length > 0
-            ){
+            return `
 
-                showMessage(
-                    "You already have a pending withdrawal request.",
-                    "error"
-                );
+            <div class="withdrawal">
 
-                return;
+                <div class="withdrawal-top">
 
-            }
+                    <div class="amount">
+                        $${Number(
+                            withdrawal.amount
+                        ).toFixed(2)}
+                    </div>
 
+                    <div class="status ${withdrawal.status}">
+                        ${withdrawal.status}
+                    </div>
 
-            /* INSERT */
-
-            const {
-                error:insertError
-            } =
-            await supabase
-
-                .from("withdrawals")
-
-                .insert({
-
-                    user_id:
-                        current.user.id,
-
-                    amount:
-                        amount,
-
-                    payment_method:
-                        method,
-
-                    payment_account:
-                        paymentAccount,
-
-                    account_holder_name:
-                        accountHolderName,
-
-                    bank_name:
-                        bankName,
-
-                    account_number:
-                        accountNumber,
-
-                    swift_code:
-                        swiftCode,
-
-                    bank_country:
-                        bankCountry,
-
-                    status:
-                        "pending"
-
-                });
+                </div>
 
 
-            if(insertError){
+                <div class="info-grid">
 
-                console.error(
-                    insertError
-                );
+                    <div class="info">
 
-                showMessage(
-                    "Withdrawal failed: " +
-                    insertError.message,
-                    "error"
-                );
+                        <strong>
+                            Worker ID
+                        </strong>
 
-                return;
+                        ${withdrawal.user_id}
 
-            }
+                    </div>
 
 
-            showMessage(
-                "Withdrawal request submitted successfully! Waiting for Admin approval.",
-                "success"
-            );
+                    <div class="info">
+
+                        <strong>
+                            Payment Method
+                        </strong>
+
+                        ${withdrawal.payment_method}
+
+                    </div>
 
 
-            document.getElementById(
-                "paymentMethod"
-            ).value = "";
+                    <div class="info">
 
-            document.getElementById(
-                "paymentAccount"
-            ).value = "";
+                        <strong>
+                            Account
+                        </strong>
 
-            document.getElementById(
-                "paypalEmail"
-            ).value = "";
+                        ${account}
 
-            document.getElementById(
-                "accountHolder"
-            ).value = "";
-
-            document.getElementById(
-                "bankName"
-            ).value = "";
-
-            document.getElementById(
-                "accountNumber"
-            ).value = "";
-
-            document.getElementById(
-                "swiftCode"
-            ).value = "";
-
-            document.getElementById(
-                "bankCountry"
-            ).value = "";
-
-            document.getElementById(
-                "amount"
-            ).value = "";
+                    </div>
 
 
-            document.getElementById(
-                "mobileAccountBox"
-            ).style.display =
-                "none";
+                    <div class="info">
 
-            document.getElementById(
-                "paypalFields"
-            ).classList.remove(
-                "show"
-            );
+                        <strong>
+                            Date
+                        </strong>
 
-            document.getElementById(
-                "bankFields"
-            ).classList.remove(
-                "show"
-            );
+                        ${created}
+
+                    </div>
+
+                </div>
+
+
+                ${buttons}
+
+            </div>
+
+            `;
 
         }
+    ).join("");
 
-        catch(error){
+}
 
-            console.error(error);
 
-            showMessage(
-                "Unexpected error: " +
-                error.message,
-                "error"
-            );
+/* =====================================
+   APPROVE
+===================================== */
 
-        }
+window.approveWithdrawal =
+async function(id){
 
-        finally{
+    if(
+        !confirm(
+            "Approve this withdrawal?"
+        )
+    ){
 
-            button.disabled =
-                false;
-
-            button.textContent =
-                "Request Withdrawal";
-
-        }
+        return;
 
     }
-);
 
 
-/* LOGOUT */
+    const {
+        data,
+        error
+    } =
+    await supabase
+
+    .rpc(
+        "approve_withdrawal",
+        {
+            withdrawal_id:id
+        }
+    );
+
+
+    if(error){
+
+        showMessage(
+            "Approve failed: " +
+            error.message,
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    if(
+        !data ||
+        data.success !== true
+    ){
+
+        showMessage(
+            data?.message ||
+            "Approval failed.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    showMessage(
+        "Withdrawal approved successfully!",
+        "success"
+    );
+
+
+    await loadWithdrawals();
+
+};
+
+
+/* =====================================
+   REJECT
+===================================== */
+
+window.rejectWithdrawal =
+async function(id){
+
+    if(
+        !confirm(
+            "Reject this withdrawal?"
+        )
+    ){
+
+        return;
+
+    }
+
+
+    const {
+        data,
+        error
+    } =
+    await supabase
+
+    .rpc(
+        "reject_withdrawal",
+        {
+            withdrawal_id:id
+        }
+    );
+
+
+    if(error){
+
+        showMessage(
+            "Reject failed: " +
+            error.message,
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    if(
+        !data ||
+        data.success !== true
+    ){
+
+        showMessage(
+            data?.message ||
+            "Rejection failed.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    showMessage(
+        "Withdrawal rejected successfully!",
+        "success"
+    );
+
+
+    await loadWithdrawals();
+
+};
+
+
+/* =====================================
+   LOGOUT
+===================================== */
 
 document
 .getElementById(
@@ -1274,19 +943,29 @@ document
         event.preventDefault();
 
         await supabase
-            .auth
-            .signOut();
+        .auth
+        .signOut();
 
         window.location.href =
-            "login.html";
+        "login.html";
 
     }
 );
 
 
-/* START */
+/* =====================================
+   START
+===================================== */
 
-loadUser();
+const isAdmin =
+await checkAdmin();
+
+
+if(isAdmin){
+
+    await loadWithdrawals();
+
+}
 
 </script>
 
