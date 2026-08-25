@@ -107,7 +107,9 @@ body{
     box-shadow:0 5px 20px rgba(0,0,0,.05);
 }
 
-.withdraw-box h2{margin-bottom:25px}
+.withdraw-box h2{
+    margin-bottom:25px;
+}
 
 .limit-box{
     background:#f0fdf4;
@@ -119,7 +121,9 @@ body{
     line-height:1.7;
 }
 
-.form-group{margin-bottom:20px}
+.form-group{
+    margin-bottom:20px;
+}
 
 label{
     display:block;
@@ -154,7 +158,9 @@ button{
     cursor:pointer;
 }
 
-button:hover{background:#15803d}
+button:hover{
+    background:#15803d;
+}
 
 button:disabled{
     opacity:.6;
@@ -298,7 +304,9 @@ button:disabled{
 
     <div class="withdraw-box">
 
-        <h2>💸 Request Withdrawal</h2>
+        <h2>
+            💸 Request Withdrawal
+        </h2>
 
 
         <div class="limit-box">
@@ -308,12 +316,17 @@ button:disabled{
             <br>
 
             Minimum Withdrawal:
-            <strong>$110.00</strong>
+            <strong>$1.00</strong>
 
             <br>
 
             Maximum Withdrawal:
             <strong>$25,000.00</strong>
+
+            <br><br>
+
+            <strong>⚠️ Testing Mode:</strong>
+            Minimum withdrawal is temporarily $1.
 
         </div>
 
@@ -324,9 +337,13 @@ button:disabled{
         ></div>
 
 
+        <!-- PAYMENT METHOD -->
+
         <div class="form-group">
 
-            <label>Payment Method</label>
+            <label>
+                Payment Method
+            </label>
 
             <select id="paymentMethod">
 
@@ -359,7 +376,7 @@ button:disabled{
         </div>
 
 
-        <!-- bKASH / NAGAD / ROCKET -->
+        <!-- MOBILE PAYMENT -->
 
         <div
             class="form-group"
@@ -499,10 +516,10 @@ button:disabled{
             <input
                 type="number"
                 id="amount"
-                min="110"
+                min="1"
                 max="25000"
                 step="0.01"
-                placeholder="Minimum $110 - Maximum $25,000"
+                placeholder="Minimum $1 - Maximum $25,000"
             >
 
         </div>
@@ -516,7 +533,7 @@ button:disabled{
         <div class="note">
 
             Minimum withdrawal:
-            <strong>$110.00</strong>
+            <strong>$1.00</strong>
 
             <br>
 
@@ -535,10 +552,6 @@ button:disabled{
 
 
 <script type="module">
-
-/* =========================================
-   SUPABASE
-========================================= */
 
 const SUPABASE_URL =
 "https://rvwboegeisnrhwicvvhj.supabase.co";
@@ -559,10 +572,6 @@ const supabase =
     );
 
 
-/* =========================================
-   SHOW MESSAGE
-========================================= */
-
 function showMessage(
     text,
     type
@@ -581,10 +590,6 @@ function showMessage(
 
 }
 
-
-/* =========================================
-   LOAD USER
-========================================= */
 
 async function loadUser(){
 
@@ -692,7 +697,6 @@ async function loadUser(){
     document.getElementById(
         "balance"
     ).textContent =
-
         "$" +
         balance.toFixed(2);
 
@@ -707,9 +711,7 @@ async function loadUser(){
 }
 
 
-/* =========================================
-   PAYMENT METHOD CHANGE
-========================================= */
+/* PAYMENT METHOD */
 
 document
 .getElementById(
@@ -721,7 +723,6 @@ document
 
         const method =
             this.value;
-
 
         const mobileBox =
             document.getElementById(
@@ -797,9 +798,7 @@ document
 );
 
 
-/* =========================================
-   REQUEST WITHDRAWAL
-========================================= */
+/* REQUEST WITHDRAWAL */
 
 document
 .getElementById(
@@ -835,8 +834,6 @@ document
                 );
 
 
-            /* METHOD CHECK */
-
             if(!method){
 
                 showMessage(
@@ -849,15 +846,13 @@ document
             }
 
 
-            /* AMOUNT CHECK */
-
             if(
                 !amount ||
-                amount < 110
+                amount < 1
             ){
 
                 showMessage(
-                    "Minimum withdrawal amount is $110.00.",
+                    "Minimum withdrawal amount is $1.00.",
                     "error"
                 );
 
@@ -880,8 +875,6 @@ document
             }
 
 
-            /* LOAD USER */
-
             const current =
                 await loadUser();
 
@@ -899,8 +892,6 @@ document
                 );
 
 
-            /* BALANCE CHECK */
-
             if(
                 amount > balance
             ){
@@ -916,18 +907,11 @@ document
             }
 
 
-            /* PAYMENT DATA */
-
             let paymentAccount = null;
-
             let accountHolderName = null;
-
             let bankName = null;
-
             let accountNumber = null;
-
             let swiftCode = null;
-
             let bankCountry = null;
 
 
@@ -1007,7 +991,7 @@ document
             }
 
 
-            /* BANK */
+            /* INTERNATIONAL BANK */
 
             if(
                 method ===
@@ -1022,7 +1006,6 @@ document
                     .value
                     .trim();
 
-
                 bankName =
                     document
                     .getElementById(
@@ -1030,7 +1013,6 @@ document
                     )
                     .value
                     .trim();
-
 
                 accountNumber =
                     document
@@ -1040,7 +1022,6 @@ document
                     .value
                     .trim();
 
-
                 swiftCode =
                     document
                     .getElementById(
@@ -1048,7 +1029,6 @@ document
                     )
                     .value
                     .trim();
-
 
                 bankCountry =
                     document
@@ -1079,9 +1059,7 @@ document
             }
 
 
-            /* =================================
-               CHECK EXISTING PENDING REQUEST
-            ================================= */
+            /* CHECK PENDING REQUEST */
 
             const {
                 data:existing,
@@ -1102,7 +1080,7 @@ document
                     "status",
                     "pending"
                 )
-                
+
                 .limit(1);
 
 
@@ -1134,12 +1112,9 @@ document
             }
 
 
-            /* =================================
-               INSERT WITHDRAWAL
-            ================================= */
+            /* INSERT */
 
             const {
-                data:withdrawal,
                 error:insertError
             } =
             await supabase
@@ -1178,10 +1153,7 @@ document
                     status:
                         "pending"
 
-                })
-
-                .select()
-                .single();
+                });
 
 
             if(insertError){
@@ -1206,8 +1178,6 @@ document
                 "success"
             );
 
-
-            /* CLEAR FORM */
 
             document.getElementById(
                 "paymentMethod"
@@ -1251,13 +1221,11 @@ document
             ).style.display =
                 "none";
 
-
             document.getElementById(
                 "paypalFields"
             ).classList.remove(
                 "show"
             );
-
 
             document.getElementById(
                 "bankFields"
@@ -1269,9 +1237,7 @@ document
 
         catch(error){
 
-            console.error(
-                error
-            );
+            console.error(error);
 
             showMessage(
                 "Unexpected error: " +
@@ -1295,9 +1261,7 @@ document
 );
 
 
-/* =========================================
-   LOGOUT
-========================================= */
+/* LOGOUT */
 
 document
 .getElementById(
@@ -1320,9 +1284,7 @@ document
 );
 
 
-/* =========================================
-   START
-========================================= */
+/* START */
 
 loadUser();
 
