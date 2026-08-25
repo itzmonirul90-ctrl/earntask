@@ -1,0 +1,974 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Admin Withdrawal - EarnTask</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    font-family:Arial,sans-serif;
+    background:#f3f4f6;
+    color:#111827;
+}
+
+.sidebar{
+    position:fixed;
+    left:0;
+    top:0;
+    width:230px;
+    height:100vh;
+    background:#111827;
+    color:white;
+    padding:25px 12px;
+}
+
+.logo{
+    text-align:center;
+    font-size:28px;
+    font-weight:800;
+    margin-bottom:35px;
+}
+
+.logo span{
+    color:#22c55e;
+}
+
+.sidebar a{
+    display:block;
+    padding:13px 15px;
+    margin-bottom:7px;
+    color:#d1d5db;
+    text-decoration:none;
+    border-radius:8px;
+}
+
+.sidebar a:hover,
+.sidebar a.active{
+    background:#16a34a;
+    color:white;
+}
+
+.main{
+    margin-left:230px;
+    padding:35px;
+}
+
+.header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:25px;
+}
+
+.header h1{
+    font-size:30px;
+}
+
+.admin{
+    background:white;
+    padding:12px 18px;
+    border-radius:10px;
+    box-shadow:0 3px 12px rgba(0,0,0,.06);
+}
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:20px;
+    margin-bottom:25px;
+}
+
+.stat{
+    background:white;
+    padding:22px;
+    border-radius:14px;
+    box-shadow:0 3px 15px rgba(0,0,0,.05);
+}
+
+.stat-title{
+    color:#64748b;
+    margin-bottom:8px;
+}
+
+.stat-number{
+    font-size:30px;
+    font-weight:800;
+}
+
+.pending-number{
+    color:#d97706;
+}
+
+.approved-number{
+    color:#16a34a;
+}
+
+.rejected-number{
+    color:#dc2626;
+}
+
+.panel{
+    background:white;
+    border-radius:14px;
+    padding:25px;
+    box-shadow:0 3px 15px rgba(0,0,0,.05);
+}
+
+.panel h2{
+    margin-bottom:20px;
+}
+
+.message{
+    display:none;
+    padding:14px;
+    margin-bottom:20px;
+    border-radius:8px;
+}
+
+.message.success{
+    display:block;
+    background:#dcfce7;
+    color:#166534;
+}
+
+.message.error{
+    display:block;
+    background:#fee2e2;
+    color:#991b1b;
+}
+
+.withdrawal{
+    border:1px solid #e5e7eb;
+    border-radius:12px;
+    padding:20px;
+    margin-bottom:15px;
+}
+
+.withdrawal-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:15px;
+}
+
+.amount{
+    font-size:25px;
+    font-weight:800;
+    color:#16a34a;
+}
+
+.status{
+    padding:6px 12px;
+    border-radius:20px;
+    font-size:13px;
+    font-weight:700;
+}
+
+.status.pending{
+    background:#fef3c7;
+    color:#92400e;
+}
+
+.status.approved{
+    background:#dcfce7;
+    color:#166534;
+}
+
+.status.rejected{
+    background:#fee2e2;
+    color:#991b1b;
+}
+
+.info-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:10px;
+    margin-bottom:18px;
+}
+
+.info{
+    background:#f8fafc;
+    padding:10px;
+    border-radius:7px;
+}
+
+.info strong{
+    display:block;
+    font-size:12px;
+    color:#64748b;
+    margin-bottom:4px;
+}
+
+.actions{
+    display:flex;
+    gap:10px;
+}
+
+.actions button{
+    border:none;
+    padding:11px 20px;
+    border-radius:7px;
+    color:white;
+    font-weight:700;
+    cursor:pointer;
+}
+
+.approve{
+    background:#16a34a;
+}
+
+.approve:hover{
+    background:#15803d;
+}
+
+.reject{
+    background:#dc2626;
+}
+
+.reject:hover{
+    background:#b91c1c;
+}
+
+.actions button:disabled{
+    opacity:.5;
+    cursor:not-allowed;
+}
+
+.empty{
+    text-align:center;
+    padding:40px;
+    color:#64748b;
+}
+
+.loading{
+    text-align:center;
+    padding:30px;
+}
+
+@media(max-width:800px){
+
+    .sidebar{
+        position:relative;
+        width:100%;
+        height:auto;
+    }
+
+    .main{
+        margin-left:0;
+        padding:20px;
+    }
+
+    .stats{
+        grid-template-columns:1fr;
+    }
+
+    .info-grid{
+        grid-template-columns:1fr;
+    }
+
+    .header{
+        display:block;
+    }
+
+    .admin{
+        display:inline-block;
+        margin-top:12px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<aside class="sidebar">
+
+    <div class="logo">
+        Earn<span>Task</span>
+    </div>
+
+    <a href="admin-dashboard.html">
+        🏠 Dashboard
+    </a>
+
+    <a href="admin-dashboard.html">
+        💼 Jobs
+    </a>
+
+    <a href="admin-withdrawals.html" class="active">
+        💸 Withdrawals
+    </a>
+
+    <a href="submissions.html">
+        📤 Submissions
+    </a>
+
+    <a href="#" id="logoutBtn">
+        🚪 Logout
+    </a>
+
+</aside>
+
+
+<main class="main">
+
+    <div class="header">
+
+        <h1>
+            Withdrawal Requests
+        </h1>
+
+        <div class="admin">
+            👑 Admin
+        </div>
+
+    </div>
+
+
+    <div class="stats">
+
+        <div class="stat">
+
+            <div class="stat-title">
+                Pending
+            </div>
+
+            <div
+                class="stat-number pending-number"
+                id="pendingCount"
+            >
+                0
+            </div>
+
+        </div>
+
+
+        <div class="stat">
+
+            <div class="stat-title">
+                Approved
+            </div>
+
+            <div
+                class="stat-number approved-number"
+                id="approvedCount"
+            >
+                0
+            </div>
+
+        </div>
+
+
+        <div class="stat">
+
+            <div class="stat-title">
+                Rejected
+            </div>
+
+            <div
+                class="stat-number rejected-number"
+                id="rejectedCount"
+            >
+                0
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="panel">
+
+        <h2>
+            💸 Withdrawal Requests
+        </h2>
+
+        <div
+            id="message"
+            class="message"
+        ></div>
+
+        <div
+            id="withdrawals"
+            class="loading"
+        >
+            Loading withdrawals...
+        </div>
+
+    </div>
+
+</main>
+
+
+<script type="module">
+
+/* =====================================
+   SUPABASE
+===================================== */
+
+const SUPABASE_URL =
+"https://rvwboegeisnrhwicvvhj.supabase.co";
+
+const SUPABASE_KEY =
+"sb_publishable_Kz3hgj9W0khG3JEIclhx2g_HZ6eSyQQ";
+
+import {
+    createClient
+}
+from
+"https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+
+const supabase =
+createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+);
+
+
+/* =====================================
+   MESSAGE
+===================================== */
+
+function showMessage(
+    text,
+    type
+){
+
+    const box =
+    document.getElementById(
+        "message"
+    );
+
+    box.textContent =
+    text;
+
+    box.className =
+    "message " + type;
+
+}
+
+
+/* =====================================
+   CHECK ADMIN
+===================================== */
+
+async function checkAdmin(){
+
+    const {
+        data:{
+            user
+        }
+    } =
+    await supabase
+    .auth
+    .getUser();
+
+
+    if(!user){
+
+        window.location.href =
+        "login.html";
+
+        return false;
+
+    }
+
+
+    const {
+        data:profile,
+        error
+    } =
+    await supabase
+
+    .from("profiles")
+
+    .select("role")
+
+    .eq(
+        "id",
+        user.id
+    )
+
+    .single();
+
+
+    if(
+        error ||
+        !profile ||
+        profile.role !== "admin"
+    ){
+
+        alert(
+            "Admin access required."
+        );
+
+        window.location.href =
+        "worker-dashboard.html";
+
+        return false;
+
+    }
+
+
+    return true;
+
+}
+
+
+/* =====================================
+   LOAD WITHDRAWALS
+===================================== */
+
+async function loadWithdrawals(){
+
+    const container =
+    document.getElementById(
+        "withdrawals"
+    );
+
+
+    container.innerHTML =
+    "Loading withdrawals...";
+
+
+    const {
+        data,
+        error
+    } =
+    await supabase
+
+    .from("withdrawals")
+
+    .select("*")
+
+    .order(
+        "created_at",
+        {
+            ascending:false
+        }
+    );
+
+
+    if(error){
+
+        container.innerHTML =
+        "";
+
+        showMessage(
+            "Failed to load withdrawals: " +
+            error.message,
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    let pending = 0;
+    let approved = 0;
+    let rejected = 0;
+
+
+    data.forEach(
+        withdrawal => {
+
+            if(
+                withdrawal.status ===
+                "pending"
+            )
+                pending++;
+
+            if(
+                withdrawal.status ===
+                "approved"
+            )
+                approved++;
+
+            if(
+                withdrawal.status ===
+                "rejected"
+            )
+                rejected++;
+
+        }
+    );
+
+
+    document.getElementById(
+        "pendingCount"
+    ).textContent =
+    pending;
+
+
+    document.getElementById(
+        "approvedCount"
+    ).textContent =
+    approved;
+
+
+    document.getElementById(
+        "rejectedCount"
+    ).textContent =
+    rejected;
+
+
+    if(!data.length){
+
+        container.innerHTML =
+        `
+        <div class="empty">
+            No withdrawal requests found.
+        </div>
+        `;
+
+        return;
+
+    }
+
+
+    container.className =
+    "";
+
+
+    container.innerHTML =
+    data.map(
+        withdrawal => {
+
+            const created =
+            withdrawal.created_at
+            ?
+            new Date(
+                withdrawal.created_at
+            ).toLocaleString()
+            :
+            "-";
+
+
+            let account =
+            withdrawal.payment_account
+            || "-";
+
+
+            if(
+                withdrawal.payment_method ===
+                "International Bank Account"
+            ){
+
+                account =
+                `
+                ${withdrawal.account_holder_name || "-"}
+                <br>
+                ${withdrawal.bank_name || "-"}
+                <br>
+                ${withdrawal.account_number || "-"}
+                <br>
+                SWIFT: ${withdrawal.swift_code || "-"}
+                <br>
+                Country: ${withdrawal.bank_country || "-"}
+                `;
+
+            }
+
+
+            const buttons =
+            withdrawal.status ===
+            "pending"
+            ?
+            `
+            <div class="actions">
+
+                <button
+                    class="approve"
+                    onclick="approveWithdrawal('${withdrawal.id}')"
+                >
+                    ✓ Approve
+                </button>
+
+                <button
+                    class="reject"
+                    onclick="rejectWithdrawal('${withdrawal.id}')"
+                >
+                    ✕ Reject
+                </button>
+
+            </div>
+            `
+            :
+            "";
+
+
+            return `
+
+            <div class="withdrawal">
+
+                <div class="withdrawal-top">
+
+                    <div class="amount">
+                        $${Number(
+                            withdrawal.amount
+                        ).toFixed(2)}
+                    </div>
+
+                    <div class="status ${withdrawal.status}">
+                        ${withdrawal.status}
+                    </div>
+
+                </div>
+
+
+                <div class="info-grid">
+
+                    <div class="info">
+
+                        <strong>
+                            Worker ID
+                        </strong>
+
+                        ${withdrawal.user_id}
+
+                    </div>
+
+
+                    <div class="info">
+
+                        <strong>
+                            Payment Method
+                        </strong>
+
+                        ${withdrawal.payment_method}
+
+                    </div>
+
+
+                    <div class="info">
+
+                        <strong>
+                            Account
+                        </strong>
+
+                        ${account}
+
+                    </div>
+
+
+                    <div class="info">
+
+                        <strong>
+                            Date
+                        </strong>
+
+                        ${created}
+
+                    </div>
+
+                </div>
+
+
+                ${buttons}
+
+            </div>
+
+            `;
+
+        }
+    ).join("");
+
+}
+
+
+/* =====================================
+   APPROVE
+===================================== */
+
+window.approveWithdrawal =
+async function(id){
+
+    if(
+        !confirm(
+            "Approve this withdrawal?"
+        )
+    ){
+
+        return;
+
+    }
+
+
+    const {
+        data,
+        error
+    } =
+    await supabase
+
+    .rpc(
+        "approve_withdrawal",
+        {
+            withdrawal_id:id
+        }
+    );
+
+
+    if(error){
+
+        showMessage(
+            "Approve failed: " +
+            error.message,
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    if(
+        !data ||
+        data.success !== true
+    ){
+
+        showMessage(
+            data?.message ||
+            "Approval failed.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    showMessage(
+        "Withdrawal approved successfully!",
+        "success"
+    );
+
+
+    await loadWithdrawals();
+
+};
+
+
+/* =====================================
+   REJECT
+===================================== */
+
+window.rejectWithdrawal =
+async function(id){
+
+    if(
+        !confirm(
+            "Reject this withdrawal?"
+        )
+    ){
+
+        return;
+
+    }
+
+
+    const {
+        data,
+        error
+    } =
+    await supabase
+
+    .rpc(
+        "reject_withdrawal",
+        {
+            withdrawal_id:id
+        }
+    );
+
+
+    if(error){
+
+        showMessage(
+            "Reject failed: " +
+            error.message,
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    if(
+        !data ||
+        data.success !== true
+    ){
+
+        showMessage(
+            data?.message ||
+            "Rejection failed.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    showMessage(
+        "Withdrawal rejected successfully!",
+        "success"
+    );
+
+
+    await loadWithdrawals();
+
+};
+
+
+/* =====================================
+   LOGOUT
+===================================== */
+
+document
+.getElementById(
+    "logoutBtn"
+)
+.addEventListener(
+    "click",
+    async function(event){
+
+        event.preventDefault();
+
+        await supabase
+        .auth
+        .signOut();
+
+        window.location.href =
+        "login.html";
+
+    }
+);
+
+
+/* =====================================
+   START
+===================================== */
+
+const isAdmin =
+await checkAdmin();
+
+
+if(isAdmin){
+
+    await loadWithdrawals();
+
+}
+
+</script>
+
+</body>
+</html>
+```
