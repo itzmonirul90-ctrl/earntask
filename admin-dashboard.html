@@ -12,7 +12,6 @@
 
 <title>Admin Dashboard - EarnTask</title>
 
-
 <style>
 
 *{
@@ -21,620 +20,409 @@
     padding:0;
 }
 
-
 body{
     font-family:Arial,sans-serif;
     background:#f8fafc;
     color:#172033;
 }
 
-
-/* ================================
-   SIDEBAR
-================================ */
-
 .sidebar{
     position:fixed;
-
     left:0;
     top:0;
-
     width:240px;
     height:100vh;
-
     background:#111827;
     color:white;
-
     padding:25px 15px;
-
-    overflow-y:auto;
 }
-
 
 .logo{
     font-size:27px;
-
     font-weight:800;
-
     text-align:center;
-
-    margin-bottom:30px;
+    margin-bottom:35px;
 }
-
 
 .logo span{
     color:#22c55e;
 }
 
-
 .sidebar a{
     display:block;
-
     color:#d1d5db;
-
     text-decoration:none;
-
     padding:13px 15px;
-
     margin-bottom:7px;
-
     border-radius:8px;
 }
-
 
 .sidebar a:hover,
 .sidebar a.active{
     background:#16a34a;
-
     color:white;
 }
 
-
 .logout{
     position:absolute;
-
     bottom:25px;
-
     left:15px;
     right:15px;
-
     background:#dc2626 !important;
-
-    color:white !important;
-
     text-align:center;
 }
 
-
-/* ================================
-   MAIN
-================================ */
-
 .main{
     margin-left:240px;
-
     padding:30px;
 }
 
-
 .topbar{
     display:flex;
-
     justify-content:space-between;
-
     align-items:center;
-
     margin-bottom:30px;
 }
-
 
 .topbar h1{
     font-size:30px;
 }
 
-
 .admin-name{
     background:white;
-
     padding:10px 18px;
-
     border-radius:10px;
-
-    box-shadow:
-        0 3px 15px rgba(0,0,0,.05);
+    box-shadow:0 3px 15px rgba(0,0,0,.05);
 }
-
-
-/* ================================
-   CARDS
-================================ */
 
 .cards{
     display:grid;
-
-    grid-template-columns:
-        repeat(4,1fr);
-
+    grid-template-columns:repeat(4,1fr);
     gap:20px;
-
     margin-bottom:30px;
 }
 
-
 .card{
     background:white;
-
     padding:25px;
-
     border-radius:14px;
-
-    box-shadow:
-        0 5px 20px rgba(0,0,0,.05);
+    box-shadow:0 5px 20px rgba(0,0,0,.05);
 }
-
 
 .card-icon{
     font-size:30px;
-
     margin-bottom:10px;
 }
 
-
 .card-title{
     color:#64748b;
-
     font-size:14px;
-
     margin-bottom:8px;
 }
 
-
 .card-number{
     font-size:28px;
-
     font-weight:800;
 }
 
-
-/* ================================
-   SECTION
-================================ */
-
 .section{
     background:white;
-
     padding:25px;
-
     border-radius:14px;
-
     margin-bottom:25px;
-
-    box-shadow:
-        0 5px 20px rgba(0,0,0,.05);
+    box-shadow:0 5px 20px rgba(0,0,0,.05);
 }
-
 
 .section h2{
     margin-bottom:20px;
 }
 
-
-/* ================================
-   MESSAGE
-================================ */
-
-.message{
-    margin-bottom:20px;
-
-    padding:13px;
-
-    border-radius:8px;
-
-    display:none;
-
-    font-weight:600;
-}
-
-
-.message.success{
-    display:block;
-
-    background:#dcfce7;
-
-    color:#166534;
-}
-
-
-.message.error{
-    display:block;
-
-    background:#fee2e2;
-
-    color:#991b1b;
-}
-
-
-/* ================================
-   JOB
-================================ */
-
 .job{
     border:1px solid #e5e7eb;
-
     border-radius:12px;
-
     padding:20px;
-
     margin-bottom:15px;
-
     display:flex;
-
     justify-content:space-between;
-
     gap:20px;
-
     align-items:center;
 }
-
 
 .job-info{
     flex:1;
 }
 
-
 .job-info h3{
     font-size:18px;
-
-    margin:10px 0 8px;
+    margin-bottom:8px;
 }
-
 
 .job-info p{
     color:#64748b;
-
     font-size:14px;
-
     margin:5px 0;
 }
 
-
 .badge{
     display:inline-block;
-
     padding:5px 9px;
-
     border-radius:6px;
-
     font-size:12px;
-
     font-weight:700;
-
     margin-right:5px;
 }
 
-
 .pending{
     background:#fef3c7;
-
     color:#92400e;
 }
 
-
-.active{
-    background:#dcfce7;
-
-    color:#166534;
-}
-
-
-.rejected{
-    background:#fee2e2;
-
-    color:#991b1b;
-}
-
-
 .category{
     background:#eff6ff;
-
     color:#2563eb;
 }
 
+.active{
+    background:#dcfce7;
+    color:#166534;
+}
+
+.rejected{
+    background:#fee2e2;
+    color:#991b1b;
+}
 
 .reward{
     color:#16a34a;
-
     font-size:18px;
-
     font-weight:800;
-
     margin-bottom:10px;
 }
 
-
-/* ================================
-   BUTTONS
-================================ */
-
 .actions{
     display:flex;
-
     gap:8px;
-
     flex-wrap:wrap;
 }
 
-
 button{
     border:none;
-
     padding:10px 15px;
-
     border-radius:7px;
-
     color:white;
-
     font-weight:700;
-
     cursor:pointer;
 }
-
-
-button:disabled{
-    opacity:.6;
-
-    cursor:not-allowed;
-}
-
 
 .approve-btn{
     background:#16a34a;
 }
 
-
 .approve-btn:hover{
     background:#15803d;
 }
-
 
 .reject-btn{
     background:#dc2626;
 }
 
-
 .reject-btn:hover{
     background:#b91c1c;
 }
-
 
 .view-btn{
     background:#2563eb;
 }
 
-
 .view-btn:hover{
     background:#1d4ed8;
 }
 
-
-/* ================================
-   WITHDRAWAL
-================================ */
-
-.withdrawal{
-    border:1px solid #e5e7eb;
-
-    border-radius:12px;
-
-    padding:20px;
-
-    margin-bottom:15px;
+button:disabled{
+    opacity:.6;
+    cursor:not-allowed;
 }
-
-
-.withdrawal-top{
-    display:flex;
-
-    justify-content:space-between;
-
-    align-items:center;
-
-    gap:15px;
-
-    margin-bottom:15px;
-}
-
-
-.withdrawal-amount{
-    color:#16a34a;
-
-    font-size:26px;
-
-    font-weight:800;
-}
-
-
-.withdrawal-status{
-    padding:6px 11px;
-
-    border-radius:20px;
-
-    font-size:12px;
-
-    font-weight:700;
-}
-
-
-.withdrawal-status.pending{
-    background:#fef3c7;
-
-    color:#92400e;
-}
-
-
-.withdrawal-status.paid,
-.withdrawal-status.approved{
-    background:#dcfce7;
-
-    color:#166534;
-}
-
-
-.withdrawal-status.rejected{
-    background:#fee2e2;
-
-    color:#991b1b;
-}
-
-
-.withdrawal-grid{
-    display:grid;
-
-    grid-template-columns:
-        repeat(4,1fr);
-
-    gap:12px;
-
-    margin-bottom:15px;
-}
-
-
-.withdrawal-info{
-    background:#f8fafc;
-
-    padding:12px;
-
-    border-radius:8px;
-
-    overflow-wrap:anywhere;
-}
-
-
-.withdrawal-info small{
-    display:block;
-
-    color:#64748b;
-
-    font-size:11px;
-
-    margin-bottom:5px;
-}
-
-
-.withdrawal-info strong{
-    font-size:14px;
-}
-
-
-/* ================================
-   LOADING / EMPTY / ERROR
-================================ */
 
 .loading{
     color:#64748b;
-
     padding:20px 0;
 }
 
-
 .empty{
     text-align:center;
-
     color:#64748b;
-
     padding:35px 20px;
 }
 
-
 .error-box{
-    color:#991b1b;
-
+    color:#b91c1c;
     background:#fef2f2;
-
     border:1px solid #fecaca;
-
     padding:15px;
-
     border-radius:8px;
 }
 
+.message{
+    margin-bottom:15px;
+    padding:12px;
+    border-radius:8px;
+    display:none;
+}
 
-/* ================================
+.message.success{
+    display:block;
+    background:#dcfce7;
+    color:#166534;
+}
+
+.message.error{
+    display:block;
+    background:#fee2e2;
+    color:#991b1b;
+}
+
+/* =========================
+   WITHDRAWAL
+========================= */
+
+.withdrawal{
+    border:1px solid #e5e7eb;
+    border-radius:12px;
+    padding:20px;
+    margin-bottom:15px;
+}
+
+.withdrawal-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+    margin-bottom:15px;
+}
+
+.withdrawal-amount{
+    font-size:25px;
+    font-weight:800;
+    color:#16a34a;
+}
+
+.withdrawal-status{
+    padding:6px 12px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:700;
+}
+
+.withdrawal-status.pending{
+    background:#fef3c7;
+    color:#92400e;
+}
+
+.withdrawal-status.paid{
+    background:#dcfce7;
+    color:#166534;
+}
+
+.withdrawal-status.approved{
+    background:#dcfce7;
+    color:#166534;
+}
+
+.withdrawal-status.rejected{
+    background:#fee2e2;
+    color:#991b1b;
+}
+
+.withdrawal-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:12px;
+    margin-bottom:15px;
+}
+
+.withdrawal-box{
+    background:#f8fafc;
+    padding:12px;
+    border-radius:8px;
+    overflow-wrap:anywhere;
+}
+
+.withdrawal-box small{
+    display:block;
+    color:#64748b;
+    font-size:11px;
+    margin-bottom:6px;
+}
+
+.withdrawal-box strong{
+    font-size:14px;
+}
+
+/* =========================
    MOBILE
-================================ */
+========================= */
 
-@media(max-width:1000px){
+@media(max-width:1100px){
 
     .cards{
-        grid-template-columns:
-            repeat(2,1fr);
+        grid-template-columns:repeat(2,1fr);
     }
 
-
     .withdrawal-grid{
-        grid-template-columns:
-            repeat(2,1fr);
+        grid-template-columns:repeat(2,1fr);
     }
 
 }
-
 
 @media(max-width:800px){
 
     .sidebar{
         position:relative;
-
         width:100%;
-
         height:auto;
-
-        padding-bottom:70px;
     }
-
 
     .logout{
-        position:absolute;
-
-        left:15px;
-        right:15px;
-
-        bottom:15px;
+        position:relative;
+        left:auto;
+        right:auto;
+        bottom:auto;
     }
-
 
     .main{
         margin-left:0;
-
         padding:20px;
     }
-
 
     .cards{
         grid-template-columns:1fr;
     }
 
-
     .topbar{
         display:block;
     }
 
-
     .admin-name{
         display:inline-block;
-
         margin-top:12px;
     }
-
 
     .job{
         display:block;
     }
 
-
     .actions{
         margin-top:15px;
     }
 
+    .withdrawal-header{
+        display:block;
+    }
+
+    .withdrawal-status{
+        display:inline-block;
+        margin-top:10px;
+    }
 
     .withdrawal-grid{
         grid-template-columns:1fr;
@@ -646,21 +434,18 @@ button:disabled{
 
 </head>
 
-
 <body>
 
 
-<!-- =========================================
+<!-- =========================
      SIDEBAR
-========================================= -->
+========================= -->
 
 <aside class="sidebar">
-
 
     <div class="logo">
         Earn<span>Task</span>
     </div>
-
 
     <a
         href="#"
@@ -669,21 +454,17 @@ button:disabled{
         🏠 Dashboard
     </a>
 
-
     <a href="#pendingJobs">
         ⏳ Pending Jobs
     </a>
-
 
     <a href="#allJobs">
         💼 All Jobs
     </a>
 
-
     <a href="#withdrawals">
         💸 Withdrawals
     </a>
-
 
     <a
         href="#"
@@ -693,24 +474,21 @@ button:disabled{
         🚪 Logout
     </a>
 
-
 </aside>
 
 
-<!-- =========================================
+<!-- =========================
      MAIN
-========================================= -->
+========================= -->
 
 <main class="main">
 
 
     <div class="topbar">
 
-
         <h1>
             Admin Dashboard
         </h1>
-
 
         <div
             class="admin-name"
@@ -719,13 +497,10 @@ button:disabled{
             Loading...
         </div>
 
-
     </div>
 
 
-    <!-- =====================================
-         MESSAGE
-    ====================================== -->
+    <!-- MESSAGE -->
 
     <div
         id="message"
@@ -733,9 +508,9 @@ button:disabled{
     ></div>
 
 
-    <!-- =====================================
-         DASHBOARD CARDS
-    ====================================== -->
+    <!-- =========================
+         CARDS
+    ========================= -->
 
     <div class="cards">
 
@@ -823,20 +598,18 @@ button:disabled{
     </div>
 
 
-    <!-- =====================================
+    <!-- =========================
          PENDING JOBS
-    ====================================== -->
+    ========================= -->
 
     <section
         class="section"
         id="pendingJobs"
     >
 
-
         <h2>
             ⏳ Pending Jobs
         </h2>
-
 
         <div id="pendingJobsList">
 
@@ -846,24 +619,21 @@ button:disabled{
 
         </div>
 
-
     </section>
 
 
-    <!-- =====================================
+    <!-- =========================
          ALL JOBS
-    ====================================== -->
+    ========================= -->
 
     <section
         class="section"
         id="allJobs"
     >
 
-
         <h2>
             💼 All Jobs
         </h2>
-
 
         <div id="allJobsList">
 
@@ -873,24 +643,21 @@ button:disabled{
 
         </div>
 
-
     </section>
 
 
-    <!-- =====================================
+    <!-- =========================
          WITHDRAWALS
-    ====================================== -->
+    ========================= -->
 
     <section
         class="section"
         id="withdrawals"
     >
 
-
         <h2>
             💸 Withdrawal Requests
         </h2>
-
 
         <div id="withdrawalsList">
 
@@ -899,7 +666,6 @@ button:disabled{
             </div>
 
         </div>
-
 
     </section>
 
@@ -910,24 +676,21 @@ button:disabled{
 <script type="module">
 
 
-/* =========================================
+/* =========================
    SUPABASE
-========================================= */
+========================= */
 
 const SUPABASE_URL =
 "https://rvwboegeisnrhwicvvhj.supabase.co";
 
-
 const SUPABASE_KEY =
 "sb_publishable_Kz3hgj9W0khG3JEIclhx2g_HZ6eSyQQ";
-
 
 import {
     createClient
 }
 from
 "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
-
 
 const supabase =
 createClient(
@@ -936,9 +699,9 @@ createClient(
 );
 
 
-/* =========================================
+/* =========================
    ESCAPE HTML
-========================================= */
+========================= */
 
 function escapeHtml(value){
 
@@ -946,37 +709,18 @@ function escapeHtml(value){
         value ?? ""
     )
 
-    .replace(
-        /&/g,
-        "&amp;"
-    )
-
-    .replace(
-        /</g,
-        "&lt;"
-    )
-
-    .replace(
-        />/g,
-        "&gt;"
-    )
-
-    .replace(
-        /"/g,
-        "&quot;"
-    )
-
-    .replace(
-        /'/g,
-        "&#039;"
-    );
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
 
 }
 
 
-/* =========================================
+/* =========================
    MESSAGE
-========================================= */
+========================= */
 
 function showMessage(
     text,
@@ -988,15 +732,12 @@ function showMessage(
         "message"
     );
 
-
     message.textContent =
     text;
-
 
     message.className =
     "message " +
     type;
-
 
     setTimeout(
         function(){
@@ -1011,12 +752,11 @@ function showMessage(
 }
 
 
-/* =========================================
+/* =========================
    CHECK ADMIN
-========================================= */
+========================= */
 
 async function checkAdmin(){
-
 
     const {
         data:{
@@ -1066,11 +806,9 @@ async function checkAdmin(){
             profileError
         );
 
-
         alert(
             "Unable to load admin profile."
         );
-
 
         return null;
 
@@ -1109,7 +847,6 @@ async function checkAdmin(){
 
         }
 
-
         return null;
 
     }
@@ -1129,9 +866,9 @@ async function checkAdmin(){
 }
 
 
-/* =========================================
-   LOAD JOB COUNTS
-========================================= */
+/* =========================
+   JOB COUNTS
+========================= */
 
 async function loadCounts(){
 
@@ -1217,9 +954,9 @@ async function loadCounts(){
 }
 
 
-/* =========================================
-   LOAD PENDING WITHDRAWAL COUNT
-========================================= */
+/* =========================
+   WITHDRAWAL COUNT
+========================= */
 
 async function loadWithdrawalCount(){
 
@@ -1249,16 +986,13 @@ async function loadWithdrawalCount(){
     if(error){
 
         console.error(
-            "Withdrawal count error:",
             error
         );
-
 
         document.getElementById(
             "pendingWithdrawalCount"
         ).textContent =
         "0";
-
 
         return;
 
@@ -1274,9 +1008,9 @@ async function loadWithdrawalCount(){
 }
 
 
-/* =========================================
+/* =========================
    LOAD PENDING JOBS
-========================================= */
+========================= */
 
 async function loadPendingJobs(){
 
@@ -1385,9 +1119,9 @@ async function loadPendingJobs(){
 }
 
 
-/* =========================================
+/* =========================
    LOAD ALL JOBS
-========================================= */
+========================= */
 
 async function loadAllJobs(){
 
@@ -1487,9 +1221,9 @@ async function loadAllJobs(){
 }
 
 
-/* =========================================
-   CREATE JOB CARD
-========================================= */
+/* =========================
+   JOB CARD
+========================= */
 
 function createJobCard(
     job,
@@ -1533,7 +1267,6 @@ function createJobCard(
 
         <div class="job-info">
 
-
             <div>
 
                 <span class="badge category">
@@ -1545,10 +1278,7 @@ function createJobCard(
 
                 </span>
 
-
-                <span
-                    class="badge ${escapeHtml(status)}"
-                >
+                <span class="badge ${escapeHtml(status)}">
 
                     ${escapeHtml(
                         status
@@ -1598,12 +1328,10 @@ function createJobCard(
 
             </p>
 
-
         </div>
 
 
         <div>
-
 
             <div class="reward">
 
@@ -1614,10 +1342,9 @@ function createJobCard(
 
             <div class="actions">
 
-
                 <button
                     class="view-btn"
-                    data-job-id="${escapeHtml(job.id)}"
+                    data-view="${escapeHtml(job.id)}"
                 >
                     View
                 </button>
@@ -1630,15 +1357,14 @@ function createJobCard(
 
                     <button
                         class="approve-btn"
-                        data-approve-job="${escapeHtml(job.id)}"
+                        data-approve="${escapeHtml(job.id)}"
                     >
                         ✓ Approve
                     </button>
 
-
                     <button
                         class="reject-btn"
-                        data-reject-job="${escapeHtml(job.id)}"
+                        data-reject="${escapeHtml(job.id)}"
                     >
                         ✕ Reject
                     </button>
@@ -1648,9 +1374,7 @@ function createJobCard(
                     ""
                 }
 
-
             </div>
-
 
         </div>
 
@@ -1662,13 +1386,11 @@ function createJobCard(
     );
 
 
-    const viewButton =
-    item.querySelector(
-        "[data-job-id]"
-    );
-
-
-    viewButton.addEventListener(
+    item
+    .querySelector(
+        "[data-view]"
+    )
+    .addEventListener(
         "click",
         function(){
 
@@ -1686,20 +1408,11 @@ function createJobCard(
 
     if(pendingOnly){
 
-
-        const approveButton =
-        item.querySelector(
-            "[data-approve-job]"
-        );
-
-
-        const rejectButton =
-        item.querySelector(
-            "[data-reject-job]"
-        );
-
-
-        approveButton.addEventListener(
+        item
+        .querySelector(
+            "[data-approve]"
+        )
+        .addEventListener(
             "click",
             function(){
 
@@ -1711,7 +1424,11 @@ function createJobCard(
         );
 
 
-        rejectButton.addEventListener(
+        item
+        .querySelector(
+            "[data-reject]"
+        )
+        .addEventListener(
             "click",
             function(){
 
@@ -1727,20 +1444,18 @@ function createJobCard(
 }
 
 
-/* =========================================
+/* =========================
    APPROVE JOB
-========================================= */
+========================= */
 
 async function approveJob(jobId){
 
 
-    const confirmed =
-    confirm(
-        "Are you sure you want to approve this job?"
-    );
-
-
-    if(!confirmed){
+    if(
+        !confirm(
+            "Are you sure you want to approve this job?"
+        )
+    ){
 
         return;
 
@@ -1796,20 +1511,18 @@ async function approveJob(jobId){
 }
 
 
-/* =========================================
+/* =========================
    REJECT JOB
-========================================= */
+========================= */
 
 async function rejectJob(jobId){
 
 
-    const confirmed =
-    confirm(
-        "Are you sure you want to reject this job?"
-    );
-
-
-    if(!confirmed){
+    if(
+        !confirm(
+            "Are you sure you want to reject this job?"
+        )
+    ){
 
         return;
 
@@ -1865,9 +1578,9 @@ async function rejectJob(jobId){
 }
 
 
-/* =========================================
+/* =========================
    LOAD WITHDRAWALS
-========================================= */
+========================= */
 
 async function loadWithdrawals(){
 
@@ -1895,15 +1608,7 @@ async function loadWithdrawals(){
 
         .from("withdrawals")
 
-        .select(`
-            id,
-            user_id,
-            amount,
-            payment_method,
-            payment_account,
-            status,
-            created_at
-        `)
+        .select("*")
 
         .order(
             "created_at",
@@ -1983,9 +1688,9 @@ async function loadWithdrawals(){
 }
 
 
-/* =========================================
-   CREATE WITHDRAWAL CARD
-========================================= */
+/* =========================
+   WITHDRAWAL CARD
+========================= */
 
 function createWithdrawalCard(
     withdrawal,
@@ -2029,30 +1734,25 @@ function createWithdrawalCard(
 
 
     if(
-        status ===
-        "paid"
+        status === "paid" ||
+        status === "approved"
     ){
 
         statusText =
-        "✅ Paid";
+        "✅ " +
+        (
+            status === "paid"
+            ?
+            "Paid"
+            :
+            "Approved"
+        );
 
     }
 
 
-    else if(
-        status ===
-        "approved"
-    ){
-
-        statusText =
-        "✅ Approved";
-
-    }
-
-
-    else if(
-        status ===
-        "rejected"
+    if(
+        status === "rejected"
     ){
 
         statusText =
@@ -2061,15 +1761,22 @@ function createWithdrawalCard(
     }
 
 
-    const isPending =
-    status ===
-    "pending";
+    const paymentMethod =
+    withdrawal.payment_method ||
+    withdrawal.method ||
+    "-";
+
+
+    const account =
+    withdrawal.payment_account ||
+    withdrawal.account_number ||
+    withdrawal.account_details ||
+    "-";
 
 
     item.innerHTML = `
 
-        <div class="withdrawal-top">
-
+        <div class="withdrawal-header">
 
             <div class="withdrawal-amount">
 
@@ -2086,14 +1793,13 @@ function createWithdrawalCard(
 
             </div>
 
-
         </div>
 
 
         <div class="withdrawal-grid">
 
 
-            <div class="withdrawal-info">
+            <div class="withdrawal-box">
 
                 <small>
                     Worker ID
@@ -2108,7 +1814,7 @@ function createWithdrawalCard(
             </div>
 
 
-            <div class="withdrawal-info">
+            <div class="withdrawal-box">
 
                 <small>
                     Payment Method
@@ -2116,15 +1822,14 @@ function createWithdrawalCard(
 
                 <strong>
                     ${escapeHtml(
-                        withdrawal.payment_method ||
-                        "-"
+                        paymentMethod
                     )}
                 </strong>
 
             </div>
 
 
-            <div class="withdrawal-info">
+            <div class="withdrawal-box">
 
                 <small>
                     Account Details
@@ -2132,15 +1837,14 @@ function createWithdrawalCard(
 
                 <strong>
                     ${escapeHtml(
-                        withdrawal.payment_account ||
-                        "-"
+                        account
                     )}
                 </strong>
 
             </div>
 
 
-            <div class="withdrawal-info">
+            <div class="withdrawal-box">
 
                 <small>
                     Request Date
@@ -2159,7 +1863,7 @@ function createWithdrawalCard(
 
 
         ${
-            isPending
+            status === "pending"
             ?
             `
 
@@ -2167,7 +1871,7 @@ function createWithdrawalCard(
 
                 <button
                     class="approve-btn"
-                    data-approve-withdrawal="${escapeHtml(withdrawal.id)}"
+                    data-withdraw-approve="${escapeHtml(withdrawal.id)}"
                 >
                     ✓ Approve Payment
                 </button>
@@ -2175,7 +1879,7 @@ function createWithdrawalCard(
 
                 <button
                     class="reject-btn"
-                    data-reject-withdrawal="${escapeHtml(withdrawal.id)}"
+                    data-withdraw-reject="${escapeHtml(withdrawal.id)}"
                 >
                     ✕ Reject
                 </button>
@@ -2195,22 +1899,15 @@ function createWithdrawalCard(
     );
 
 
-    if(isPending){
+    if(
+        status === "pending"
+    ){
 
-
-        const approveButton =
-        item.querySelector(
-            "[data-approve-withdrawal]"
-        );
-
-
-        const rejectButton =
-        item.querySelector(
-            "[data-reject-withdrawal]"
-        );
-
-
-        approveButton.addEventListener(
+        item
+        .querySelector(
+            "[data-withdraw-approve]"
+        )
+        .addEventListener(
             "click",
             function(){
 
@@ -2222,7 +1919,11 @@ function createWithdrawalCard(
         );
 
 
-        rejectButton.addEventListener(
+        item
+        .querySelector(
+            "[data-withdraw-reject]"
+        )
+        .addEventListener(
             "click",
             function(){
 
@@ -2238,22 +1939,20 @@ function createWithdrawalCard(
 }
 
 
-/* =========================================
+/* =========================
    APPROVE WITHDRAWAL
-========================================= */
+========================= */
 
 async function approveWithdrawal(
     withdrawalId
 ){
 
 
-    const confirmed =
-    confirm(
-        "Are you sure you want to approve this withdrawal payment?"
-    );
-
-
-    if(!confirmed){
+    if(
+        !confirm(
+            "Are you sure you want to approve this withdrawal?"
+        )
+    ){
 
         return;
 
@@ -2261,14 +1960,6 @@ async function approveWithdrawal(
 
 
     try{
-
-
-        /*
-         * Existing Supabase approval function.
-         *
-         * It handles the withdrawal approval
-         * and worker wallet deduction.
-         */
 
 
         const {
@@ -2289,7 +1980,6 @@ async function approveWithdrawal(
         if(error){
 
             console.error(
-                "Approval error:",
                 error
             );
 
@@ -2338,11 +2028,6 @@ async function approveWithdrawal(
 
     catch(error){
 
-        console.error(
-            error
-        );
-
-
         showMessage(
             "Withdrawal approval failed: " +
             error.message,
@@ -2354,22 +2039,20 @@ async function approveWithdrawal(
 }
 
 
-/* =========================================
+/* =========================
    REJECT WITHDRAWAL
-========================================= */
+========================= */
 
 async function rejectWithdrawal(
     withdrawalId
 ){
 
 
-    const confirmed =
-    confirm(
-        "Are you sure you want to reject this withdrawal request?"
-    );
-
-
-    if(!confirmed){
+    if(
+        !confirm(
+            "Are you sure you want to reject this withdrawal?"
+        )
+    ){
 
         return;
 
@@ -2404,7 +2087,6 @@ async function rejectWithdrawal(
     if(error){
 
         console.error(
-            "Reject withdrawal error:",
             error
         );
 
@@ -2433,9 +2115,9 @@ async function rejectWithdrawal(
 }
 
 
-/* =========================================
+/* =========================
    LOGOUT
-========================================= */
+========================= */
 
 document
 .getElementById(
@@ -2460,9 +2142,9 @@ document
 );
 
 
-/* =========================================
-   START DASHBOARD
-========================================= */
+/* =========================
+   START
+========================= */
 
 async function startDashboard(){
 
