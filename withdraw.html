@@ -1,413 +1,815 @@
 ```html
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Admin Withdrawal - EarnTask</title>
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>Withdraw - EarnTask</title>
+
 
 <style>
+
 *{
     box-sizing:border-box;
     margin:0;
     padding:0;
 }
 
+
 body{
     font-family:Arial,sans-serif;
-    background:#f3f4f6;
-    color:#111827;
+    background:#f5f7fb;
+    color:#172033;
 }
 
-.sidebar{
-    position:fixed;
-    left:0;
-    top:0;
-    width:230px;
-    height:100vh;
+
+/* ================================
+   NAVBAR
+================================ */
+
+.navbar{
     background:#111827;
     color:white;
-    padding:25px 12px;
+
+    padding:15px 25px;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    box-shadow:0 3px 12px rgba(0,0,0,.15);
 }
 
+
 .logo{
-    text-align:center;
-    font-size:28px;
+    font-size:26px;
     font-weight:800;
-    margin-bottom:35px;
 }
+
 
 .logo span{
     color:#22c55e;
 }
 
-.sidebar a{
-    display:block;
-    padding:13px 15px;
-    margin-bottom:7px;
+
+.nav-links{
+    display:flex;
+    gap:18px;
+    align-items:center;
+}
+
+
+.nav-links a{
     color:#d1d5db;
     text-decoration:none;
-    border-radius:8px;
+    font-size:14px;
 }
 
-.sidebar a:hover,
-.sidebar a.active{
-    background:#16a34a;
-    color:white;
+
+.nav-links a:hover{
+    color:#22c55e;
 }
 
-.main{
-    margin-left:230px;
-    padding:35px;
+
+/* ================================
+   CONTAINER
+================================ */
+
+.container{
+    max-width:1100px;
+    margin:30px auto;
+    padding:0 20px;
 }
+
 
 .header{
     display:flex;
     justify-content:space-between;
     align-items:center;
+
     margin-bottom:25px;
 }
+
 
 .header h1{
     font-size:30px;
 }
 
-.admin{
-    background:white;
-    padding:12px 18px;
-    border-radius:10px;
-    box-shadow:0 3px 12px rgba(0,0,0,.06);
-}
 
-.stats{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:20px;
-    margin-bottom:25px;
-}
-
-.stat{
+.user-name{
     background:white;
-    padding:22px;
-    border-radius:14px;
+
+    padding:10px 16px;
+
+    border-radius:9px;
+
     box-shadow:0 3px 15px rgba(0,0,0,.05);
 }
 
-.stat-title{
+
+/* ================================
+   BALANCE
+================================ */
+
+.balance-card{
+    background:white;
+
+    border-radius:15px;
+
+    padding:25px;
+
+    margin-bottom:25px;
+
+    box-shadow:0 5px 20px rgba(0,0,0,.06);
+}
+
+
+.balance-label{
     color:#64748b;
+
+    font-size:14px;
+
     margin-bottom:8px;
 }
 
-.stat-number{
-    font-size:30px;
+
+.balance{
+    color:#16a34a;
+
+    font-size:34px;
+
     font-weight:800;
 }
 
-.pending-number{
-    color:#d97706;
+
+.balance-note{
+    color:#64748b;
+
+    font-size:13px;
+
+    margin-top:8px;
 }
 
-.approved-number{
-    color:#16a34a;
-}
 
-.rejected-number{
-    color:#dc2626;
-}
-
-.panel{
-    background:white;
-    border-radius:14px;
-    padding:25px;
-    box-shadow:0 3px 15px rgba(0,0,0,.05);
-}
-
-.panel h2{
-    margin-bottom:20px;
-}
+/* ================================
+   MESSAGE
+================================ */
 
 .message{
     display:none;
+
     padding:14px;
+
+    border-radius:9px;
+
     margin-bottom:20px;
-    border-radius:8px;
+
+    font-weight:600;
 }
+
 
 .message.success{
     display:block;
+
     background:#dcfce7;
+
     color:#166534;
 }
+
 
 .message.error{
     display:block;
+
     background:#fee2e2;
+
     color:#991b1b;
 }
 
-.withdrawal{
-    border:1px solid #e5e7eb;
-    border-radius:12px;
-    padding:20px;
-    margin-bottom:15px;
+
+/* ================================
+   FORM
+================================ */
+
+.card{
+    background:white;
+
+    padding:25px;
+
+    border-radius:15px;
+
+    margin-bottom:25px;
+
+    box-shadow:0 5px 20px rgba(0,0,0,.06);
 }
 
-.withdrawal-top{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:15px;
+
+.card h2{
+    margin-bottom:20px;
+
+    font-size:21px;
 }
 
-.amount{
-    font-size:25px;
-    font-weight:800;
-    color:#16a34a;
-}
 
-.status{
-    padding:6px 12px;
-    border-radius:20px;
-    font-size:13px;
+label{
+    display:block;
+
+    font-size:14px;
+
     font-weight:700;
+
+    margin-bottom:7px;
 }
 
-.status.pending{
-    background:#fef3c7;
-    color:#92400e;
+
+input,
+select,
+textarea{
+    width:100%;
+
+    border:1px solid #dbe1e8;
+
+    border-radius:9px;
+
+    padding:12px;
+
+    font-size:15px;
+
+    margin-bottom:18px;
+
+    outline:none;
+
+    font-family:Arial,sans-serif;
 }
 
-.status.approved{
-    background:#dcfce7;
-    color:#166534;
+
+input:focus,
+select:focus,
+textarea:focus{
+    border-color:#22c55e;
 }
 
-.status.rejected{
-    background:#fee2e2;
-    color:#991b1b;
+
+textarea{
+    min-height:100px;
+
+    resize:vertical;
 }
 
-.info-grid{
-    display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:10px;
+
+.help{
+    color:#64748b;
+
+    font-size:12px;
+
+    margin-top:-12px;
+
     margin-bottom:18px;
 }
 
-.info{
-    background:#f8fafc;
-    padding:10px;
-    border-radius:7px;
+
+.withdraw-info{
+    display:grid;
+
+    grid-template-columns:repeat(2,1fr);
+
+    gap:12px;
+
+    margin-bottom:20px;
 }
 
-.info strong{
+
+.limit-box{
+    background:#f8fafc;
+
+    border-radius:9px;
+
+    padding:13px;
+}
+
+
+.limit-box span{
     display:block;
-    font-size:12px;
+
     color:#64748b;
+
+    font-size:12px;
+
     margin-bottom:4px;
 }
 
-.actions{
-    display:flex;
-    gap:10px;
+
+.limit-box strong{
+    font-size:17px;
 }
 
-.actions button{
-    border:none;
-    padding:11px 20px;
-    border-radius:7px;
+
+.submit-btn{
+    width:100%;
+
+    border:0;
+
+    padding:14px;
+
+    border-radius:9px;
+
+    background:#16a34a;
+
     color:white;
-    font-weight:700;
+
+    font-size:16px;
+
+    font-weight:800;
+
     cursor:pointer;
 }
 
-.approve{
-    background:#16a34a;
-}
 
-.approve:hover{
+.submit-btn:hover{
     background:#15803d;
 }
 
-.reject{
-    background:#dc2626;
-}
 
-.reject:hover{
-    background:#b91c1c;
-}
+.submit-btn:disabled{
+    opacity:.6;
 
-.actions button:disabled{
-    opacity:.5;
     cursor:not-allowed;
 }
 
+
+/* ================================
+   PAYMENT INFO
+================================ */
+
+.payment-box{
+    display:none;
+
+    background:#f0fdf4;
+
+    border:1px solid #bbf7d0;
+
+    padding:15px;
+
+    border-radius:9px;
+
+    margin-bottom:18px;
+
+    color:#166534;
+
+    font-size:13px;
+}
+
+
+.payment-box.show{
+    display:block;
+}
+
+
+/* ================================
+   HISTORY
+================================ */
+
+.withdrawal{
+    border:1px solid #e5e7eb;
+
+    border-radius:12px;
+
+    padding:20px;
+
+    margin-bottom:15px;
+}
+
+
+.withdrawal-top{
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:15px;
+}
+
+
+.amount{
+    color:#16a34a;
+
+    font-size:25px;
+
+    font-weight:800;
+}
+
+
+.status{
+    padding:6px 12px;
+
+    border-radius:20px;
+
+    font-size:12px;
+
+    font-weight:700;
+
+    text-transform:capitalize;
+}
+
+
+.status.pending{
+    background:#fef3c7;
+
+    color:#92400e;
+}
+
+
+.status.approved,
+.status.paid{
+    background:#dcfce7;
+
+    color:#166534;
+}
+
+
+.status.rejected{
+    background:#fee2e2;
+
+    color:#991b1b;
+}
+
+
+.info-grid{
+    display:grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap:10px;
+}
+
+
+.info{
+    background:#f8fafc;
+
+    padding:12px;
+
+    border-radius:8px;
+
+    overflow-wrap:anywhere;
+}
+
+
+.info small{
+    display:block;
+
+    color:#64748b;
+
+    font-size:11px;
+
+    margin-bottom:5px;
+}
+
+
+.info strong{
+    font-size:14px;
+}
+
+
+.loading,
 .empty{
     text-align:center;
-    padding:40px;
+
+    padding:35px;
+
     color:#64748b;
 }
 
-.loading{
-    text-align:center;
-    padding:30px;
-}
+
+/* ================================
+   MOBILE
+================================ */
 
 @media(max-width:800px){
 
-    .sidebar{
-        position:relative;
-        width:100%;
-        height:auto;
+    .navbar{
+        display:block;
     }
 
-    .main{
-        margin-left:0;
-        padding:20px;
+
+    .nav-links{
+        margin-top:12px;
+
+        flex-wrap:wrap;
+
+        gap:12px;
     }
 
-    .stats{
-        grid-template-columns:1fr;
-    }
-
-    .info-grid{
-        grid-template-columns:1fr;
-    }
 
     .header{
         display:block;
     }
 
-    .admin{
+
+    .user-name{
         display:inline-block;
+
         margin-top:12px;
     }
+
+
+    .withdraw-info{
+        grid-template-columns:1fr;
+    }
+
+
+    .info-grid{
+        grid-template-columns:1fr;
+    }
+
+
+    .withdrawal-top{
+        align-items:flex-start;
+
+        gap:10px;
+    }
+
 }
+
 </style>
+
 </head>
+
 
 <body>
 
-<aside class="sidebar">
+
+<!-- ================================
+     NAVBAR
+================================ -->
+
+<div class="navbar">
 
     <div class="logo">
         Earn<span>Task</span>
     </div>
 
-    <a href="admin-dashboard.html">
-        🏠 Dashboard
-    </a>
 
-    <a href="admin-dashboard.html">
-        💼 Jobs
-    </a>
+    <div class="nav-links">
 
-    <a href="admin-withdrawals.html" class="active">
-        💸 Withdrawals
-    </a>
+        <a href="worker-dashboard.html">
+            🏠 Dashboard
+        </a>
 
-    <a href="submissions.html">
-        📤 Submissions
-    </a>
+        <a href="worker-dashboard.html#jobs">
+            💼 Jobs
+        </a>
 
-    <a href="#" id="logoutBtn">
-        🚪 Logout
-    </a>
+        <a href="worker-dashboard.html#earnings">
+            💰 Earnings
+        </a>
 
-</aside>
+        <a href="withdraw.html">
+            💸 Withdraw
+        </a>
+
+        <a href="worker-dashboard.html#profile">
+            👤 Profile
+        </a>
+
+        <a
+            href="#"
+            id="logoutBtn"
+        >
+            🚪 Logout
+        </a>
+
+    </div>
+
+</div>
 
 
-<main class="main">
+<!-- ================================
+     MAIN
+================================ -->
+
+<div class="container">
+
 
     <div class="header">
 
         <h1>
-            Withdrawal Requests
+            💸 Withdraw
         </h1>
 
-        <div class="admin">
-            👑 Admin
+
+        <div
+            class="user-name"
+            id="userName"
+        >
+            Loading...
         </div>
 
     </div>
 
 
-    <div class="stats">
+    <!-- MESSAGE -->
 
-        <div class="stat">
+    <div
+        id="message"
+        class="message"
+    ></div>
 
-            <div class="stat-title">
-                Pending
-            </div>
 
-            <div
-                class="stat-number pending-number"
-                id="pendingCount"
-            >
-                0
-            </div>
+    <!-- ================================
+         BALANCE
+    ================================= -->
 
+    <div class="balance-card">
+
+        <div class="balance-label">
+            Available Balance
         </div>
 
 
-        <div class="stat">
-
-            <div class="stat-title">
-                Approved
-            </div>
-
-            <div
-                class="stat-number approved-number"
-                id="approvedCount"
-            >
-                0
-            </div>
-
+        <div
+            class="balance"
+            id="balance"
+        >
+            $0.00
         </div>
 
 
-        <div class="stat">
-
-            <div class="stat-title">
-                Rejected
-            </div>
-
-            <div
-                class="stat-number rejected-number"
-                id="rejectedCount"
-            >
-                0
-            </div>
-
+        <div class="balance-note">
+            Minimum withdrawal: $110.00
+            &nbsp; | &nbsp;
+            Maximum withdrawal: $25,000.00
         </div>
 
     </div>
 
 
-    <div class="panel">
+    <!-- ================================
+         WITHDRAW FORM
+    ================================= -->
+
+    <div class="card">
 
         <h2>
-            💸 Withdrawal Requests
+            💸 Request Withdrawal
         </h2>
 
-        <div
-            id="message"
-            class="message"
-        ></div>
+
+        <div class="withdraw-info">
+
+            <div class="limit-box">
+
+                <span>
+                    Minimum Withdrawal
+                </span>
+
+                <strong>
+                    $110.00
+                </strong>
+
+            </div>
+
+
+            <div class="limit-box">
+
+                <span>
+                    Maximum Withdrawal
+                </span>
+
+                <strong>
+                    $25,000.00
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <label>
+            Payment Method
+        </label>
+
+
+        <select
+            id="paymentMethod"
+        >
+
+            <option value="">
+                Select Payment Method
+            </option>
+
+
+            <option value="bKash">
+                🇧🇩 bKash
+            </option>
+
+
+            <option value="Nagad">
+                🇧🇩 Nagad
+            </option>
+
+
+            <option value="Rocket">
+                🚀 Rocket
+            </option>
+
+
+            <option value="International Bank Account">
+                🏦 International Bank Account
+            </option>
+
+
+            <option value="PayPal">
+                💳 PayPal
+            </option>
+
+        </select>
+
 
         <div
-            id="withdrawals"
-            class="loading"
+            id="paymentHelp"
+            class="payment-box"
+        ></div>
+
+
+        <label>
+            Account Details
+        </label>
+
+
+        <textarea
+            id="paymentAccount"
+            placeholder="Enter your payment account details"
+        ></textarea>
+
+
+        <div class="help">
+            bKash/Nagad/Rocket: enter your mobile number.
+            PayPal: enter your PayPal email.
+            International Bank Account: enter account holder name, bank name, account number/IBAN, SWIFT/BIC and country.
+        </div>
+
+
+        <label>
+            Withdrawal Amount (USD)
+        </label>
+
+
+        <input
+            type="number"
+            id="amount"
+            min="110"
+            max="25000"
+            step="0.01"
+            placeholder="Enter amount between $110 and $25,000"
+        />
+
+
+        <button
+            type="button"
+            id="withdrawBtn"
+            class="submit-btn"
         >
-            Loading withdrawals...
+            💸 Submit Withdrawal
+        </button>
+
+    </div>
+
+
+    <!-- ================================
+         HISTORY
+    ================================= -->
+
+    <div class="card">
+
+        <h2>
+            📋 Withdrawal History
+        </h2>
+
+
+        <div id="history">
+
+            <div class="loading">
+                Loading withdrawal history...
+            </div>
+
         </div>
 
     </div>
 
-</main>
+
+</div>
 
 
 <script type="module">
+
 
 /* =====================================
    SUPABASE
@@ -416,14 +818,17 @@ body{
 const SUPABASE_URL =
 "https://rvwboegeisnrhwicvvhj.supabase.co";
 
+
 const SUPABASE_KEY =
 "sb_publishable_Kz3hgj9W0khG3JEIclhx2g_HZ6eSyQQ";
+
 
 import {
     createClient
 }
 from
 "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+
 
 const supabase =
 createClient(
@@ -432,13 +837,66 @@ createClient(
 );
 
 
+let currentUser = null;
+
+
+/* =====================================
+   CONSTANTS
+===================================== */
+
+const MIN_WITHDRAW =
+110;
+
+
+const MAX_WITHDRAW =
+25000;
+
+
+/* =====================================
+   HTML ESCAPE
+===================================== */
+
+function escapeHtml(value){
+
+    return String(
+        value ?? ""
+    )
+
+    .replace(
+        /&/g,
+        "&amp;"
+    )
+
+    .replace(
+        /</g,
+        "&lt;"
+    )
+
+    .replace(
+        />/g,
+        "&gt;"
+    )
+
+    .replace(
+        /"/g,
+        "&quot;"
+    )
+
+    .replace(
+        /'/g,
+        "&#039;"
+    );
+
+}
+
+
 /* =====================================
    MESSAGE
 ===================================== */
 
 function showMessage(
     text,
-    type
+    type="success"
 ){
 
     const box =
@@ -446,96 +904,298 @@ function showMessage(
         "message"
     );
 
+
     box.textContent =
     text;
 
+
     box.className =
-    "message " + type;
+    "message " +
+    type;
+
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
 
 }
 
 
 /* =====================================
-   CHECK ADMIN
+   CHECK USER
 ===================================== */
 
-async function checkAdmin(){
+async function checkUser(){
 
     const {
         data:{
             user
-        }
-    } =
-    await supabase
-    .auth
-    .getUser();
-
-
-    if(!user){
-
-        window.location.href =
-        "login.html";
-
-        return false;
-
-    }
-
-
-    const {
-        data:profile,
+        },
         error
     } =
     await supabase
-
-    .from("profiles")
-
-    .select("role")
-
-    .eq(
-        "id",
-        user.id
-    )
-
-    .single();
+        .auth
+        .getUser();
 
 
     if(
         error ||
-        !profile ||
-        profile.role !== "admin"
+        !user
     ){
 
-        alert(
-            "Admin access required."
-        );
-
         window.location.href =
-        "worker-dashboard.html";
+        "login.html";
 
-        return false;
+        return null;
 
     }
 
 
-    return true;
+    currentUser =
+    user;
+
+
+    return user;
 
 }
 
 
 /* =====================================
-   LOAD WITHDRAWALS
+   LOAD PROFILE
 ===================================== */
 
-async function loadWithdrawals(){
+async function loadProfile(){
 
-    const container =
+    const {
+        data,
+        error
+    } =
+    await supabase
+
+        .from("profiles")
+
+        .select("*")
+
+        .eq(
+            "id",
+            currentUser.id
+        )
+
+        .single();
+
+
+    if(error){
+
+        console.log(
+            "Profile error:",
+            error.message
+        );
+
+        document.getElementById(
+            "userName"
+        ).textContent =
+        "Worker";
+
+        return;
+
+    }
+
+
     document.getElementById(
-        "withdrawals"
+        "userName"
+    ).textContent =
+
+        data?.full_name ||
+        data?.username ||
+        "Worker";
+
+}
+
+
+/* =====================================
+   LOAD BALANCE
+===================================== */
+
+async function loadBalance(){
+
+    const {
+        data,
+        error
+    } =
+    await supabase
+
+        .from("wallets")
+
+        .select("balance")
+
+        .eq(
+            "user_id",
+            currentUser.id
+        )
+
+        .single();
+
+
+    if(error){
+
+        console.error(
+            "Wallet error:",
+            error
+        );
+
+        document.getElementById(
+            "balance"
+        ).textContent =
+        "$0.00";
+
+        return 0;
+
+    }
+
+
+    const balance =
+    Number(
+        data?.balance || 0
     );
 
 
-    container.innerHTML =
-    "Loading withdrawals...";
+    document.getElementById(
+        "balance"
+    ).textContent =
+    "$" +
+    balance.toFixed(2);
+
+
+    return balance;
+
+}
+
+
+/* =====================================
+   PAYMENT METHOD HELP
+===================================== */
+
+document
+.getElementById(
+    "paymentMethod"
+)
+.addEventListener(
+    "change",
+    function(){
+
+        const method =
+        this.value;
+
+
+        const box =
+        document.getElementById(
+            "paymentHelp"
+        );
+
+
+        if(!method){
+
+            box.className =
+            "payment-box";
+
+            box.innerHTML =
+            "";
+
+            return;
+
+        }
+
+
+        let text =
+        "";
+
+
+        if(
+            method ===
+            "bKash"
+        ){
+
+            text =
+            "bKash selected — enter your bKash mobile number.";
+
+        }
+
+
+        else if(
+            method ===
+            "Nagad"
+        ){
+
+            text =
+            "Nagad selected — enter your Nagad mobile number.";
+
+        }
+
+
+        else if(
+            method ===
+            "Rocket"
+        ){
+
+            text =
+            "Rocket selected — enter your Rocket mobile/account number.";
+
+        }
+
+
+        else if(
+            method ===
+            "PayPal"
+        ){
+
+            text =
+            "PayPal selected — enter your PayPal email address.";
+
+        }
+
+
+        else if(
+            method ===
+            "International Bank Account"
+        ){
+
+            text =
+            "International Bank Account selected — enter Account Holder Name, Bank Name, Account Number/IBAN, SWIFT/BIC and Country.";
+
+        }
+
+
+        box.textContent =
+        text;
+
+
+        box.className =
+        "payment-box show";
+
+    }
+);
+
+
+/* =====================================
+   LOAD WITHDRAWAL HISTORY
+===================================== */
+
+async function loadHistory(){
+
+    const history =
+    document.getElementById(
+        "history"
+    );
+
+
+    history.innerHTML = `
+
+        <div class="loading">
+            Loading withdrawal history...
+        </div>
+
+    `;
 
 
     const {
@@ -544,89 +1204,46 @@ async function loadWithdrawals(){
     } =
     await supabase
 
-    .from("withdrawals")
+        .from("withdrawals")
 
-    .select("*")
+        .select(`
+            id,
+            amount,
+            payment_method,
+            payment_account,
+            status,
+            created_at
+        `)
 
-    .order(
-        "created_at",
-        {
-            ascending:false
-        }
-    );
+        .eq(
+            "user_id",
+            currentUser.id
+        )
+
+        .order(
+            "created_at",
+            {
+                ascending:false
+            }
+        );
 
 
     if(error){
 
-        container.innerHTML =
-        "";
-
-        showMessage(
-            "Failed to load withdrawals: " +
-            error.message,
-            "error"
+        console.error(
+            error
         );
 
-        return;
 
-    }
+        history.innerHTML = `
 
+            <div class="message error">
+                Unable to load withdrawal history:
+                ${escapeHtml(
+                    error.message
+                )}
+            </div>
 
-    let pending = 0;
-    let approved = 0;
-    let rejected = 0;
-
-
-    data.forEach(
-        withdrawal => {
-
-            if(
-                withdrawal.status ===
-                "pending"
-            )
-                pending++;
-
-            if(
-                withdrawal.status ===
-                "approved"
-            )
-                approved++;
-
-            if(
-                withdrawal.status ===
-                "rejected"
-            )
-                rejected++;
-
-        }
-    );
-
-
-    document.getElementById(
-        "pendingCount"
-    ).textContent =
-    pending;
-
-
-    document.getElementById(
-        "approvedCount"
-    ).textContent =
-    approved;
-
-
-    document.getElementById(
-        "rejectedCount"
-    ).textContent =
-    rejected;
-
-
-    if(!data.length){
-
-        container.innerHTML =
-        `
-        <div class="empty">
-            No withdrawal requests found.
-        </div>
         `;
 
         return;
@@ -634,13 +1251,39 @@ async function loadWithdrawals(){
     }
 
 
-    container.className =
-    "";
+    if(
+        !data ||
+        data.length === 0
+    ){
+
+        history.innerHTML = `
+
+            <div class="empty">
+                📋 No withdrawal requests yet.
+            </div>
+
+        `;
+
+        return;
+
+    }
 
 
-    container.innerHTML =
+    history.innerHTML =
     data.map(
         withdrawal => {
+
+
+            const amount =
+            Number(
+                withdrawal.amount || 0
+            );
+
+
+            const status =
+            withdrawal.status ||
+            "pending";
+
 
             const created =
             withdrawal.created_at
@@ -652,129 +1295,116 @@ async function loadWithdrawals(){
             "-";
 
 
-            let account =
-            withdrawal.payment_account
-            || "-";
+            let statusText =
+            "⏳ Pending";
 
 
             if(
-                withdrawal.payment_method ===
-                "International Bank Account"
+                status ===
+                "approved"
             ){
 
-                account =
-                `
-                ${withdrawal.account_holder_name || "-"}
-                <br>
-                ${withdrawal.bank_name || "-"}
-                <br>
-                ${withdrawal.account_number || "-"}
-                <br>
-                SWIFT: ${withdrawal.swift_code || "-"}
-                <br>
-                Country: ${withdrawal.bank_country || "-"}
-                `;
+                statusText =
+                "✅ Approved";
 
             }
 
 
-            const buttons =
-            withdrawal.status ===
-            "pending"
-            ?
-            `
-            <div class="actions">
+            else if(
+                status ===
+                "paid"
+            ){
 
-                <button
-                    class="approve"
-                    onclick="approveWithdrawal('${withdrawal.id}')"
-                >
-                    ✓ Approve
-                </button>
+                statusText =
+                "✅ Paid";
 
-                <button
-                    class="reject"
-                    onclick="rejectWithdrawal('${withdrawal.id}')"
-                >
-                    ✕ Reject
-                </button>
+            }
 
-            </div>
-            `
-            :
-            "";
+
+            else if(
+                status ===
+                "rejected"
+            ){
+
+                statusText =
+                "❌ Rejected";
+
+            }
 
 
             return `
 
-            <div class="withdrawal">
+                <div class="withdrawal">
 
-                <div class="withdrawal-top">
+                    <div class="withdrawal-top">
 
-                    <div class="amount">
-                        $${Number(
-                            withdrawal.amount
-                        ).toFixed(2)}
+                        <div class="amount">
+                            $${amount.toFixed(2)}
+                        </div>
+
+
+                        <div
+                            class="status ${escapeHtml(status)}"
+                        >
+                            ${statusText}
+                        </div>
+
                     </div>
 
-                    <div class="status ${withdrawal.status}">
-                        ${withdrawal.status}
+
+                    <div class="info-grid">
+
+
+                        <div class="info">
+
+                            <small>
+                                Payment Method
+                            </small>
+
+                            <strong>
+                                ${escapeHtml(
+                                    withdrawal.payment_method ||
+                                    "-"
+                                )}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="info">
+
+                            <small>
+                                Account Details
+                            </small>
+
+                            <strong>
+                                ${escapeHtml(
+                                    withdrawal.payment_account ||
+                                    "-"
+                                )}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="info">
+
+                            <small>
+                                Request Date
+                            </small>
+
+                            <strong>
+                                ${escapeHtml(
+                                    created
+                                )}
+                            </strong>
+
+                        </div>
+
+
                     </div>
 
                 </div>
-
-
-                <div class="info-grid">
-
-                    <div class="info">
-
-                        <strong>
-                            Worker ID
-                        </strong>
-
-                        ${withdrawal.user_id}
-
-                    </div>
-
-
-                    <div class="info">
-
-                        <strong>
-                            Payment Method
-                        </strong>
-
-                        ${withdrawal.payment_method}
-
-                    </div>
-
-
-                    <div class="info">
-
-                        <strong>
-                            Account
-                        </strong>
-
-                        ${account}
-
-                    </div>
-
-
-                    <div class="info">
-
-                        <strong>
-                            Date
-                        </strong>
-
-                        ${created}
-
-                    </div>
-
-                </div>
-
-
-                ${buttons}
-
-            </div>
 
             `;
 
@@ -785,147 +1415,317 @@ async function loadWithdrawals(){
 
 
 /* =====================================
-   APPROVE
+   SUBMIT WITHDRAWAL
 ===================================== */
 
-window.approveWithdrawal =
-async function(id){
+document
+.getElementById(
+    "withdrawBtn"
+)
+.addEventListener(
+    "click",
+    async function(){
 
-    if(
-        !confirm(
-            "Approve this withdrawal?"
-        )
-    ){
-
-        return;
-
-    }
+        const button =
+        this;
 
 
-    const {
-        data,
-        error
-    } =
-    await supabase
+        const method =
+        document.getElementById(
+            "paymentMethod"
+        ).value.trim();
 
-    .rpc(
-        "approve_withdrawal",
-        {
-            withdrawal_id:id
+
+        const account =
+        document.getElementById(
+            "paymentAccount"
+        ).value.trim();
+
+
+        const amount =
+        Number(
+            document.getElementById(
+                "amount"
+            ).value
+        );
+
+
+        /* ============================
+           METHOD CHECK
+        ============================ */
+
+        if(!method){
+
+            showMessage(
+                "Please select a payment method.",
+                "error"
+            );
+
+            return;
+
         }
-    );
 
 
-    if(error){
+        /* ============================
+           ACCOUNT CHECK
+        ============================ */
 
-        showMessage(
-            "Approve failed: " +
-            error.message,
-            "error"
-        );
+        if(!account){
 
-        return;
+            showMessage(
+                "Please enter your payment account details.",
+                "error"
+            );
 
-    }
+            return;
 
-
-    if(
-        !data ||
-        data.success !== true
-    ){
-
-        showMessage(
-            data?.message ||
-            "Approval failed.",
-            "error"
-        );
-
-        return;
-
-    }
-
-
-    showMessage(
-        "Withdrawal approved successfully!",
-        "success"
-    );
-
-
-    await loadWithdrawals();
-
-};
-
-
-/* =====================================
-   REJECT
-===================================== */
-
-window.rejectWithdrawal =
-async function(id){
-
-    if(
-        !confirm(
-            "Reject this withdrawal?"
-        )
-    ){
-
-        return;
-
-    }
-
-
-    const {
-        data,
-        error
-    } =
-    await supabase
-
-    .rpc(
-        "reject_withdrawal",
-        {
-            withdrawal_id:id
         }
-    );
 
 
-    if(error){
+        /* ============================
+           AMOUNT CHECK
+        ============================ */
 
-        showMessage(
-            "Reject failed: " +
-            error.message,
-            "error"
+        if(
+            !Number.isFinite(amount)
+        ){
+
+            showMessage(
+                "Please enter a valid withdrawal amount.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        if(
+            amount < MIN_WITHDRAW
+        ){
+
+            showMessage(
+                "Minimum withdrawal is $110.00.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        if(
+            amount > MAX_WITHDRAW
+        ){
+
+            showMessage(
+                "Maximum withdrawal is $25,000.00.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        /* ============================
+           CHECK WALLET
+        ============================ */
+
+        const {
+            data:wallet,
+            error:walletError
+        } =
+        await supabase
+
+            .from("wallets")
+
+            .select("balance")
+
+            .eq(
+                "user_id",
+                currentUser.id
+            )
+
+            .single();
+
+
+        if(walletError){
+
+            showMessage(
+                "Unable to check balance: " +
+                walletError.message,
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        const balance =
+        Number(
+            wallet?.balance || 0
         );
 
-        return;
 
-    }
+        if(
+            balance < amount
+        ){
+
+            showMessage(
+                "Insufficient balance. Available balance: $" +
+                balance.toFixed(2),
+                "error"
+            );
+
+            return;
+
+        }
 
 
-    if(
-        !data ||
-        data.success !== true
-    ){
+        /* ============================
+           CONFIRM
+        ============================ */
 
-        showMessage(
-            data?.message ||
-            "Rejection failed.",
-            "error"
+        const confirmed =
+        confirm(
+            "Submit withdrawal request for $" +
+            amount.toFixed(2) +
+            " via " +
+            method +
+            "?"
         );
 
-        return;
+
+        if(!confirmed){
+
+            return;
+
+        }
+
+
+        button.disabled =
+        true;
+
+
+        button.textContent =
+        "⏳ Submitting...";
+
+
+        /* ============================
+           INSERT REQUEST
+        ============================ */
+
+        const {
+            error
+        } =
+        await supabase
+
+            .from("withdrawals")
+
+            .insert({
+
+                user_id:
+                currentUser.id,
+
+                amount:
+                amount,
+
+                payment_method:
+                method,
+
+                payment_account:
+                account,
+
+                status:
+                "pending"
+
+            });
+
+
+        if(error){
+
+            console.error(
+                "Withdrawal insert error:",
+                error
+            );
+
+
+            showMessage(
+                "Withdrawal failed: " +
+                error.message,
+                "error"
+            );
+
+
+            button.disabled =
+            false;
+
+
+            button.textContent =
+            "💸 Submit Withdrawal";
+
+
+            return;
+
+        }
+
+
+        /* ============================
+           SUCCESS
+        ============================ */
+
+        showMessage(
+            "Withdrawal request submitted successfully! Waiting for Admin approval.",
+            "success"
+        );
+
+
+        document.getElementById(
+            "paymentMethod"
+        ).value =
+        "";
+
+
+        document.getElementById(
+            "paymentAccount"
+        ).value =
+        "";
+
+
+        document.getElementById(
+            "amount"
+        ).value =
+        "";
+
+
+        document.getElementById(
+            "paymentHelp"
+        ).className =
+        "payment-box";
+
+
+        document.getElementById(
+            "paymentHelp"
+        ).innerHTML =
+        "";
+
+
+        button.disabled =
+        false;
+
+
+        button.textContent =
+        "💸 Submit Withdrawal";
+
+
+        await loadBalance();
+
+        await loadHistory();
 
     }
-
-
-    showMessage(
-        "Withdrawal rejected successfully!",
-        "success"
-    );
-
-
-    await loadWithdrawals();
-
-};
+);
 
 
 /* =====================================
@@ -942,9 +1742,11 @@ document
 
         event.preventDefault();
 
+
         await supabase
-        .auth
-        .signOut();
+            .auth
+            .signOut();
+
 
         window.location.href =
         "login.html";
@@ -957,18 +1759,33 @@ document
    START
 ===================================== */
 
-const isAdmin =
-await checkAdmin();
+async function start(){
+
+    const user =
+    await checkUser();
 
 
-if(isAdmin){
+    if(!user){
 
-    await loadWithdrawals();
+        return;
+
+    }
+
+
+    await loadProfile();
+
+    await loadBalance();
+
+    await loadHistory();
 
 }
+
+
+start();
 
 </script>
 
 </body>
+
 </html>
 ```
